@@ -85,7 +85,21 @@ struct ContentView: View {
             
             Button("Translate") {
                 // logic
-                outputText = "From: \(fromLanguage) -> To: \(toLanguage)\n\(inputText)"
+                Task{
+                    do {
+                        if #available(macOS 26.0, *){
+                            outputText = try await AppleTranslator.translate(
+                                text: inputText,
+                                from: fromLanguage,
+                                to: toLanguage
+                            )
+                        } else {
+                          outputText = "Translation requires macOS 26 or newer."
+                        }
+                    } catch {
+                        outputText = error.localizedDescription
+                    }
+                }
                 
             }
             .disabled(inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
