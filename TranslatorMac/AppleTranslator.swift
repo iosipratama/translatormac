@@ -7,7 +7,7 @@
 
 import Foundation
 import Translation
-// Translation is the macOS framework that can transalte on device level
+// Translation is the macOS framework that can translate on device level
 
 @available(macOS 26.0, *)
 enum AppleTranslator {
@@ -18,16 +18,18 @@ enum AppleTranslator {
         let target = try language(to)
         
         
-        let session = TranslationSession(installedSource: source, target:target)
+        let session = TranslationSession(installedSource: source, target: target)
         
+        // Perform the translation. `translate(_:)` returns a single Response object.
         let response = try await session.translate(text)
-        
-        var result = ""
-            for segment in response {
-                result += segment.text
-            }
 
-            return result
+        // Use the translated target text (non-optional); provide a minimal fallback if unexpected.
+        let translated = response.targetText
+        if !translated.isEmpty {
+            return translated
+        }
+        // Fallback: stringify the response if target text is unexpectedly empty.
+        return String(describing: response)
         
     }
     
