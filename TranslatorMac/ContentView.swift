@@ -22,6 +22,27 @@ struct ContentView: View {
     
     private let languages = ["English", "Indonesian", "Arabic", "German", "Japanese"]
     
+    //
+    private func triggerTranslate(){
+        // logic
+        Task{
+            do {
+                if #available(macOS 26.0, *){
+                    outputText = try await AppleTranslator.translate(
+                        text: inputText,
+                        from: fromLanguage,
+                        to: toLanguage
+                    )
+                } else {
+                  outputText = "Translation requires macOS 26 or newer."
+                }
+            } catch {
+                outputText = error.localizedDescription
+            }
+        }
+    }
+    
+    
     var body: some View {
         VStack (spacing: 20){
             Text("Translator")
@@ -84,25 +105,12 @@ struct ContentView: View {
             }
             
             Button("Translate") {
-                // logic
-                Task{
-                    do {
-                        if #available(macOS 26.0, *){
-                            outputText = try await AppleTranslator.translate(
-                                text: inputText,
-                                from: fromLanguage,
-                                to: toLanguage
-                            )
-                        } else {
-                          outputText = "Translation requires macOS 26 or newer."
-                        }
-                    } catch {
-                        outputText = error.localizedDescription
-                    }
-                }
-                
+                // clicking the buttons run the translation
+                triggerTranslate()
             }
+            .keyboardShortcut(.return, modifiers: [.command])
             .disabled(inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            .help("Translate Command Enter")
         }
         .padding()
         .frame(minWidth: 760, minHeight: 360)
