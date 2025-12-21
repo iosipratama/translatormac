@@ -84,12 +84,30 @@ struct ContentView: View {
                 VStack{
                     Text("Input")
                     //
-                    TextEditor(text: $inputText)
-                        .frame(minHeight: 180)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(.quaternary)
-                        )
+                    
+                    ZStack(alignment: .topLeading){
+                        if inputText.isEmpty {
+                            Text("Type or paste text to translate")
+                                .foregroundStyle(.tertiary)
+                                .padding(8)
+                                .allowsHitTesting(false)
+                        }
+                        
+                        TextEditor(text: $inputText)
+                            
+                            .frame(minHeight: 180)
+                            .padding(8)
+                            .background(.clear)
+                            .scrollContentBackground(.hidden)
+                            
+                        
+                    }
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(.quaternary)
+                    )
+                    
+                    
                 }
                 
                 VStack{
