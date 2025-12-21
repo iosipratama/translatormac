@@ -45,7 +45,7 @@ struct ContentView: View {
     
     var body: some View {
         VStack (spacing: 20){
-            Text("Translator")
+            Text("Offline Translator")
                 .font(.title2)
             
             
@@ -82,26 +82,25 @@ struct ContentView: View {
             // Input and Output field
             HStack{
                 VStack{
-                    Text("Input")
-                    //
+                    
                     
                     ZStack(alignment: .topLeading){
                         if inputText.isEmpty {
                             Text("Type or paste text to translate")
                                 .foregroundStyle(.tertiary)
-                                .padding(8)
                                 .allowsHitTesting(false)
                         }
                         
                         TextEditor(text: $inputText)
-                            
+                            .padding(.top, 3)
+                            .padding(.leading, -4)
                             .frame(minHeight: 180)
-                            .padding(8)
                             .background(.clear)
                             .scrollContentBackground(.hidden)
                             
                         
                     }
+                    .padding(8)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(.quaternary)
@@ -111,16 +110,32 @@ struct ContentView: View {
                 }
                 
                 VStack{
-                    Text("Output")
-                    TextEditor(text: $outputText)
-                        .frame(minHeight: 180)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(.quaternary)
-                        )
-                        .disabled(true)
+                    
+                    ZStack(alignment: .topLeading){
+                        if outputText.isEmpty {
+                            Text("Translation")
+                                .foregroundStyle(.tertiary)
+
+                        }
+                        
+                        TextEditor(text: $outputText)
+                            .padding(.top, 3)
+                            .padding(.leading, -4)
+                            .frame(minHeight: 180)
+                            .background(.clear)
+                            .scrollContentBackground(.hidden)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(.quaternary)
+                            )
+                            .disabled(true)
+                        
+                    }
+                    .padding(8)
+                    
                 }
             }
+            
             
             Button("Translate") {
                 // clicking the buttons run the translation
