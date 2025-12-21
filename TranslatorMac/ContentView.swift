@@ -79,14 +79,12 @@ struct ContentView: View {
             }
             
             
-            // Input and Output field
+
             HStack{
-                VStack{
-                    
-                    
+                    // Input
                     ZStack(alignment: .topLeading){
                         if inputText.isEmpty {
-                            Text("Type or paste text to translate")
+                            Text("Type or paste text and ⌘↵ to translate")
                                 .foregroundStyle(.tertiary)
                                 .allowsHitTesting(false)
                         }
@@ -95,10 +93,10 @@ struct ContentView: View {
                             .padding(.top, 3)
                             .padding(.leading, -4)
                             .frame(minHeight: 180)
-                            .background(.clear)
                             .scrollContentBackground(.hidden)
+                            .background(.clear)
                             
-                        
+                            
                     }
                     .padding(8)
                     .overlay(
@@ -107,10 +105,9 @@ struct ContentView: View {
                     )
                     
                     
-                }
                 
-                VStack{
-                    
+                
+                // Translation
                     ZStack(alignment: .topLeading){
                         if outputText.isEmpty {
                             Text("Translation")
@@ -124,18 +121,26 @@ struct ContentView: View {
                             .frame(minHeight: 180)
                             .background(.clear)
                             .scrollContentBackground(.hidden)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(.quaternary)
-                            )
+                            
                             .disabled(true)
                         
                     }
                     .padding(8)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(.quaternary)
+                    )
                     
-                }
+                
             }
-            
+            // automatically set translation value to zero if input text zero
+            .onChange(of: inputText) { oldValue, newValue in
+                if newValue.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    // clear the output field
+                    outputText = ""
+                }
+                
+            }
             
             Button("Translate") {
                 // clicking the buttons run the translation
