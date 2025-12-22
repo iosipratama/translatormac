@@ -20,7 +20,7 @@ struct ContentView: View {
     @State private var fromLanguage = "English"
     @State private var toLanguage = "Indonesian"
     
-    private let languages = ["English", "Indonesian", "Arabic", "German", "Japanese"]
+    private let languages = ["Auto ", "English", "Indonesian", "Arabic", "German", "Japanese"]
     
     //
     private func triggerTranslate(){

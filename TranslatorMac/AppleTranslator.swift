@@ -12,6 +12,7 @@ import Foundation
 // Translation is the macOS framework that can translate on device level
 // Available on macOS 26+ and performs on-device translation.
 import Translation
+import NaturalLanguage
 
 @available(macOS 26.0, *)
 // This enum namespaces translation utilities and is only available on macOS 26 or later.
@@ -25,6 +26,8 @@ enum AppleTranslator {
         case missingLanguageModel(source: String, target: String) // Error when required language models are not installed.
         case emptyInput              // Error when the input text is empty.
         case underlying(Error)       // Wraps other underlying errors that may occur.
+        case lowConfidenceDetection
+        case sameSourceAndTarget
 
         // Maps each error case to a human-readable message.
         var errorDescription: String? {
@@ -37,6 +40,10 @@ enum AppleTranslator {
                 return "Required on-device language models are not installed for \(source) → \(target)."
             case .emptyInput:
                 return "Input text is empty."
+            case .lowConfidenceDetection:
+                return "Unable to confidently detect the source language."
+            case .sameSourceAndTarget:
+                return "Source and target languages are the same."
             case .underlying(let error):
                 return error.localizedDescription
             }
@@ -46,6 +53,12 @@ enum AppleTranslator {
     // Cleans up user input by trimming whitespace and lowercasing to match language names consistently.
     private static func normalizeLanguageKey(_ name: String) -> String {
         name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    }
+    
+    // Returns true when the provided language string indicates auto-detection.
+    private static func isAutoSelection(_ value: String?) -> Bool {
+        guard let v = value?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() else { return true }
+        return v == "auto" || v == "automatic" || v == "detect" || v == "auto-detect"
     }
 
     /*
@@ -71,6 +84,23 @@ enum AppleTranslator {
         return .init(identifier: id)
     }
     
+    // Detect language and also return its BCP-47 identifier for error reporting.
+    private static func detectLanguageWithID(from text: String) -> (Locale.Language, String)? {
+        let recognizer = NLLanguageRecognizer()
+        recognizer.processString(text)
+        let hypotheses = recognizer.languageHypotheses(withMaximum: 1)
+        guard let (lang, confidence) = hypotheses.first, confidence >= 0.4 else {
+            return nil
+        }
+        let id = lang.rawValue
+        return (Locale.Language(identifier: id), id)
+    }
+    
+    // MARK: - Helpers for language auto detection
+    private static func detectLanguage(from text: String) -> Locale.Language? {
+        return detectLanguageWithID(from: text)?.0
+    }
+    
     /**
      Translates the given text from a source language to a target language using on-device translation.
      
@@ -82,42 +112,48 @@ enum AppleTranslator {
      - Throws: `TranslateError` if input is invalid, languages are unsupported, models are missing, or other failures occur.
      - Returns: The translated text as a String.
      */
-    static func translate(text: String, from: String, to: String) async throws -> String {
+    static func translate(text: String, from: String?, to: String) async throws -> String {
         // Trim whitespace and check that input is not empty.
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { throw TranslateError.emptyInput }
-
-        // Attempt to resolve source and target language names to Locale.Language instances.
-        // This is wrapped in do/catch because resolving may fail if language is unsupported.
+        
+        var sourceID: String = ""
+        let targetID: String = try languageIdentifier(for: to)
+        
+        let targetLang = Locale.Language(identifier: targetID)
         let sourceLang: Locale.Language
-        let targetLang: Locale.Language
-        do {
-            sourceLang = try language(from)
-            targetLang = try language(to)
-        } catch {
-            throw error
+        if isAutoSelection(from) {
+            guard let (detected, detectedID) = detectLanguageWithID(from: trimmed) else {
+                throw TranslateError.lowConfidenceDetection
+            }
+            sourceLang = detected
+            sourceID = detectedID
+        } else {
+            let provided = try languageIdentifier(for: from!)
+            sourceID = provided
+            sourceLang = Locale.Language(identifier: provided)
+        }
+        
+        if sourceLang == targetLang {
+            throw TranslateError.sameSourceAndTarget
         }
 
-        // Create a TranslationSession assuming required language models are installed.
-        // This initializer does not throw.
         let session = TranslationSession(installedSource: sourceLang, target: targetLang)
-
         do {
-            // Perform the async translation request.
             let response = try await session.translate(trimmed)
             let translated = response.targetText
-            // Return the translated text if not empty.
-            if !translated.isEmpty {
-                return translated
+            guard !translated.isEmpty else {
+                throw TranslateError.underlying(NSError(domain: "AppleTranslator", code: 2, userInfo: [NSLocalizedDescriptionKey: "Empty translation result"]))
             }
-            // If translation result is empty, throw an error for better feedback.
-            throw TranslateError.underlying(NSError(domain: "AppleTranslator", code: 2, userInfo: [NSLocalizedDescriptionKey: "Empty translation result"]))
+            return translated
         } catch {
-            // Wrap any underlying errors in our TranslateError for better UI messages.
             if let tError = error as? TranslateError { throw tError }
-            throw TranslateError.underlying(error)
+            // If the underlying error suggests models aren’t present, surface a clearer message.
+            // We can’t directly introspect model presence here, so provide a targeted error.
+            throw TranslateError.missingLanguageModel(source: sourceID, target: targetID)
         }
     }
+    
     
 }
 
