@@ -142,13 +142,17 @@ struct ContentView: View {
                 
             }
             
-            Button("Translate") {
+            Button(action: {
                 // clicking the buttons run the translation
                 triggerTranslate()
+            }) {
+                Text("Translate")
+                
             }
             .keyboardShortcut(.return, modifiers: [.command])
             .disabled(inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             .help("Translate Command Enter")
+            
         }
         .padding()
         .frame(minWidth: 760, minHeight: 360)
