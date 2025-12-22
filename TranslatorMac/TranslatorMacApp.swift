@@ -21,11 +21,13 @@ struct TranslatorMacApp: App {
         
         Window("About Offline Translator", id: "about"){
             AboutView()
+                .animation(.easeOut(duration: 1), value: UUID())
         }
         .windowResizability(.contentSize)
         .windowStyle(.hiddenTitleBar)
         .defaultSize(width: 360, height: 300)
         .defaultPosition(.center)
+        
         
         .commands {
             CommandGroup(replacing: .appInfo) {

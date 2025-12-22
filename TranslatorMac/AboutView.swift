@@ -8,31 +8,51 @@
 import SwiftUI
 
 struct AboutView: View {
+    
+    private var appVersion: String {
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "-"
+        let build = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "-"
+        return "Version \(version)(\(build))"
+    }
+    
     var body: some View {
         VStack(spacing: 16){
             Image(nsImage:  NSApp.applicationIconImage)
                 .resizable()
                 .frame(width: 64, height: 64)
             
-            Text("Offline Translator")
-                .font(.title2)
-                .fontWeight(.semibold)
+            VStack(spacing: 6){
+                Text("Offline Translator")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                
+                Text(appVersion)
+                    .foregroundStyle(.secondary)
+                
+                Link("by mekarya Studio", destination: URL(string: "https://www.mekarya.studio")!)
+                    .font(.footnote)
+                    .foregroundStyle(.tertiary)
+            }
             
-            Text("Version 1.0")
-                .foregroundStyle(.secondary)
                 
             
             Divider()
                 .frame(height: 1)
             
-            Text("Offline translation powered by Apple's on-device language models. No need to connect to the internet.")
+            Text("Offline translation powered by Apple's on-device language models.")
+                .font(.callout)
+                .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
-                .frame(maxWidth: 260)
                 .fixedSize(horizontal: false, vertical: true)
             
         }
         .padding(24)
         .frame(maxWidth: 300, maxHeight: 300)
+        .transition(.scale.combined(with: .opacity))
         
     }
+}
+
+#Preview {
+    AboutView()
 }

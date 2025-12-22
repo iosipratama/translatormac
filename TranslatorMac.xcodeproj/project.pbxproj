@@ -6,10 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		4EEC71BE2EF90AA80044AE89 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 4EEC71BD2EF90A970044AE89 /* README.md */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
 		4E387F7E2EF58778003702F0 /* TranslatorMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TranslatorMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EEC71BD2EF90A970044AE89 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = README.md; sourceTree = "<group>"; };
@@ -125,7 +121,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4EEC71BE2EF90AA80044AE89 /* README.md in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
