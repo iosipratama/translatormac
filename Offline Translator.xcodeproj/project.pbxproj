@@ -12,9 +12,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		4E387F802EF58778003702F0 /* TranslatorMac */ = {
+		4E387F802EF58778003702F0 /* Offline Translator */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = TranslatorMac;
+			path = "Offline Translator";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -34,7 +34,7 @@
 			isa = PBXGroup;
 			children = (
 				4EEC71BD2EF90A970044AE89 /* README.md */,
-				4E387F802EF58778003702F0 /* TranslatorMac */,
+				4E387F802EF58778003702F0 /* Offline Translator */,
 				4E387F7F2EF58778003702F0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -63,7 +63,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				4E387F802EF58778003702F0 /* TranslatorMac */,
+				4E387F802EF58778003702F0 /* Offline Translator */,
 			);
 			name = TranslatorMac;
 			packageProductDependencies = (
