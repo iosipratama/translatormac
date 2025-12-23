@@ -87,7 +87,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4E387F792EF58777003702F0 /* Build configuration list for PBXProject "TranslatorMac" */;
+			buildConfigurationList = 4E387F792EF58777003702F0 /* Build configuration list for PBXProject "Offline Translator" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -344,7 +344,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4E387F792EF58777003702F0 /* Build configuration list for PBXProject "TranslatorMac" */ = {
+		4E387F792EF58777003702F0 /* Build configuration list for PBXProject "Offline Translator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4E387F872EF58779003702F0 /* Debug */,
