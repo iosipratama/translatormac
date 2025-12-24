@@ -45,9 +45,6 @@ struct ContentView: View {
     
     var body: some View {
         VStack (spacing: 20){
-            Text("Offline Translator")
-                .font(.title2)
-            
             
             // Language control
             HStack{
