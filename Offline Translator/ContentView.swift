@@ -81,7 +81,7 @@ struct ContentView: View {
             
 
             HStack{
-                    // Input
+                    // Input field.
                     ZStack(alignment: .topLeading){
                         if inputText.isEmpty {
                             Text("Type or paste text and ⌘↵ to translate")
@@ -90,7 +90,6 @@ struct ContentView: View {
                         }
                         
                         TextEditor(text: $inputText)
-                            .padding(.top, 3)
                             .padding(.leading, -4)
                             .frame(minHeight: 180)
                             .scrollContentBackground(.hidden)
@@ -98,6 +97,7 @@ struct ContentView: View {
                             
                             
                     }
+                    .font(.body)
                     .padding(8)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
@@ -116,7 +116,6 @@ struct ContentView: View {
                         }
                         
                         TextEditor(text: $outputText)
-                            .padding(.top, 3)
                             .padding(.leading, -4)
                             .frame(minHeight: 180)
                             .background(.clear)
@@ -125,6 +124,7 @@ struct ContentView: View {
                             .disabled(true)
                         
                     }
+                    .font(.body)
                     .padding(8)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
@@ -142,6 +142,8 @@ struct ContentView: View {
                 
             }
             
+            let isDisabled = inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            
             Button(action: {
                 // clicking the buttons run the translation
                 triggerTranslate()
@@ -149,9 +151,11 @@ struct ContentView: View {
                 Text("Translate")
                 
             }
+            .buttonStyle(.borderedProminent)
+            .disabled(isDisabled)
+            .opacity(isDisabled ? 0.4 : 1.0)
             .keyboardShortcut(.return, modifiers: [.command])
-            .disabled(inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-            .help("Translate Command Enter")
+            .help("Translate ⌘↩")
             
         }
         .padding()
