@@ -37,7 +37,11 @@ enum AppleTranslator {
             case .unsupportedLanguage(let name):
                 return "Unsupported Language: \(name)"
             case .missingLanguageModel(let source, let target):
-                return "This \(source) → \(target) translation is not available yet. Open Settings, search for Translation Languages, then download the language you want to use."
+                return """
+                This \(AppleTranslator.displayName(forLanguageID: source)) → \(AppleTranslator.displayName(forLanguageID: target)) translation not downloaded yet.
+                
+                Open System Settings → search Translation Languages → download the language you want to use.
+                """
             case .emptyInput:
                 return "Input text is empty."
             case .lowConfidenceDetection:
@@ -100,6 +104,15 @@ enum AppleTranslator {
     // MARK: - Helpers for language auto detection
     private static func detectLanguage(from text: String) -> Locale.Language? {
         return detectLanguageWithID(from: text)?.0
+    }
+
+    // Returns a user-friendly display name for a BCP-47 language identifier (fallbacks to the id itself).
+    private static func displayName(forLanguageID id: String) -> String {
+        if let name = Locale.current.localizedString(forLanguageCode: id) {
+            // Capitalize the first letter for consistency (e.g., "english" -> "English")
+            return name.prefix(1).uppercased() + name.dropFirst()
+        }
+        return id
     }
     
     /**

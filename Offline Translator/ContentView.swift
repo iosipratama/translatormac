@@ -37,7 +37,11 @@ struct ContentView: View {
                   outputText = "Translation requires macOS 26 or newer."
                 }
             } catch {
-                outputText = error.localizedDescription
+                if let tError = error as? AppleTranslator.TranslateError {
+                    outputText = tError.localizedDescription
+                } else {
+                    outputText = error.localizedDescription
+                }
             }
         }
     }
