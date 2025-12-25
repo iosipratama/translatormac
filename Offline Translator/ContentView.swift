@@ -22,25 +22,63 @@ struct ContentView: View {
     
     private let languages = ["Auto ", "English", "Indonesian", "Arabic", "German", "Japanese", "French"]
     
-    //
+    private enum EditedSide { case source, result }
+    @State private var lastEdited: EditedSide = .source
+    
     private func triggerTranslate(){
-        // logic
+        // Decide direction based on which editor was last edited
+        let textToTranslate: String
+        let fromLang: String
+        let toLang: String
+
+        switch lastEdited {
+        case .source:
+            textToTranslate = inputText
+            fromLang = fromLanguage
+            toLang = toLanguage
+        case .result:
+            textToTranslate = outputText
+            fromLang = toLanguage
+            toLang = fromLanguage
+        }
+
         Task{
             do {
                 if #available(macOS 26.0, *){
-                    outputText = try await AppleTranslator.translate(
-                        text: inputText,
-                        from: fromLanguage,
-                        to: toLanguage
+                    let translated = try await AppleTranslator.translate(
+                        text: textToTranslate,
+                        from: fromLang,
+                        to: toLang
                     )
+
+                    // Write result to the opposite side
+                    switch lastEdited {
+                    case .source:
+                        outputText = translated
+                    case .result:
+                        inputText = translated
+                    }
                 } else {
-                  outputText = "Translation requires macOS 26 or newer."
+                    let message = "Translation requires macOS 26 or newer."
+                    switch lastEdited {
+                    case .source:
+                        outputText = message
+                    case .result:
+                        inputText = message
+                    }
                 }
             } catch {
+                let message: String
                 if let tError = error as? AppleTranslator.TranslateError {
-                    outputText = tError.localizedDescription
+                    message = tError.localizedDescription
                 } else {
-                    outputText = error.localizedDescription
+                    message = error.localizedDescription
+                }
+                switch lastEdited {
+                case .source:
+                    outputText = message
+                case .result:
+                    inputText = message
                 }
             }
         }
@@ -95,7 +133,7 @@ struct ContentView: View {
                             .frame(minHeight: 180)
                             .scrollContentBackground(.hidden)
                             .background(.clear)
-                            
+                            .onChange(of: inputText) { _, _ in lastEdited = .source }
                             
                     }
                     .font(.body)
@@ -121,8 +159,7 @@ struct ContentView: View {
                             .frame(minHeight: 180)
                             .background(.clear)
                             .scrollContentBackground(.hidden)
-                            
-                            .disabled(true)
+                            .onChange(of: outputText) { _, _ in lastEdited = .result }
                         
                     }
                     .font(.body)
@@ -140,10 +177,17 @@ struct ContentView: View {
                     // clear the output field
                     outputText = ""
                 }
-                
+                lastEdited = .source
             }
             
-            let isDisabled = inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            let isDisabled: Bool = {
+                switch lastEdited {
+                case .source:
+                    return inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                case .result:
+                    return outputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                }
+            }()
             
             Button(action: {
                 // clicking the buttons run the translation
@@ -156,7 +200,7 @@ struct ContentView: View {
             .disabled(isDisabled)
             .opacity(isDisabled ? 0.4 : 1.0)
             .keyboardShortcut(.return, modifiers: [.command])
-            .help("Translate ⌘↩")
+            .help(lastEdited == .source ? "Translate source → result (⌘↩)" : "Translate result → source (⌘↩)")
             
         }
         .padding()
