@@ -37,7 +37,7 @@ enum AppleTranslator {
             case .unsupportedLanguage(let name):
                 return "Unsupported Language: \(name)"
             case .missingLanguageModel(let source, let target):
-                return "Required on-device language models are not installed for \(source) → \(target)."
+                return "This \(source) → \(target) translation is not available yet. Open Settings, search for Translation Languages, then download the language you want to use."
             case .emptyInput:
                 return "Input text is empty."
             case .lowConfidenceDetection:
@@ -73,6 +73,7 @@ enum AppleTranslator {
         case "japanese", "ja": return "ja"
         case "german", "de": return "de"
         case "arabic", "ar": return "ar"
+        case "french", "fr", "fr-fr", "fr-ca": return "fr"
         default:
             throw TranslateError.unsupportedLanguage(name)
         }
