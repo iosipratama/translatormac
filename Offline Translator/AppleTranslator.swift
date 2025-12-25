@@ -27,7 +27,6 @@ enum AppleTranslator {
         case emptyInput              // Error when the input text is empty.
         case underlying(Error)       // Wraps other underlying errors that may occur.
         case lowConfidenceDetection
-        case sameSourceAndTarget
 
         // Maps each error case to a human-readable message.
         var errorDescription: String? {
@@ -46,8 +45,6 @@ enum AppleTranslator {
                 return "Input text is empty."
             case .lowConfidenceDetection:
                 return "Unable to confidently detect the source language."
-            case .sameSourceAndTarget:
-                return "Source and target languages are the same."
             case .underlying(let error):
                 return error.localizedDescription
             }
@@ -149,7 +146,7 @@ enum AppleTranslator {
         }
         
         if sourceLang == targetLang {
-            throw TranslateError.sameSourceAndTarget
+            return trimmed
         }
 
         let session = TranslationSession(installedSource: sourceLang, target: targetLang)
