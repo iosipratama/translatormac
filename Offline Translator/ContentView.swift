@@ -92,7 +92,7 @@ struct ContentView: View {
             HStack{
                 
                 // From picker
-                Picker("From", selection: $fromLanguage) {
+                Picker("", selection: $fromLanguage) {
                     ForEach(languages, id: \.self) { lang in
                         Text(lang).tag(lang)
                     }
@@ -108,7 +108,7 @@ struct ContentView: View {
                 }
                 
                 // To picker
-                Picker ("To", selection: $toLanguage) {
+                Picker ("", selection: $toLanguage) {
                     ForEach(languages, id:\.self) { lang in
                         Text(lang).tag(lang)
                     }

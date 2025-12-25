@@ -39,7 +39,7 @@ struct AboutView: View {
             Divider()
                 .frame(height: 1)
             
-            Text("Offline translation powered by Apple's on-device language models.")
+            Text("Simple offline translation for macOS.")
                 .font(.callout)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
