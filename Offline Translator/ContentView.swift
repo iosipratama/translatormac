@@ -17,10 +17,32 @@ struct ContentView: View {
     @State private var outputText = ""
     
     
-    @State private var fromLanguage = "English"
+    @State private var fromLanguage = "Auto"
     @State private var toLanguage = "Indonesian"
     
-    private let languages = ["Auto ", "English", "Indonesian", "Arabic", "German", "Japanese", "French"]
+    private let languages = [
+        "Auto",
+        "Arabic",
+        "Chinese (Simplified)",
+        "Chinese (Traditional)",
+        "Dutch",
+        "English (US)",
+        "English (UK)",
+        "French",
+        "German",
+        "Hindi",
+        "Indonesian",
+        "Italian",
+        "Korean",
+        "Polish",
+        "Portuguese (Brazil)",
+        "Russian",
+        "Spanish",
+        "Thai",
+        "Turkish",
+        "Ukrainian",
+        "Vietnamese"
+    ]
     
     private enum EditedSide { case source, result }
     @State private var lastEdited: EditedSide = .source
@@ -211,3 +233,4 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+

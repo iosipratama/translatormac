@@ -69,12 +69,28 @@ enum AppleTranslator {
     private static func languageIdentifier(for name: String) throws -> String {
         let key = normalizeLanguageKey(name)
         switch key {
-        case "english", "en", "en-us", "en-gb": return "en"
+        case "english", "en": return "en"
+        case "english (us)", "en-us", "en_us", "us english", "american english": return "en-US"
+        case "english (uk)", "en-gb", "en_gb", "british english": return "en-GB"
         case "indonesian", "bahasa indonesia", "id": return "id"
         case "japanese", "ja": return "ja"
         case "german", "de": return "de"
         case "arabic", "ar": return "ar"
         case "french", "fr", "fr-fr", "fr-ca": return "fr"
+        case "chinese (simplified)", "simplified chinese", "zh-hans", "zh_cn", "zh-cn", "zh": return "zh-Hans"
+        case "chinese (traditional)", "traditional chinese", "zh-hant", "zh_tw", "zh-tw": return "zh-Hant"
+        case "dutch", "nl", "nl-nl", "nl_be": return "nl"
+        case "hindi", "hi", "hi-in": return "hi"
+        case "italian", "it", "it-it": return "it"
+        case "korean", "ko", "ko-kr": return "ko"
+        case "polish", "pl", "pl-pl": return "pl"
+        case "portuguese (brazil)", "brazilian portuguese", "pt-br", "pt_br": return "pt-BR"
+        case "russian", "ru", "ru-ru": return "ru"
+        case "spanish", "es", "es-es", "es-mx", "es-419": return "es"
+        case "thai", "th", "th-th": return "th"
+        case "turkish", "tr", "tr-tr": return "tr"
+        case "ukrainian", "uk", "uk-ua", "ua", "ukrainian (ukraine)": return "uk"
+        case "vietnamese", "vi", "vi-vn": return "vi"
         default:
             throw TranslateError.unsupportedLanguage(name)
         }
