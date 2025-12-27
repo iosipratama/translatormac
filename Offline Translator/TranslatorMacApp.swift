@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct TranslatorMacApp: App {
@@ -19,6 +20,10 @@ struct TranslatorMacApp: App {
             ContentView()
         }
         
+        // Register SwiftDate in entry point
+        .modelContainer(for: TranslationHistory.self)
+        
+        // Add about window
         Window("About Offline Translator", id: "about"){
             AboutView()
                 .animation(.easeOut(duration: 1), value: UUID())

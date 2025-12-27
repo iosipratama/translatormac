@@ -6,8 +6,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    
+    // Inject model context for Translation history
+    @Environment(\.modelContext) private var modelContext
+    
+    @Query(
+        sort: \TranslationHistory.createdAt,
+        order: .reverse
+    )
+    
+    private var historyItems: [TranslationHistory]
     
     // Declare private variable with nill value.
     // @State local UI state, automatically change the value in the UI
@@ -223,6 +234,20 @@ struct ContentView: View {
             .opacity(isDisabled ? 0.4 : 1.0)
             .keyboardShortcut(.return, modifiers: [.command])
             .help(lastEdited == .source ? "Translate source → result (⌘↩)" : "Translate result → source (⌘↩)")
+            
+            
+            Button("Add test history") {
+                let item = TranslationHistory(
+                    sourceText: "Hello",
+                    translatedText: "Halo",
+                    sourceLanguage: "EN",
+                    targetLanguage: "ID",
+                    createdAt: .now
+                )
+                modelContext.insert(item)
+            }
+            
+            Text("History Count: \(historyItems.count)")
             
         }
         .padding()
