@@ -58,11 +58,27 @@ struct ContentView: View {
     private enum EditedSide { case source, result }
     @State private var lastEdited: EditedSide = .source
     
+    
+    /**
+     
+     let historyItem = TranslationHistory(
+         sourceText: inputText,
+         translatedText: outputText,
+         sourceLanguage: fromLang,
+         targetLanguage: toLang,
+         createdAt: .now
+         
+     )
+     
+     **/
     private func triggerTranslate(){
         // Decide direction based on which editor was last edited
         let textToTranslate: String
         let fromLang: String
         let toLang: String
+        
+        
+        
 
         switch lastEdited {
         case .source:
@@ -91,6 +107,21 @@ struct ContentView: View {
                     case .result:
                         inputText = translated
                     }
+                    
+                    
+                    // Save history only when success
+                    let historyItem = TranslationHistory(
+                        sourceText: inputText,
+                        translatedText: outputText,
+                        sourceLanguage: fromLanguage,
+                        targetLanguage: toLanguage,
+                        createdAt: .now
+                        
+                    )
+                    
+                    modelContext.insert(historyItem)
+                    //
+                    
                 } else {
                     let message = "Translation requires macOS 26 or newer."
                     switch lastEdited {
@@ -236,18 +267,9 @@ struct ContentView: View {
             .help(lastEdited == .source ? "Translate source → result (⌘↩)" : "Translate result → source (⌘↩)")
             
             
-            Button("Add test history") {
-                let item = TranslationHistory(
-                    sourceText: "Hello",
-                    translatedText: "Halo",
-                    sourceLanguage: "EN",
-                    targetLanguage: "ID",
-                    createdAt: .now
-                )
-                modelContext.insert(item)
-            }
+
             
-            Text("History Count: \(historyItems.count)")
+            
             
         }
         .padding()
