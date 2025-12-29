@@ -14,6 +14,7 @@ struct TranslatorMacApp: App {
     @Environment(\.openWindow) private var openWindow
     
     @State private var showAbout = false
+    @State private var showHistory = false
     
     var body: some Scene {
         WindowGroup {
@@ -32,12 +33,24 @@ struct TranslatorMacApp: App {
         .windowStyle(.hiddenTitleBar)
         .defaultSize(width: 360, height: 300)
         .defaultPosition(.center)
-        
-        
         .commands {
             CommandGroup(replacing: .appInfo) {
                 Button("About Offline Translator") {
                     openWindow(id: "about")
+                }
+            }
+        }
+        
+        Window("History", id: "history") {
+            HistoryView()
+                .modelContainer(for: TranslationHistory.self)
+                .animation(.easeOut(duration: 1), value: UUID())
+        }
+        .windowResizability(.contentSize)
+        .commands {
+            CommandGroup(replacing: .appInfo) {
+                Button("History") {
+                    openWindow(id: "history")
                 }
             }
         }
@@ -47,3 +60,4 @@ struct TranslatorMacApp: App {
         
     }
 }
+

@@ -12,6 +12,7 @@ struct ContentView: View {
     
     // Inject model context for Translation history
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.openWindow) private var openWindow
     
     @Query(
         sort: \TranslationHistory.createdAt,
@@ -79,7 +80,6 @@ struct ContentView: View {
         
         
         
-
         switch lastEdited {
         case .source:
             textToTranslate = inputText
@@ -109,18 +109,18 @@ struct ContentView: View {
                     }
                     
                     
-                    // Save history only when success
+                    // Save history using the actual direction used
                     let historyItem = TranslationHistory(
-                        sourceText: inputText,
-                        translatedText: outputText,
-                        sourceLanguage: fromLanguage,
-                        targetLanguage: toLanguage,
+                        sourceText: textToTranslate,
+                        translatedText: translated,
+                        sourceLanguage: fromLang,
+                        targetLanguage: toLang,
                         createdAt: .now
-                        
                     )
                     
                     modelContext.insert(historyItem)
-                    //
+                    try modelContext.save()
+                    print("Saved history:", textToTranslate, "->", translated)
                     
                 } else {
                     let message = "Translation requires macOS 26 or newer."
@@ -271,6 +271,19 @@ struct ContentView: View {
             
             
             
+        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    openWindow(id: "history")
+                } label: {
+                    Label("History", systemImage: "clock.arrow.circlepath")
+                }
+                .help("Open History")
+            }
+        }
+        .onAppear {
+            print("ContentView sees history count:", historyItems.count)
         }
         .padding()
         .frame(minWidth: 760, minHeight: 360)
