@@ -39,6 +39,7 @@ struct HistoryView: View {
                     }
                 }
             }
+            .textSelection(.enabled)
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
