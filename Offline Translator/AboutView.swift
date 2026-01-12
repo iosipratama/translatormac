@@ -34,7 +34,7 @@ struct AboutView: View {
                     .foregroundStyle(.tertiary)
             }
             
-                
+            
             
             Divider()
                 .frame(height: 1)

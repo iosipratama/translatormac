@@ -1,6 +1,6 @@
-# Offline Translator
+# Translate Offline
 
-A simple macOS app for offline text translation using Apple's on-device translation framework
+A simple macOS app for offline text translation using Apple's on-device translation framework.
 
 ### Features
 - Offline translation
@@ -10,3 +10,4 @@ A simple macOS app for offline text translation using Apple's on-device translat
 ### Requirements
 - macOS 26+
 - On-device language models installed 
+
