@@ -22,7 +22,7 @@ struct AboutView: View {
                 .frame(width: 64, height: 64)
             
             VStack(spacing: 6){
-                Text("Offline Translator")
+                Text("Translate Offline")
                     .font(.title2)
                     .fontWeight(.semibold)
                 

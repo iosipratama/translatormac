@@ -25,7 +25,7 @@ struct TranslatorMacApp: App {
         .modelContainer(for: TranslationHistory.self)
         
         // Add about window
-        Window("About Offline Translator", id: "about"){
+        Window("About Translate Offline", id: "about"){
             AboutView()
                 .animation(.easeOut(duration: 1), value: UUID())
         }
@@ -35,7 +35,7 @@ struct TranslatorMacApp: App {
         .defaultPosition(.center)
         .commands {
             CommandGroup(replacing: .appInfo) {
-                Button("About Offline Translator") {
+                Button("About Translate Offline") {
                     openWindow(id: "about")
                 }
             }
