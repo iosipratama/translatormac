@@ -33,6 +33,7 @@ struct ContentView: View {
         "Hindi",
         "Indonesian",
         "Italian",
+        "Japanese",
         "Korean",
         "Polish",
         "Portuguese (Brazil)",
