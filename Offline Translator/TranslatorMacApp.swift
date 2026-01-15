@@ -42,16 +42,22 @@ struct TranslatorMacApp: App {
         .windowResizability(.contentSize)
         
         .commands {
-            // Replace the system About with our custom About
+            // App menu items in desired order
             CommandGroup(replacing: .appInfo) {
+                Button("History") {
+                    openWindow(id: "history")
+                }
                 Button("About Translate Offline") {
                     openWindow(id: "about")
                 }
-            }
-            // Then add History immediately after About
-            CommandGroup(after: .appInfo) {
-                Button("History") {
-                    openWindow(id: "history")
+                Button("Rate Translate Offline") {
+                    // Replace with your real App Store Apple ID
+                    let appID = "6757454429"
+                    if let url = URL(string: "macappstore://itunes.apple.com/app/id\(appID)?mt=12&action=write-review") {
+                        NSWorkspace.shared.open(url)
+                    } else if let webURL = URL(string: "https://apps.apple.com/app/id\(appID)?mt=12&action=write-review") {
+                        NSWorkspace.shared.open(webURL)
+                    }
                 }
             }
         }
