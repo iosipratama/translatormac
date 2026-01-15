@@ -45,9 +45,6 @@ struct ContentView: View {
         "Vietnamese"
     ]
 
-    private enum EditedSide { case source, result }
-    @State private var lastEdited: EditedSide = .source
-
     // Small service instance; keeping it here avoids global singletons
     private let translationService = AppleTranslationService()
 
@@ -65,43 +62,19 @@ struct ContentView: View {
     }
 
     private func triggerTranslate() {
-        // Decide direction based on which editor was last edited
-        let textToTranslate: String
-        let fromLang: String
-        let toLang: String
-
-        switch lastEdited {
-        case .source:
-            textToTranslate = inputText
-            fromLang = fromLanguage
-            toLang = toLanguage
-        case .result:
-            textToTranslate = outputText
-            fromLang = toLanguage
-            toLang = fromLanguage
-        }
+        let textToTranslate = inputText
+        let fromLang = fromLanguage
+        let toLang = toLanguage
 
         Task {
             do {
                 let translated = try await translationService.translate(textToTranslate, from: fromLang, to: toLang)
-
-                // Write result to the opposite side
-                switch lastEdited {
-                case .source:
-                    outputText = translated
-                case .result:
-                    inputText = translated
-                }
-
+                // Always write to result
+                outputText = translated
                 saveHistory(source: textToTranslate, translated: translated, from: fromLang, to: toLang)
             } catch {
                 let message = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
-                switch lastEdited {
-                case .source:
-                    outputText = message
-                case .result:
-                    inputText = message
-                }
+                outputText = message
             }
         }
     }
@@ -117,6 +90,21 @@ struct ContentView: View {
 
                 Button("Swap") {
                     (fromLanguage, toLanguage) = (toLanguage, fromLanguage)
+                    let trimmedOutput = outputText.trimmingCharacters(in: .whitespacesAndNewlines)
+                    if !trimmedOutput.isEmpty {
+                        // Move previous translation into source, clear result, then re-translate in new direction
+                        inputText = outputText
+                        outputText = ""
+                        triggerTranslate()
+                    } else {
+                        // No previous translation; behave like before
+                        let trimmedInput = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
+                        if trimmedInput.isEmpty {
+                            outputText = ""
+                        } else {
+                            triggerTranslate()
+                        }
+                    }
                 }
 
                 Picker("", selection: $toLanguage) {
@@ -139,7 +127,6 @@ struct ContentView: View {
                         .frame(minHeight: 180)
                         .scrollContentBackground(.hidden)
                         .background(.clear)
-                        .onChange(of: inputText) { _, _ in lastEdited = .source }
                 }
                 .font(.body)
                 .padding(8)
@@ -152,12 +139,17 @@ struct ContentView: View {
                             .foregroundStyle(.tertiary)
                     }
 
-                    TextEditor(text: $outputText)
-                        .padding(.leading, -4)
-                        .frame(minHeight: 180)
-                        .background(.clear)
-                        .scrollContentBackground(.hidden)
-                        .onChange(of: outputText) { _, _ in lastEdited = .result }
+                    ScrollView {
+                        Text(outputText)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .textSelection(.enabled)
+                            .multilineTextAlignment(.leading)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding(.horizontal, 4)
+                            .padding(.vertical, 2)
+                    }
+                    .frame(minHeight: 180)
+                    .background(.clear)
                 }
                 .font(.body)
                 .padding(8)
@@ -168,24 +160,16 @@ struct ContentView: View {
                 if newValue.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                     outputText = ""
                 }
-                lastEdited = .source
             }
 
-            let isDisabled: Bool = {
-                switch lastEdited {
-                case .source:
-                    return inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                case .result:
-                    return outputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                }
-            }()
+            let isDisabled: Bool = inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
 
             Button("Translate", action: triggerTranslate)
                 .buttonStyle(.borderedProminent)
                 .disabled(isDisabled)
                 .opacity(isDisabled ? 0.4 : 1.0)
                 .keyboardShortcut(.return, modifiers: [.command])
-                .help(lastEdited == .source ? "Translate source → result (⌘↩)" : "Translate result → source (⌘↩)")
+                .help("Translate source → result (⌘↩)")
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
