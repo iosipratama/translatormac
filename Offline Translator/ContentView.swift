@@ -12,9 +12,6 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.openWindow) private var openWindow
 
-    @Query(sort: \TranslationHistory.createdAt, order: .reverse)
-    private var historyItems: [TranslationHistory]
-
     @State private var inputText = ""
     @State private var outputText = ""
     @State private var fromLanguage = "Auto"
@@ -45,9 +42,6 @@ struct ContentView: View {
         "Vietnamese"
     ]
 
-    // Small service instance; keeping it here avoids global singletons
-    private let translationService = AppleTranslationService()
-
     private func saveHistory(source: String, translated: String, from: String, to: String) {
         // Persist the actual direction used for this translation
         let item = TranslationHistory(
@@ -68,13 +62,12 @@ struct ContentView: View {
 
         Task {
             do {
-                let translated = try await translationService.translate(textToTranslate, from: fromLang, to: toLang)
+                let translated = try await AppleTranslator.translate(text: textToTranslate, from: fromLang, to: toLang)
                 // Always write to result
                 outputText = translated
                 saveHistory(source: textToTranslate, translated: translated, from: fromLang, to: toLang)
             } catch {
-                let message = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
-                outputText = message
+                outputText = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
             }
         }
     }
@@ -181,16 +174,8 @@ struct ContentView: View {
                 .help("Open History")
             }
         }
-        .onAppear {
-            // Quick sanity check for data flow; remove if noisy
-            print("ContentView sees history count:", historyItems.count)
-        }
         .padding()
         .frame(minWidth: 760, minHeight: 360)
     }
-}
-
-#Preview {
-    ContentView()
 }
 

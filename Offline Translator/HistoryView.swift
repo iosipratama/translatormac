@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import os
 
 struct HistoryView: View {
     @Environment(\.modelContext) private var modelContext
@@ -20,9 +21,9 @@ struct HistoryView: View {
         for item in items { modelContext.delete(item) }
         do {
             try modelContext.save()
-            print("Cleared all history")
+            Log.history.notice("Cleared all history")
         } catch {
-            print("Failed to clear history:", error.localizedDescription)
+            Log.history.error("Failed to clear history: \(error.localizedDescription, privacy: .public)")
         }
     }
 
@@ -30,7 +31,7 @@ struct HistoryView: View {
         // Support row deletion from the list
         for index in offsets { modelContext.delete(items[index]) }
         do { try modelContext.save() } catch {
-            print("Failed to delete items:", error.localizedDescription)
+            Log.history.error("Failed to delete items: \(error.localizedDescription, privacy: .public)")
         }
     }
 
@@ -78,13 +79,6 @@ struct HistoryView: View {
         } message: {
             Text("This action cannot be undone.")
         }
-        .onAppear { print("HistoryView appeared. Items:", items.count) }
-        .onChange(of: items) { _, new in print("HistoryView items changed:", new.count) }
     }
-}
-
-#Preview {
-    HistoryView()
-        .modelContainer(for: [TranslationHistory.self], inMemory: true)
 }
 

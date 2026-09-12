@@ -14,14 +14,13 @@ import Foundation
 import Translation
 import NaturalLanguage
 
-@available(macOS 26.0, *)
-// This enum namespaces translation utilities and is only available on macOS 26 or later.
-enum AppleTranslator {
-    
+// `nonisolated` keeps this utility off the main actor: the project builds with
+// main-actor-by-default isolation, and translation has no business on the UI actor.
+nonisolated enum AppleTranslator {
+
     // Custom error type for translation failures.
     // Implements LocalizedError to provide friendly, user-readable descriptions of errors.
-    enum TranslateError: LocalizedError {
-        case unavailableOS            // Error for when the OS version is too old to support translation.
+    nonisolated enum TranslateError: LocalizedError {
         case unsupportedLanguage(String) // Error when the given language is not supported.
         case missingLanguageModel(source: String, target: String) // Error when required language models are not installed.
         case emptyInput              // Error when the input text is empty.
@@ -31,8 +30,6 @@ enum AppleTranslator {
         // Maps each error case to a human-readable message.
         var errorDescription: String? {
             switch self {
-            case .unavailableOS:
-                return "Translation requires macOS 26 or later."
             case .unsupportedLanguage(let name):
                 return "Unsupported Language: \(name)"
             case .missingLanguageModel(let source, let target):

@@ -5,6 +5,7 @@
 //  Created by Iosi Pratama on 19/12/25.
 //
 
+import AppKit
 import SwiftUI
 import SwiftData
 
@@ -27,7 +28,6 @@ struct TranslatorMacApp: App {
         // Add about window
         Window("About Translate Offline", id: "about"){
             AboutView()
-                .animation(.easeOut(duration: 1), value: UUID())
         }
         .windowResizability(.contentSize)
         .windowStyle(.hiddenTitleBar)
@@ -37,7 +37,6 @@ struct TranslatorMacApp: App {
         Window("History", id: "history") {
             HistoryView()
                 .modelContainer(for: TranslationHistory.self)
-                .animation(.easeOut(duration: 1), value: UUID())
         }
         .windowResizability(.contentSize)
         

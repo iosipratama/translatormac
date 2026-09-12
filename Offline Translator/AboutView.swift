@@ -5,14 +5,15 @@
 //  Created by Iosi Pratama on 22/12/25.
 //
 
+import AppKit
 import SwiftUI
 
 struct AboutView: View {
     
     private var appVersion: String {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "-"
-        let build = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "-"
-        return "Version \(version)(\(build))"
+        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "-"
+        return "Version \(version) (\(build))"
     }
     
     var body: some View {
@@ -53,6 +54,3 @@ struct AboutView: View {
     }
 }
 
-#Preview {
-    AboutView()
-}
