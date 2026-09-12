@@ -1,5 +1,5 @@
 //
-//  SwiftTranslation.swift
+//  TranslationHistory.swift
 //  TranslatorMac
 //
 //  Created by Iosi Pratama on 27/12/25.
@@ -10,6 +10,9 @@ import SwiftData
 
 @Model
 final class TranslationHistory {
+    // Every query sorts on createdAt, so index it.
+    #Index<TranslationHistory>([\.createdAt])
+
     var sourceText: String
     var translatedText: String
     var sourceLanguage: String
@@ -21,7 +24,7 @@ final class TranslationHistory {
         translatedText: String,
         sourceLanguage: String,
         targetLanguage: String,
-        createdAt: Date
+        createdAt: Date = .now
     ) {
         self.sourceText = sourceText
         self.translatedText = translatedText
