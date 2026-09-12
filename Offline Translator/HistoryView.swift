@@ -13,6 +13,8 @@ import os
 struct HistoryView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var showClearConfirm = false
+    /// Loaded so history rows use the same names as the pickers.
+    @State private var catalog: [TranslationLanguage] = []
 
     @Query(sort: \TranslationHistory.createdAt, order: .reverse)
     private var items: [TranslationHistory]
@@ -37,12 +39,16 @@ struct HistoryView: View {
     }
 
     /// History stores BCP-47 identifiers, so render them for display here.
+    private func name(forIdentifier id: String) -> String {
+        let language = LanguageCatalog.language(forIdentifier: id)
+        let key = LanguageCatalog.groupKey(for: language)
+        return catalog.first { LanguageCatalog.groupKey(for: $0.language) == key }?.name
+            ?? LanguageCatalog.fallbackName(for: language)
+    }
+
     private func languagePair(for item: TranslationHistory) -> String {
-        let source = item.sourceLanguage == "auto"
-            ? "Detected"
-            : LanguageCatalog.displayName(for: LanguageCatalog.language(forIdentifier: item.sourceLanguage))
-        let target = LanguageCatalog.displayName(for: LanguageCatalog.language(forIdentifier: item.targetLanguage))
-        return "\(source) → \(target)"
+        let source = item.sourceLanguage == "auto" ? "Detected" : name(forIdentifier: item.sourceLanguage)
+        return "\(source) → \(name(forIdentifier: item.targetLanguage))"
     }
 
     @ViewBuilder
@@ -86,6 +92,9 @@ struct HistoryView: View {
                 }
                 .textSelection(.enabled)
             }
+        }
+        .task {
+            catalog = await LanguageCatalog.supportedLanguages()
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {

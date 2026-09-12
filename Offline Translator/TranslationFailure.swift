@@ -16,8 +16,8 @@ import Foundation
 nonisolated enum TranslationFailure {
 
     static func message(for error: any Error, from source: Locale.Language?, to target: Locale.Language) -> String {
-        let sourceName = source.map(LanguageCatalog.displayName(for:)) ?? "the detected language"
-        let targetName = LanguageCatalog.displayName(for: target)
+        let sourceName = source.map(LanguageCatalog.fallbackName(for:)) ?? "the detected language"
+        let targetName = LanguageCatalog.fallbackName(for: target)
 
         switch error {
         case is CancellationError:

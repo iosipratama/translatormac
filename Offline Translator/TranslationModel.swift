@@ -40,7 +40,9 @@ final class TranslationModel {
     }
 
     /// Loaded from the framework on appear; empty until then.
-    var supportedLanguages: [Locale.Language] = []
+    var supportedLanguages: [TranslationLanguage] = []
+
+    var isLoadingLanguages: Bool { supportedLanguages.isEmpty }
 
     var inputText = "" {
         didSet {
@@ -82,25 +84,42 @@ final class TranslationModel {
             ?? Locale.current.language
     }
 
-    /// `LanguageAvailability.supportedLanguages` is async, so the picker starts
-    /// empty and fills in once the framework answers.
+    /// `LanguageAvailability.supportedLanguages` is async, so the pickers start
+    /// empty and fill in once the framework answers.
     func loadSupportedLanguages() async {
         let languages = await LanguageCatalog.supportedLanguages()
         supportedLanguages = languages
 
-        // Fall back if the persisted target is no longer offered, or if this is
-        // a first launch and the device language isn't translatable.
-        let identifiers = Set(languages.map(LanguageCatalog.identifier(for:)))
-        if !identifiers.contains(LanguageCatalog.identifier(for: targetLanguage)) {
-            targetLanguage = languages.first { $0.languageCode == Locale.current.language.languageCode }
-                ?? languages.first { $0.languageCode?.identifier == "en" }
-                ?? languages.first
-                ?? targetLanguage
+        // A Picker shows no selection when the bound value matches none of its
+        // tags, so both ends have to be pinned to an entry that is really in the
+        // catalog. The stored value may differ from the catalog entry only by
+        // region — either from an earlier launch, or because the device language
+        // carries a region the framework has no model for.
+        targetLanguage = resolve(targetLanguage)
+            ?? resolve(Locale.current.language)
+            ?? languages.first { $0.language.languageCode?.identifier == "en" }?.language
+            ?? languages.first?.language
+            ?? targetLanguage
+
+        if let source = sourceLanguage {
+            sourceLanguage = resolve(source)
         }
-        if let source = sourceLanguage,
-           !identifiers.contains(LanguageCatalog.identifier(for: source)) {
-            sourceLanguage = nil
+    }
+
+    /// Finds the catalog entry representing a language, ignoring region.
+    private func resolve(_ language: Locale.Language) -> Locale.Language? {
+        let key = LanguageCatalog.groupKey(for: language)
+        if let exact = supportedLanguages.first(where: { LanguageCatalog.groupKey(for: $0.language) == key }) {
+            return exact.language
         }
+        // A stored value may have no script where the catalog entry has one.
+        guard let code = language.languageCode?.identifier else { return nil }
+        return supportedLanguages.first { $0.language.languageCode?.identifier == code }?.language
+    }
+
+    func name(for language: Locale.Language) -> String {
+        supportedLanguages.first { $0.language == language }?.name
+            ?? LanguageCatalog.fallbackName(for: language)
     }
 
     var trimmedInput: String {

@@ -58,13 +58,13 @@ struct ContentView: View {
             Picker("Translate from", selection: $model.sourceLanguage) {
                 Text("Detect Language").tag(Locale.Language?.none)
                 Divider()
-                ForEach(model.supportedLanguages, id: \.self) { language in
-                    Text(LanguageCatalog.displayName(for: language))
-                        .tag(Locale.Language?.some(language))
+                ForEach(model.supportedLanguages) { entry in
+                    Text(entry.name).tag(Locale.Language?.some(entry.language))
                 }
             }
             .labelsHidden()
             .accessibilityLabel("Translate from")
+            .disabled(model.isLoadingLanguages)
             .frame(width: 220)
 
             Button("Swap languages", systemImage: "arrow.left.arrow.right") {
@@ -77,12 +77,13 @@ struct ContentView: View {
                   : "Choose a source language to swap")
 
             Picker("Translate to", selection: $model.targetLanguage) {
-                ForEach(model.supportedLanguages, id: \.self) { language in
-                    Text(LanguageCatalog.displayName(for: language)).tag(language)
+                ForEach(model.supportedLanguages) { entry in
+                    Text(entry.name).tag(entry.language)
                 }
             }
             .labelsHidden()
             .accessibilityLabel("Translate to")
+            .disabled(model.isLoadingLanguages)
             .frame(width: 220)
         }
         .overlay(alignment: .bottomLeading) {
@@ -99,70 +100,65 @@ struct ContentView: View {
     // MARK: - Text
 
     private var editors: some View {
+        // Equal widths regardless of content: the panes previously took their
+        // ideal widths, so the empty result side was narrow until a translation
+        // arrived and then the layout jumped.
         HStack(spacing: 12) {
             sourceEditor
             resultPane
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    /// Shared geometry so both panes are always the same size.
+    private func pane<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        content()
+            .font(.body)
+            .padding(8)
+            .frame(maxWidth: .infinity, minHeight: 220, maxHeight: .infinity, alignment: .topLeading)
+            .overlay(RoundedRectangle(cornerRadius: 8).stroke(.quaternary))
     }
 
     private var sourceEditor: some View {
-        ZStack(alignment: .topLeading) {
-            if model.inputText.isEmpty {
-                Text("Type or paste text and ⌘↵ to translate")
-                    .foregroundStyle(.tertiary)
-                    .allowsHitTesting(false)
-            }
+        pane {
+            ZStack(alignment: .topLeading) {
+                if model.inputText.isEmpty {
+                    Text("Type or paste text and ⌘↵ to translate")
+                        .foregroundStyle(.tertiary)
+                        .allowsHitTesting(false)
+                }
 
-            TextEditor(text: $model.inputText)
-                .padding(.leading, -4)
-                .frame(minHeight: 180)
-                .scrollContentBackground(.hidden)
-                .background(.clear)
-                .accessibilityLabel("Text to translate")
+                TextEditor(text: $model.inputText)
+                    .padding(.leading, -4)
+                    .scrollContentBackground(.hidden)
+                    .background(.clear)
+                    .accessibilityLabel("Text to translate")
+            }
         }
-        .font(.body)
-        .padding(8)
-        .overlay(RoundedRectangle(cornerRadius: 8).stroke(.quaternary))
     }
 
     private var resultPane: some View {
-        ZStack(alignment: .topLeading) {
-            switch model.phase {
-            case .idle:
-                Text("Translation")
-                    .foregroundStyle(.tertiary)
+        pane {
+            ZStack(alignment: .topLeading) {
+                switch model.phase {
+                case .idle:
+                    Text("Translation")
+                        .foregroundStyle(.tertiary)
 
-            case .translating:
-                ProgressView()
-                    .controlSize(.small)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                case .translating:
+                    ProgressView()
+                        .controlSize(.small)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-            case .translated(let text):
-                ScrollView {
-                    Text(text)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .textSelection(.enabled)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(.horizontal, 4)
-                        .padding(.vertical, 2)
-                }
+                case .translated(let text):
+                    resultText(text)
 
-            case .failed(let message):
-                ScrollView {
-                    Text(message)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .foregroundStyle(.secondary)
-                        .textSelection(.enabled)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(.horizontal, 4)
-                        .padding(.vertical, 2)
+                case .failed(let message):
+                    resultText(message, style: .secondary)
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .topLeading)
         }
-        .frame(minHeight: 180, maxHeight: .infinity, alignment: .topLeading)
-        .font(.body)
-        .padding(8)
-        .overlay(RoundedRectangle(cornerRadius: 8).stroke(.quaternary))
         .overlay(alignment: .bottomTrailing) {
             if let translation = model.phase.translation {
                 Button("Copy translation", systemImage: "document.on.document") {
@@ -176,6 +172,18 @@ struct ContentView: View {
             }
         }
         .animation(.smooth, value: model.phase)
+    }
+
+    private func resultText(_ text: String, style: HierarchicalShapeStyle = .primary) -> some View {
+        ScrollView {
+            Text(text)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundStyle(style)
+                .textSelection(.enabled)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, 4)
+                .padding(.vertical, 2)
+        }
     }
 
     private var translateButton: some View {
