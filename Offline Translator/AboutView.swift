@@ -30,7 +30,7 @@ struct AboutView: View {
                 Text(appVersion)
                     .foregroundStyle(.secondary)
                 
-                Link("by mekarya Studio", destination: URL(string: "https://www.mekarya.studio")!)
+                Link("by Mekarya", destination: URL(string: "https://www.mekarya.studio")!)
                     .font(.footnote)
                     .foregroundStyle(.tertiary)
             }
