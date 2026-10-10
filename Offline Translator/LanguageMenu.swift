@@ -64,6 +64,8 @@ struct LanguageMenu: View {
         } label: {
             Text(selectedName)
                 .frame(minWidth: 88, alignment: .leading)
+                // Room between the name and the pill's edges and chevron.
+                .padding(.horizontal, 6)
         }
         .menuIndicator(.visible)
         .disabled(languages.isEmpty)
