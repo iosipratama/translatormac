@@ -25,21 +25,27 @@ final class TranslationHistory {
     /// migrate without a schema step.
     var isSaved: Bool = false
 
+    /// When it was starred; Saved sorts and labels by this. `nil` when not
+    /// saved, or for entries saved before this was recorded.
+    var savedAt: Date?
+
     init(
         sourceText: String,
         translatedText: String,
         sourceLanguage: String,
         targetLanguage: String,
-        createdAt: Date = .now,
-        isSaved: Bool = false
+        createdAt: Date = .now
     ) {
         self.sourceText = sourceText
         self.translatedText = translatedText
         self.sourceLanguage = sourceLanguage
         self.targetLanguage = targetLanguage
         self.createdAt = createdAt
-        self.isSaved = isSaved
     }
+
+    /// The date to show in Saved; entries starred before `savedAt` existed
+    /// fall back to when they were made.
+    var savedDate: Date { savedAt ?? createdAt }
 
     /// The stored languages as identifiers, whatever version wrote them.
     var sourceLanguageID: String { LanguageCatalog.normalizedIdentifier(sourceLanguage) }

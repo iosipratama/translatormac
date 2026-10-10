@@ -557,14 +557,12 @@ final class TranslationModel {
 
     func toggleSaved() {
         if let record = currentRecord, record.isSaved {
-            record.isSaved = false
-            saveContext()
+            history.setSaved(record, false)
             return
         }
         recordToRecent()
         guard let record = currentRecord else { return }
-        record.isSaved = true
-        saveContext()
+        history.setSaved(record, true)
     }
 
     // MARK: - Recent
@@ -634,10 +632,6 @@ final class TranslationModel {
 
     private var history: HistoryStore {
         HistoryStore(context: modelContext)
-    }
-
-    private func saveContext() {
-        history.save()
     }
 
     // MARK: - Persistence

@@ -46,6 +46,27 @@ struct HistoryStore {
         return entry
     }
 
+    /// Stars or unstars an entry, undoably when an undo manager is given.
+    /// Unsaving doesn't delete: the entry stays in Recent, and the usual
+    /// pruning retires it once it falls past the newest 500.
+    func setSaved(_ entry: TranslationHistory, _ isSaved: Bool, undoManager: UndoManager? = nil) {
+        let previousDate = entry.savedAt
+        entry.isSaved = isSaved
+        entry.savedAt = isSaved ? .now : nil
+        save()
+
+        guard let undoManager else { return }
+        undoManager.registerUndo(withTarget: entry) { entry in
+            entry.isSaved = !isSaved
+            entry.savedAt = previousDate
+            self.save()
+            undoManager.registerUndo(withTarget: entry) { entry in
+                self.setSaved(entry, isSaved, undoManager: undoManager)
+            }
+        }
+        undoManager.setActionName(isSaved ? String(localized: "Save Translation") : String(localized: "Unsave Translation"))
+    }
+
     func delete(_ entries: [TranslationHistory]) {
         for entry in entries {
             context.delete(entry)

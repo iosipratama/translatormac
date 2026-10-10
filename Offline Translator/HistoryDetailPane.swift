@@ -4,7 +4,6 @@
 //
 
 import AppKit
-import SwiftData
 import SwiftUI
 
 /// The selected history entry in full: original and translation side by
@@ -12,11 +11,12 @@ import SwiftUI
 /// never jumps as the selection changes.
 struct HistoryDetailPane: View {
     var entry: TranslationHistory
+    var scope: HistoryListView.Scope
     var speaker: TranslationSpeaker
     var onOpen: () -> Void
+    var onSetSaved: (Bool) -> Void
     var onDelete: () -> Void
 
-    @Environment(\.modelContext) private var modelContext
     @State private var justCopied = false
     @State private var copiedTask: Task<Void, Never>?
 
@@ -112,20 +112,28 @@ struct HistoryDetailPane: View {
             .disabled(!speaker.isSpeaking && !speaker.canSpeak(targetLanguage))
             .help(speaker.isSpeaking ? "Stop speaking" : "Read the translation aloud")
 
-            Toggle("Save", systemImage: entry.isSaved ? "star.fill" : "star", isOn: Binding(
-                get: { entry.isSaved },
-                set: { isSaved in
-                    entry.isSaved = isSaved
-                    HistoryStore(context: modelContext).save()
-                }
-            ))
-            .toggleStyle(.button)
-            .labelStyle(.iconOnly)
-            .help(entry.isSaved ? "Remove from Saved" : "Save this translation")
-
-            Button("Delete", systemImage: "trash", role: .destructive, action: onDelete)
+            switch scope {
+            case .recent:
+                Toggle("Save", systemImage: entry.isSaved ? "star.fill" : "star", isOn: Binding(
+                    get: { entry.isSaved },
+                    set: { onSetSaved($0) }
+                ))
+                .toggleStyle(.button)
                 .labelStyle(.iconOnly)
-                .help("Remove from history")
+                .help(entry.isSaved ? "Remove from Saved" : "Save this translation")
+
+                Button("Delete", systemImage: "trash", role: .destructive, action: onDelete)
+                    .labelStyle(.iconOnly)
+                    .help("Remove from history")
+
+            case .saved:
+                // Spelled out: here it's the one action that changes what
+                // this screen keeps, and it stays undoable.
+                Button("Unsave") {
+                    onSetSaved(false)
+                }
+                .help("Remove from Saved. It stays in Recent.")
+            }
         }
         .padding(.horizontal, PaneMetrics.inset)
         .frame(height: PaneMetrics.footerHeight)

@@ -15,6 +15,7 @@ struct HistoryContent: View {
     var openInTranslate: (TranslationHistory?) -> Void
 
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.undoManager) private var undoManager
     @State private var speaker = TranslationSpeaker()
 
     @Query private var items: [TranslationHistory]
@@ -31,25 +32,38 @@ struct HistoryContent: View {
         self.openInTranslate = openInTranslate
 
         let text = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
-        let predicate: Predicate<TranslationHistory>
-        switch (scope, text.isEmpty) {
-        case (.recent, true):
-            predicate = #Predicate { _ in true }
-        case (.recent, false):
-            predicate = #Predicate {
-                $0.sourceText.localizedStandardContains(text)
-                    || $0.translatedText.localizedStandardContains(text)
-            }
-        case (.saved, true):
-            predicate = #Predicate { $0.isSaved }
-        case (.saved, false):
-            predicate = #Predicate {
-                $0.isSaved
-                    && ($0.sourceText.localizedStandardContains(text)
-                        || $0.translatedText.localizedStandardContains(text))
-            }
+        switch scope {
+        case .recent:
+            let predicate: Predicate<TranslationHistory> = text.isEmpty
+                ? #Predicate { _ in true }
+                : #Predicate {
+                    $0.sourceText.localizedStandardContains(text)
+                        || $0.translatedText.localizedStandardContains(text)
+                }
+            _items = Query(
+                filter: predicate,
+                sort: [SortDescriptor(\TranslationHistory.createdAt, order: .reverse)],
+                animation: .smooth
+            )
+        case .saved:
+            let predicate: Predicate<TranslationHistory> = text.isEmpty
+                ? #Predicate { $0.isSaved }
+                : #Predicate {
+                    $0.isSaved
+                        && ($0.sourceText.localizedStandardContains(text)
+                            || $0.translatedText.localizedStandardContains(text))
+                }
+            // Newest saved first; entries starred before savedAt existed sort
+            // by when they were made.
+            _items = Query(
+                filter: predicate,
+                sort: [
+                    SortDescriptor(\TranslationHistory.savedAt, order: .reverse),
+                    SortDescriptor(\TranslationHistory.createdAt, order: .reverse),
+                ],
+                animation: .smooth
+            )
         }
-        _items = Query(filter: predicate, sort: \TranslationHistory.createdAt, order: .reverse)
     }
 
     private var store: HistoryStore {
@@ -68,8 +82,10 @@ struct HistoryContent: View {
                 VStack(spacing: 0) {
                     table
                     if let entry = selectedEntry {
-                        HistoryDetailPane(entry: entry, speaker: speaker) {
+                        HistoryDetailPane(entry: entry, scope: scope, speaker: speaker) {
                             openInTranslate(entry)
+                        } onSetSaved: { isSaved in
+                            setSaved([entry], isSaved)
                         } onDelete: {
                             delete([entry])
                         }
@@ -94,7 +110,9 @@ struct HistoryContent: View {
     private var table: some View {
         Table(items, selection: $selection) {
             TableColumn("") { entry in
-                SaveStar(entry: entry)
+                SaveStar(entry: entry) { isSaved in
+                    setSaved([entry], isSaved)
+                }
             }
             .width(24)
 
@@ -114,8 +132,8 @@ struct HistoryContent: View {
             }
             .width(84)
 
-            TableColumn("When") { entry in
-                Text(HistoryDate.label(for: entry.createdAt))
+            TableColumn(scope == .saved ? "Saved" : "When") { entry in
+                Text(HistoryDate.label(for: scope == .saved ? entry.savedDate : entry.createdAt))
                     .foregroundStyle(.secondary)
             }
             .width(96)
@@ -129,8 +147,12 @@ struct HistoryContent: View {
             }
         }
         .onDeleteCommand {
-            if let entry = selectedEntry {
-                delete([entry])
+            guard let entry = selectedEntry else { return }
+            // In Saved the Delete key only unstars: the entry survives in
+            // Recent, and the action can be undone.
+            switch scope {
+            case .recent: delete([entry])
+            case .saved: setSaved([entry], false)
             }
         }
     }
@@ -149,15 +171,22 @@ struct HistoryContent: View {
                 copy(entry.sourceText)
             }
             Divider()
-            Button(entry.isSaved ? "Remove from Saved" : "Save") {
-                entry.isSaved.toggle()
-                store.save()
-            }
-            Divider()
         }
         if !entries.isEmpty {
-            Button("Delete", role: .destructive) {
-                delete(entries)
+            switch scope {
+            case .recent:
+                let allSaved = entries.allSatisfy(\.isSaved)
+                Button(allSaved ? "Remove from Saved" : "Save") {
+                    setSaved(entries, !allSaved)
+                }
+                Divider()
+                Button("Delete", role: .destructive) {
+                    delete(entries)
+                }
+            case .saved:
+                Button("Unsave") {
+                    setSaved(entries, false)
+                }
             }
         }
     }
@@ -177,25 +206,42 @@ struct HistoryContent: View {
         NSPasteboard.general.setString(text, forType: .string)
     }
 
-    /// Moves the selection to the next row so the keyboard flow isn't lost.
-    private func delete(_ entries: [TranslationHistory]) {
-        let ids = Set(entries.map(\.id))
-        if let selection, ids.contains(selection) {
-            let remaining = items.filter { !ids.contains($0.id) }
-            let index = items.firstIndex { $0.id == selection } ?? 0
-            self.selection = remaining[safe: index]?.id ?? remaining.last?.id
+    private func setSaved(_ entries: [TranslationHistory], _ isSaved: Bool) {
+        // In Saved an unstarred row leaves the list, so hand the selection on
+        // first, as a deletion would.
+        if scope == .saved, !isSaved {
+            moveSelectionPast(entries)
         }
+        for entry in entries {
+            store.setSaved(entry, isSaved, undoManager: undoManager)
+        }
+    }
+
+    private func delete(_ entries: [TranslationHistory]) {
+        moveSelectionPast(entries)
         store.delete(entries)
+    }
+
+    /// Moves the selection to the next row so the keyboard flow isn't lost
+    /// when the selected rows are about to go.
+    private func moveSelectionPast(_ entries: [TranslationHistory]) {
+        let ids = Set(entries.map(\.id))
+        guard let selection, ids.contains(selection) else { return }
+        let remaining = items.filter { !ids.contains($0.id) }
+        let index = items.firstIndex { $0.id == selection } ?? 0
+        self.selection = remaining[safe: index]?.id ?? remaining.last?.id
     }
 
     // MARK: - Chrome
 
     private var statusBar: some View {
         HStack {
-            if searchText.isEmpty {
-                Text("^[\(items.count) translation](inflect: true) · kept on this Mac only")
-            } else {
+            if !searchText.isEmpty {
                 Text("^[\(items.count) result](inflect: true)")
+            } else if scope == .saved {
+                Text("\(items.count) saved · never deleted automatically")
+            } else {
+                Text("^[\(items.count) translation](inflect: true) · kept on this Mac only")
             }
         }
         .font(.caption)
@@ -228,7 +274,7 @@ struct HistoryContent: View {
                 ContentUnavailableView {
                     Label("No saved translations", systemImage: "star")
                 } description: {
-                    Text("Star a translation to keep it here. Saved translations are never cleared.")
+                    Text("Click the star on any translation to keep it here. Saved translations are never deleted automatically.")
                 } actions: {
                     Button("Start Translating") {
                         openInTranslate(nil)
@@ -242,16 +288,12 @@ struct HistoryContent: View {
 /// The star in each row. A toggle, so its state reads as state.
 private struct SaveStar: View {
     var entry: TranslationHistory
-
-    @Environment(\.modelContext) private var modelContext
+    var onChange: (Bool) -> Void
 
     var body: some View {
         Toggle("Save", systemImage: entry.isSaved ? "star.fill" : "star", isOn: Binding(
             get: { entry.isSaved },
-            set: { isSaved in
-                entry.isSaved = isSaved
-                HistoryStore(context: modelContext).save()
-            }
+            set: { onChange($0) }
         ))
         .toggleStyle(.button)
         .buttonStyle(.plain)
