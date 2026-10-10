@@ -22,16 +22,16 @@ struct ProView: View {
             header
 
             benefits
-                .padding(.top, 20)
+                .padding(.top, 28)
 
             if purchases.hasPro {
                 ownedState
-                    .padding(.top, 24)
+                    .padding(.top, 28)
             } else {
                 plans
-                    .padding(.top, 22)
+                    .padding(.top, 28)
                 callToAction
-                    .padding(.top, 18)
+                    .padding(.top, 20)
             }
 
             if let message = purchases.statusMessage {
@@ -44,10 +44,24 @@ struct ProView: View {
             }
 
             footer
-                .padding(.top, 18)
+                .padding(.top, 16)
         }
-        .padding(EdgeInsets(top: 28, leading: 32, bottom: 20, trailing: 32))
+        .padding(EdgeInsets(top: 36, leading: 36, bottom: 24, trailing: 36))
         .frame(width: width)
+        .overlay(alignment: .topLeading) {
+            // Dismissal lives where the eye expects it on a sheet like this,
+            // leaving the bottom to the one button that matters.
+            Button(purchases.hasPro ? "Done" : "Not Now", systemImage: "xmark.circle.fill") {
+                dismiss()
+            }
+            .labelStyle(.iconOnly)
+            .buttonStyle(.plain)
+            .font(.system(size: 22))
+            .foregroundStyle(.secondary)
+            .keyboardShortcut(.cancelAction)
+            .padding(16)
+            .help(purchases.hasPro ? "Close" : "Not now")
+        }
         .animation(.smooth, value: purchases.hasPro)
         .task {
             await purchases.loadProducts()
@@ -57,17 +71,17 @@ struct ProView: View {
     // MARK: - Header
 
     private var header: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: 6) {
             Image(nsImage: NSApp.applicationIconImage)
                 .resizable()
-                .frame(width: 64, height: 64)
+                .frame(width: 72, height: 72)
                 .accessibilityHidden(true)
-                .padding(.bottom, 10)
+                .padding(.bottom, 8)
 
             Text("Unlock Pro")
-                .font(.title2.weight(.bold))
+                .font(.title.weight(.bold))
             Text("Translate without limits.")
-                .font(.callout)
+                .font(.body)
                 .foregroundStyle(.secondary)
         }
     }
@@ -75,47 +89,27 @@ struct ProView: View {
     // MARK: - Benefits
 
     private var benefits: some View {
-        Grid(alignment: .topLeading, horizontalSpacing: 20, verticalSpacing: 12) {
-            GridRow {
-                benefit(
-                    "Unlimited translations",
-                    detail: "Free plan: \(PurchaseStore.dailyFreeLimit) a day"
-                )
-                benefit(
-                    "Every language Apple offers",
-                    detail: "Translated on this Mac, offline"
-                )
-            }
-            GridRow {
-                benefit(
-                    "History and Saved",
-                    detail: "Keep and star as many translations as you like"
-                )
-                benefit(
-                    "All future updates",
-                    detail: "New features included as they ship"
-                )
-            }
+        VStack(alignment: .leading, spacing: 12) {
+            benefit("Unlimited translations", detail: "the free plan has \(PurchaseStore.dailyFreeLimit) a day")
+            benefit("Every language Apple offers", detail: "translated on this Mac, offline")
+            benefit("History and Saved", detail: "star as many translations as you like")
+            benefit("All future updates", detail: "new features included as they ship")
         }
+        .frame(maxWidth: 400)
     }
 
     private func benefit(_ title: LocalizedStringKey, detail: LocalizedStringKey) -> some View {
-        HStack(alignment: .top, spacing: 10) {
+        HStack(alignment: .firstTextBaseline, spacing: 12) {
             Image(systemName: "checkmark")
                 .font(.system(size: 12, weight: .bold))
                 .foregroundStyle(.tint)
-                .frame(width: 15, height: 17)
+                .frame(width: 14)
                 .accessibilityHidden(true)
 
-            VStack(alignment: .leading, spacing: 1) {
-                Text(title)
-                    .font(.body)
-                Text(detail)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
+            Text("\(Text(title).fontWeight(.medium)) \(Text(verbatim: "—").foregroundStyle(.tertiary)) \(Text(detail).foregroundStyle(.secondary))")
+                .font(.body)
+                .lineLimit(1)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
     }
 
@@ -156,6 +150,7 @@ struct ProView: View {
                 if AppStore.canMakePayments {
                     Text(selectedPlan.terms)
                         .font(.caption)
+                        .padding(.top, 2)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
@@ -206,28 +201,39 @@ struct ProView: View {
     // MARK: - Footer
 
     private var footer: some View {
-        HStack(spacing: 14) {
-            Button(purchases.hasPro ? "Done" : "Not Now") {
-                dismiss()
-            }
-            .keyboardShortcut(.cancelAction)
-
-            Spacer()
-
+        HStack(spacing: 6) {
             if purchases.activePlan?.isSubscription == true {
-                Link("Manage Subscription", destination: AppLinks.manageSubscriptions)
+                footerLink("Manage Subscription", destination: AppLinks.manageSubscriptions)
+                footerSeparator
             }
             if !purchases.hasPro {
                 Button("Restore Purchase") {
                     Task { await purchases.restorePurchases() }
                 }
-                .buttonStyle(.link)
+                .buttonStyle(.plain)
                 .disabled(purchases.isPurchasing)
+                footerSeparator
             }
-            Link("Terms of Use", destination: AppLinks.termsOfUse)
-            Link("Privacy Policy", destination: AppLinks.privacyPolicy)
+            footerLink("Terms of Use", destination: AppLinks.termsOfUse)
+            footerSeparator
+            footerLink("Privacy Policy", destination: AppLinks.privacyPolicy)
         }
-        .font(.callout)
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .frame(maxWidth: .infinity)
+    }
+
+    private func footerLink(_ title: LocalizedStringKey, destination: URL) -> some View {
+        Button(title) {
+            NSWorkspace.shared.open(destination)
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var footerSeparator: some View {
+        Text(verbatim: "·")
+            .foregroundStyle(.tertiary)
+            .accessibilityHidden(true)
     }
 }
 
@@ -262,14 +268,14 @@ private struct PlanCard: View {
                 Group {
                     if let product {
                         Text(plan.priceLine(for: product))
-                            .font(.system(size: 20, weight: .bold))
+                            .font(.system(size: 18, weight: .bold))
                         Text(plan.priceNote(for: product))
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     } else {
                         // Keeps the card's height while prices load.
                         Text(verbatim: "0.00 / year")
-                            .font(.system(size: 20, weight: .bold))
+                            .font(.system(size: 18, weight: .bold))
                         Text(verbatim: "About 0.00 a month")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
