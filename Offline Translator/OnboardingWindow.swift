@@ -3,6 +3,7 @@
 //  TranslatorMac
 //
 
+import AppKit
 import SwiftUI
 // See LanguageCatalog.swift: the Translation framework is not yet
 // Sendable-audited.
@@ -59,8 +60,22 @@ struct OnboardingWindow: View {
         guard !didFinish else { return }
         didFinish = true
         model.finish()
-        openWindow(id: "main")
+        showMainWindow()
         dismissWindow(id: "onboarding")
+    }
+
+    /// Opening the main window group always makes a new window, so when the
+    /// flow was reopened from the Help menu the existing one comes forward
+    /// instead.
+    private func showMainWindow() {
+        let existing = NSApp.windows.first {
+            $0.isVisible && $0.identifier?.rawValue.hasPrefix("main") == true
+        }
+        if let existing {
+            existing.makeKeyAndOrderFront(nil)
+        } else {
+            openWindow(id: "main")
+        }
     }
 }
 
