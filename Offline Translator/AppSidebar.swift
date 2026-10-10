@@ -10,7 +10,7 @@ struct AppSidebar: View {
     @Binding var selection: SidebarItem
 
     @Environment(PurchaseStore.self) private var purchases
-    @Environment(\.openWindow) private var openWindow
+    @Environment(ProPresentation.self) private var pro
 
     var body: some View {
         List(selection: $selection) {
@@ -22,8 +22,8 @@ struct AppSidebar: View {
         .navigationSplitViewColumnWidth(min: 180, ideal: 200, max: 280)
         .safeAreaInset(edge: .bottom) {
             if !purchases.hasPro {
-                ProUnlockCard(price: purchases.product?.displayPrice) {
-                    openWindow(id: "pro")
+                ProUnlockCard {
+                    pro.present()
                 }
                 .padding(10)
             }
@@ -35,7 +35,6 @@ struct AppSidebar: View {
 /// A quiet pointer to Pro at the foot of the sidebar. The App menu and the
 /// result pane's limit message also lead there, so nothing depends on it.
 private struct ProUnlockCard: View {
-    var price: String?
     var action: () -> Void
 
     var body: some View {
@@ -50,7 +49,7 @@ private struct ProUnlockCard: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Unlock Pro")
                         .font(.subheadline.weight(.semibold))
-                    Text(subtitle)
+                    Text("Yearly or lifetime")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -65,12 +64,7 @@ private struct ProUnlockCard: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Unlock Pro")
-        .accessibilityHint(Text(subtitle))
-        .help("Unlimited translations with a one-time purchase")
-    }
-
-    private var subtitle: String {
-        if let price { return "\(price), one-time purchase" }
-        return "One-time purchase"
+        .accessibilityHint("Yearly or lifetime")
+        .help("Unlimited translations, yearly or for good")
     }
 }

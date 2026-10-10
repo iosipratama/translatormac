@@ -3,7 +3,36 @@
 //  TranslatorMac
 //
 
+import AppKit
 import SwiftUI
+
+/// App menu: Pro and rating, after the About item.
+struct AppMenuCommands: Commands {
+    var purchases: PurchaseStore
+
+    @FocusedValue(\.proPresentation) private var pro
+
+    var body: some Commands {
+        CommandGroup(after: .appInfo) {
+            Button(purchases.hasPro ? "Translate Offline Pro" : "Upgrade to Pro…") {
+                pro?.present()
+            }
+            .disabled(pro == nil)
+
+            Button("Rate Translate Offline") {
+                rateApp()
+            }
+        }
+    }
+
+    private func rateApp() {
+        let appID = "6757454429"
+        let review = "id\(appID)?mt=12&action=write-review"
+        guard let url = URL(string: "macappstore://itunes.apple.com/app/\(review)")
+                ?? URL(string: "https://apps.apple.com/app/\(review)") else { return }
+        NSWorkspace.shared.open(url)
+    }
+}
 
 /// View menu: jump between the sidebar's screens with ⌘1–⌘3.
 struct NavigationCommands: Commands {

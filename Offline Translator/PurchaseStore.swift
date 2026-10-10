@@ -8,12 +8,14 @@ import StoreKit
 import SwiftUI
 import os
 
-/// Everything about Translate Offline Pro: the product, whether this person has
-/// it, and the free tier's daily allowance.
+/// Everything about Translate Offline Pro: the plans, whether this person has
+/// one, and the free tier's daily allowance.
 @Observable
 final class PurchaseStore {
 
-    static let proProductID = "iosipratama.TranslatorMac.pro"
+    /// The plans the Pro sheet offers, in display order. The first is
+    /// selected by default.
+    static let offeredPlans: [ProPlan] = [.yearly, .lifetime]
 
     /// Free translations per calendar day without Pro.
     static let dailyFreeLimit = 10
@@ -24,25 +26,33 @@ final class PurchaseStore {
     private static let firstFreeVersion = "1.2"
 
     private enum DefaultsKey {
-        static let ownsPro = "ownsPro"
+        static let activePlan = "activeProPlan"
+        /// Written by versions that only had the one-time purchase.
+        static let legacyOwnsPro = "ownsPro"
         static let isEarlySupporter = "isEarlySupporter"
         static let allowanceDay = "freeAllowanceDay"
         static let allowanceUsed = "freeAllowanceUsed"
     }
 
-    /// `nil` until the App Store answers, or when it can't be reached.
-    private(set) var product: Product?
-    private(set) var isLoadingProduct = false
+    /// Empty until the App Store answers, or when it can't be reached.
+    private(set) var products: [ProPlan: Product] = [:]
+    private(set) var isLoadingProducts = false
 
-    /// Bought the Pro in-app purchase.
-    private(set) var ownsPro: Bool {
-        didSet { UserDefaults.standard.set(ownsPro, forKey: DefaultsKey.ownsPro) }
+    /// The plan this person is entitled through, if any.
+    private(set) var activePlan: ProPlan? {
+        didSet { UserDefaults.standard.set(activePlan?.rawValue, forKey: DefaultsKey.activePlan) }
     }
+
+    /// When the current subscription ends unless it renews; `nil` for
+    /// lifetime or no plan.
+    private(set) var subscriptionExpiration: Date?
 
     /// Bought the app back when it was paid.
     private(set) var isEarlySupporter: Bool {
         didSet { UserDefaults.standard.set(isEarlySupporter, forKey: DefaultsKey.isEarlySupporter) }
     }
+
+    var ownsPro: Bool { activePlan != nil }
 
     var hasPro: Bool { ownsPro || isEarlySupporter }
 
@@ -71,7 +81,13 @@ final class PurchaseStore {
         // Start from the last known answer so an offline launch doesn't briefly
         // treat a Pro owner as a free user; StoreKit corrects it moments later.
         let defaults = UserDefaults.standard
-        ownsPro = defaults.bool(forKey: DefaultsKey.ownsPro)
+        if let raw = defaults.string(forKey: DefaultsKey.activePlan), let plan = ProPlan(rawValue: raw) {
+            activePlan = plan
+        } else if defaults.bool(forKey: DefaultsKey.legacyOwnsPro) {
+            activePlan = .lifetime
+        } else {
+            activePlan = nil
+        }
         isEarlySupporter = defaults.bool(forKey: DefaultsKey.isEarlySupporter)
         allowance = DailyAllowance(
             day: defaults.object(forKey: DefaultsKey.allowanceDay) as? Date ?? .now,
@@ -79,7 +95,7 @@ final class PurchaseStore {
         )
 
         // Purchases can also arrive from outside the app — Ask to Buy approvals,
-        // refunds, or a purchase made on another Mac.
+        // refunds, renewals, or a purchase made on another Mac.
         Task { [weak self] in
             for await update in StoreKit.Transaction.updates {
                 await self?.handle(update)
@@ -88,7 +104,7 @@ final class PurchaseStore {
 
         Task {
             await refreshAccess()
-            await loadProduct()
+            await loadProducts()
         }
     }
 
@@ -102,15 +118,26 @@ final class PurchaseStore {
 
     // MARK: - Store
 
-    func loadProduct() async {
-        guard product == nil, !isLoadingProduct else { return }
-        isLoadingProduct = true
-        defer { isLoadingProduct = false }
+    func product(for plan: ProPlan) -> Product? {
+        products[plan]
+    }
+
+    func loadProducts() async {
+        guard products.isEmpty, !isLoadingProducts else { return }
+        isLoadingProducts = true
+        defer { isLoadingProducts = false }
 
         do {
-            product = try await Product.products(for: [Self.proProductID]).first
-            if product == nil {
-                Log.purchases.error("The App Store returned no product for \(Self.proProductID, privacy: .public)")
+            let loaded = try await Product.products(for: Self.offeredPlans.map(\.productID))
+            var byPlan: [ProPlan: Product] = [:]
+            for product in loaded {
+                if let plan = ProPlan(productID: product.id) {
+                    byPlan[plan] = product
+                }
+            }
+            products = byPlan
+            for plan in Self.offeredPlans where byPlan[plan] == nil {
+                Log.purchases.error("The App Store returned no product for \(plan.productID, privacy: .public)")
             }
         } catch {
             Log.purchases.error("Failed to load products: \(error.localizedDescription, privacy: .public)")
@@ -119,8 +146,8 @@ final class PurchaseStore {
 
     /// Takes SwiftUI's `purchase` action so the confirmation sheet attaches to
     /// the window the person is using.
-    func purchase(using purchase: PurchaseAction) async {
-        guard let product, !isPurchasing else { return }
+    func purchase(_ plan: ProPlan, using purchase: PurchaseAction) async {
+        guard let product = products[plan], !isPurchasing else { return }
         isPurchasing = true
         statusMessage = nil
         defer { isPurchasing = false }
@@ -130,7 +157,7 @@ final class PurchaseStore {
             case .success(let verification):
                 await handle(verification)
             case .pending:
-                statusMessage = "Your purchase is waiting for approval. Pro unlocks as soon as it’s approved."
+                statusMessage = String(localized: "Your purchase is waiting for approval. Pro unlocks as soon as it’s approved.")
             case .userCancelled:
                 break
             @unknown default:
@@ -138,7 +165,7 @@ final class PurchaseStore {
             }
         } catch {
             Log.purchases.error("Purchase failed: \(error.localizedDescription, privacy: .public)")
-            statusMessage = "The purchase couldn’t be completed. \(error.localizedDescription)"
+            statusMessage = String(localized: "The purchase couldn’t be completed. \(error.localizedDescription)")
         }
     }
 
@@ -151,13 +178,13 @@ final class PurchaseStore {
             return
         } catch {
             Log.purchases.error("Restore failed: \(error.localizedDescription, privacy: .public)")
-            statusMessage = "Purchases couldn’t be restored. Check your internet connection and try again."
+            statusMessage = String(localized: "Purchases couldn’t be restored. Check your internet connection and try again.")
             return
         }
 
         await refreshAccess()
         if !hasPro {
-            statusMessage = "No Pro purchase was found for this Apple Account."
+            statusMessage = String(localized: "No Pro purchase was found for this Apple Account.")
         }
     }
 
@@ -168,14 +195,22 @@ final class PurchaseStore {
         await refreshEarlySupporter()
     }
 
+    /// Reads every current entitlement. Lifetime wins over a subscription,
+    /// since it never ends.
     private func refreshOwnership() async {
-        var owns = false
-        for await result in StoreKit.Transaction.currentEntitlements(for: Self.proProductID) {
-            if case .verified(let transaction) = result, transaction.revocationDate == nil {
-                owns = true
+        var plan: ProPlan?
+        var expiration: Date?
+        for await result in StoreKit.Transaction.currentEntitlements {
+            guard case .verified(let transaction) = result,
+                  transaction.revocationDate == nil,
+                  let found = ProPlan(productID: transaction.productID) else { continue }
+            if found == .lifetime || plan == nil {
+                plan = found
+                expiration = found.isSubscription ? transaction.expirationDate : nil
             }
         }
-        ownsPro = owns
+        activePlan = plan
+        subscriptionExpiration = expiration
     }
 
     private func refreshEarlySupporter() async {
@@ -203,16 +238,14 @@ final class PurchaseStore {
     private func handle(_ verification: VerificationResult<StoreKit.Transaction>) async {
         guard case .verified(let transaction) = verification else {
             Log.purchases.error("Transaction failed verification")
-            statusMessage = "The purchase couldn’t be verified. Try Restore Purchases."
+            statusMessage = String(localized: "The purchase couldn’t be verified. Try Restore Purchases.")
             return
         }
 
-        if transaction.productID == Self.proProductID {
-            if transaction.revocationDate == nil {
-                ownsPro = true
-            } else {
-                await refreshOwnership()
-            }
+        if ProPlan(productID: transaction.productID) != nil {
+            // Any change to a plan — purchase, renewal, refund — is simplest
+            // to answer from the full set of entitlements.
+            await refreshOwnership()
         }
         await transaction.finish()
     }

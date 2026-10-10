@@ -15,6 +15,7 @@ struct MainWindow: View {
 
     @State private var model: TranslationModel
     @State private var selection: SidebarItem = .translate
+    @State private var pro = ProPresentation()
 
     /// The model outlives the translate screen so switching to Recent and back
     /// keeps the text and result. `State` only reads this value the first time
@@ -60,6 +61,11 @@ struct MainWindow: View {
         }
         .focusedSceneValue(\.sidebarSelection, $selection)
         .focusedSceneValue(\.translationModel, model)
+        .focusedSceneValue(\.proPresentation, pro)
+        .environment(pro)
+        .sheet(isPresented: Bindable(pro).isPresented) {
+            ProView()
+        }
     }
 
     /// Shows the translate screen, with a history entry loaded when given one.

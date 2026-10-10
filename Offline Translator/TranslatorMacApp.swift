@@ -5,7 +5,6 @@
 //  Created by Iosi Pratama on 19/12/25.
 //
 
-import AppKit
 import SwiftUI
 import SwiftData
 
@@ -39,13 +38,8 @@ struct TranslatorMacApp: App {
                 Button("About Translate Offline") {
                     openWindow(id: "about")
                 }
-                Button(purchases.hasPro ? "Translate Offline Pro" : "Upgrade to Pro…") {
-                    openWindow(id: "pro")
-                }
-                Button("Rate Translate Offline") {
-                    rateApp()
-                }
             }
+            AppMenuCommands(purchases: purchases)
 
             SidebarCommands()
             NavigationCommands()
@@ -61,22 +55,5 @@ struct TranslatorMacApp: App {
         .defaultSize(width: 360, height: 300)
         .defaultPosition(.center)
         .defaultLaunchBehavior(.suppressed)
-
-        Window("Translate Offline Pro", id: "pro") {
-            ProView()
-        }
-        .environment(purchases)
-        .windowResizability(.contentSize)
-        .windowStyle(.hiddenTitleBar)
-        .defaultPosition(.center)
-        .defaultLaunchBehavior(.suppressed)
-    }
-
-    private func rateApp() {
-        let appID = "6757454429"
-        let review = "id\(appID)?mt=12&action=write-review"
-        guard let url = URL(string: "macappstore://itunes.apple.com/app/\(review)")
-                ?? URL(string: "https://apps.apple.com/app/\(review)") else { return }
-        NSWorkspace.shared.open(url)
     }
 }

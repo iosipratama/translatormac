@@ -5,12 +5,12 @@
   ],
   "products" : [
     {
-      "displayPrice" : "4.99",
+      "displayPrice" : "14.99",
       "familyShareable" : false,
       "internalID" : "5E3A9C22",
       "localizations" : [
         {
-          "description" : "Unlimited translations every day.",
+          "description" : "Unlimited translations, forever.",
           "displayName" : "Translate Offline Pro",
           "locale" : "en_US"
         }
@@ -29,7 +29,40 @@
     ]
   },
   "subscriptionGroups" : [
+    {
+      "id" : "5E3A9C30",
+      "localizations" : [
 
+      ],
+      "name" : "Pro",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "4.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "5E3A9C31",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Unlimited translations for a year.",
+              "displayName" : "Translate Offline Pro Yearly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "iosipratama.TranslatorMac.pro.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Pro Yearly",
+          "subscriptionGroupID" : "5E3A9C30",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
   ],
   "version" : {
     "major" : 3,

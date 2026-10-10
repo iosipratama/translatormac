@@ -9,7 +9,7 @@ import SwiftUI
 struct ResultPane: View {
     var model: TranslationModel
 
-    @Environment(\.openWindow) private var openWindow
+    @Environment(ProPresentation.self) private var pro
 
     var body: some View {
         VStack(spacing: 0) {
@@ -45,7 +45,7 @@ struct ResultPane: View {
                 description: "Unlock Pro for unlimited translations. Free translations come back tomorrow."
             ) {
                 Button("Unlock Pro") {
-                    openWindow(id: "pro")
+                    pro.present()
                 }
                 .buttonStyle(.borderedProminent)
             }

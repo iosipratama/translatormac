@@ -15,7 +15,10 @@ A simple macOS app for offline text translation using Apple's on-device translat
 - On-device language models installed 
 
 
-### In-app purchase
-- Product: `iosipratama.TranslatorMac.pro` (non-consumable)
-- Anyone whose original download is older than 1.2, the first free version, gets Pro automatically
-- `Translate Offline.storekit` lets local runs buy Pro without App Store Connect
+### In-app purchases
+- Pro is offered as a choice of plans, listed in `PurchaseStore.offeredPlans`; each plan's product is in `ProPlan`
+  - Lifetime: `iosipratama.TranslatorMac.pro` (non-consumable, the original product)
+  - Yearly: `iosipratama.TranslatorMac.pro.yearly` (auto-renewable subscription)
+  - Weekly is defined but not offered: `iosipratama.TranslatorMac.pro.weekly`
+- Any active plan unlocks Pro; anyone whose original download is older than 1.2, the first free version, gets Pro automatically
+- `Translate Offline.storekit` lets local runs buy either plan without App Store Connect; its prices are placeholders
