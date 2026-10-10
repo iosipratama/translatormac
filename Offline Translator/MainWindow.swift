@@ -37,10 +37,11 @@ struct MainWindow: View {
                     HistoryListView(scope: .saved)
                 }
             }
-            // The minimum size goes on the detail, not the split view: on
-            // macOS 26 a frame on NavigationSplitView itself leaves the sidebar
-            // and most of the detail undrawn until the next state change.
-            .frame(minWidth: 600, minHeight: 520)
+            // The size goes on the detail, not the split view: on macOS 26 a
+            // frame on NavigationSplitView itself lays the content out at the
+            // split view's own screen-tall measurement and centers it, pushing
+            // the headers and footers out of view until the next layout.
+            .frame(minWidth: 600, idealWidth: 800, minHeight: 520, idealHeight: 660)
         }
         // Attached here rather than to the translate screen so a translation or
         // download prompt that's underway survives a switch to another screen.
