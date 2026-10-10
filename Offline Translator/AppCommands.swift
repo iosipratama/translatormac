@@ -34,6 +34,20 @@ struct AppMenuCommands: Commands {
     }
 }
 
+/// Help menu: the first-launch flow, for anyone who skipped it or wants to
+/// download languages the easy way again.
+struct HelpCommands: Commands {
+    @Environment(\.openWindow) private var openWindow
+
+    var body: some Commands {
+        CommandGroup(replacing: .help) {
+            Button("Welcome to Translate Offline") {
+                openWindow(id: "onboarding")
+            }
+        }
+    }
+}
+
 /// View menu: jump between the sidebar's screens with ⌘1–⌘3.
 struct NavigationCommands: Commands {
     @FocusedBinding(\.sidebarSelection) private var selection

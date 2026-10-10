@@ -15,6 +15,10 @@ struct TranslatorMacApp: App {
 
     @State private var purchases = PurchaseStore()
 
+    /// Read once at launch: it decides which window opens first. The flow
+    /// itself updates the stored value when it finishes.
+    private let didFinishOnboarding = OnboardingModel.didFinish
+
     /// One container shared by every scene. Scene modifiers do not cascade to
     /// sibling scenes, so applying `.modelContainer(for:)` per scene would build
     /// separate containers over the same store.
@@ -27,12 +31,15 @@ struct TranslatorMacApp: App {
     }()
 
     var body: some Scene {
-        WindowGroup {
+        WindowGroup(id: "main") {
             MainWindow(modelContext: modelContainer.mainContext, purchases: purchases)
         }
         .modelContainer(modelContainer)
         .environment(purchases)
         .defaultSize(width: 1000, height: 660)
+        // On a first launch the welcome window opens instead; it opens this
+        // one when it's done.
+        .defaultLaunchBehavior(didFinishOnboarding ? .automatic : .suppressed)
         .commands {
             CommandGroup(replacing: .appInfo) {
                 Button("About Translate Offline") {
@@ -44,7 +51,18 @@ struct TranslatorMacApp: App {
             SidebarCommands()
             NavigationCommands()
             TranslationCommands()
+            HelpCommands()
         }
+
+        Window("Welcome", id: "onboarding") {
+            OnboardingWindow()
+        }
+        .environment(purchases)
+        .windowResizability(.contentSize)
+        .windowStyle(.hiddenTitleBar)
+        .defaultPosition(.center)
+        .restorationBehavior(.disabled)
+        .defaultLaunchBehavior(didFinishOnboarding ? .suppressed : .presented)
 
         Window("About Translate Offline", id: "about") {
             AboutView()
@@ -54,6 +72,7 @@ struct TranslatorMacApp: App {
         .windowStyle(.hiddenTitleBar)
         .defaultSize(width: 360, height: 300)
         .defaultPosition(.center)
+        .restorationBehavior(.disabled)
         .defaultLaunchBehavior(.suppressed)
     }
 }
