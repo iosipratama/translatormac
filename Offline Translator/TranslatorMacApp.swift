@@ -18,8 +18,7 @@ struct TranslatorMacApp: App {
 
     /// One container shared by every scene. Scene modifiers do not cascade to
     /// sibling scenes, so applying `.modelContainer(for:)` per scene would build
-    /// separate containers over the same store and the History window would not
-    /// see newly saved translations until relaunch.
+    /// separate containers over the same store.
     private let modelContainer: ModelContainer = {
         do {
             return try ModelContainer(for: TranslationHistory.self)
@@ -30,10 +29,11 @@ struct TranslatorMacApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainWindow(modelContext: modelContainer.mainContext, purchases: purchases)
         }
         .modelContainer(modelContainer)
         .environment(purchases)
+        .defaultSize(width: 1000, height: 660)
         .commands {
             CommandGroup(replacing: .appInfo) {
                 Button("About Translate Offline") {
@@ -47,15 +47,9 @@ struct TranslatorMacApp: App {
                 }
             }
 
-            // History opens a window, so it belongs in the Window menu.
-            CommandGroup(before: .windowList) {
-                Button("History") {
-                    openWindow(id: "history")
-                }
-                .keyboardShortcut("y", modifiers: [.command])
-
-                Divider()
-            }
+            SidebarCommands()
+            NavigationCommands()
+            TranslationCommands()
         }
 
         Window("About Translate Offline", id: "about") {
@@ -75,13 +69,6 @@ struct TranslatorMacApp: App {
         .windowResizability(.contentSize)
         .windowStyle(.hiddenTitleBar)
         .defaultPosition(.center)
-        .defaultLaunchBehavior(.suppressed)
-
-        Window("History", id: "history") {
-            HistoryView()
-        }
-        .modelContainer(modelContainer)
-        .defaultSize(width: 520, height: 420)
         .defaultLaunchBehavior(.suppressed)
     }
 

@@ -3,35 +3,32 @@
 //  TranslatorMac
 //
 
+import AppKit
 import Foundation
+import SwiftData
 // See LanguageCatalog.swift: the Translation framework is not yet
 // Sendable-audited.
 @preconcurrency import Translation
+import os
 
 /// State and rules for the translate screen, kept out of the view.
+///
+/// Translation is live: the screen translates shortly after typing pauses,
+/// keeps the previous result visible while the next one is in flight, and
+/// records a translation to Recent once the person has settled on it.
 @Observable
 final class TranslationModel {
 
-    /// One value for what the screen is doing, so a result and an error message
-    /// can't both be live at once — previously an error was written into the
-    /// same string as a translation and could be saved to history.
-    enum Phase: Equatable {
-        case idle
-        case translating
-        case translated(String)
+    /// What the result pane shows. One value, so a result and an error message
+    /// can't both be live at once.
+    enum Outcome: Equatable {
+        case translated(TranslationResult)
         case failed(String)
 
-        var translation: String? {
-            if case .translated(let text) = self { return text }
+        var result: TranslationResult? {
+            if case .translated(let result) = self { return result }
             return nil
         }
-
-        var errorMessage: String? {
-            if case .failed(let message) = self { return message }
-            return nil
-        }
-
-        var isTranslating: Bool { self == .translating }
     }
 
     private enum DefaultsKey {
@@ -39,43 +36,131 @@ final class TranslationModel {
         static let target = "targetLanguage"
     }
 
+    private enum Timing {
+        /// How long typing has to pause before translating.
+        static let debounce: Duration = .milliseconds(400)
+        /// How long a translation can take before the screen says so.
+        static let indicatorDelay: Duration = .milliseconds(300)
+        /// How long typing has to pause before the translation counts as made.
+        static let pauseBeforeRecording: Duration = .seconds(2)
+        static let copiedFeedback: Duration = .seconds(1.5)
+    }
+
+    private let modelContext: ModelContext
+    private let purchases: PurchaseStore
+
+    /// Owned here so the Translation menu can reach it through the model.
+    @ObservationIgnored private(set) lazy var speaker = TranslationSpeaker()
+
+    // MARK: Languages
+
     /// Loaded from the framework on appear; empty until then.
-    var supportedLanguages: [TranslationLanguage] = []
+    private(set) var supportedLanguages: [TranslationLanguage] = []
 
     var isLoadingLanguages: Bool { supportedLanguages.isEmpty }
 
-    var inputText = "" {
-        didSet {
-            guard trimmedInput.isEmpty, !phase.isTranslating else { return }
-            phase = .idle
-        }
-    }
-
-    var phase: Phase = .idle
-
     /// `nil` means "detect automatically". The framework does the detection when
-    /// a configuration carries no source language, which is why this app no
-    /// longer links NaturalLanguage or applies its own confidence threshold.
+    /// a configuration carries no source language.
     var sourceLanguage: Locale.Language? {
         didSet {
-            guard sourceLanguage != oldValue else { return }
-            store(sourceLanguage, forKey: DefaultsKey.source)
-            invalidateResult()
+            guard sourceLanguage != oldValue, !isAdjustingLanguages else { return }
+            // Choosing the current target as the source swaps the pair.
+            if let source = sourceLanguage, source == targetLanguage {
+                isAdjustingLanguages = true
+                targetLanguage = oldValue ?? alternativeTarget(to: source)
+                isAdjustingLanguages = false
+            }
+            languagesDidChange()
         }
     }
 
     var targetLanguage: Locale.Language {
         didSet {
-            guard targetLanguage != oldValue else { return }
-            store(targetLanguage, forKey: DefaultsKey.target)
-            invalidateResult()
+            guard targetLanguage != oldValue, !isAdjustingLanguages else { return }
+            // Choosing the current source as the target swaps the pair.
+            if targetLanguage == sourceLanguage {
+                isAdjustingLanguages = true
+                sourceLanguage = oldValue
+                isAdjustingLanguages = false
+            }
+            languagesDidChange()
         }
     }
 
-    /// Whether the selected pair needs downloading before it can be used.
-    var availability: LanguageAvailability.Status?
+    /// Set while the pair is being changed as a unit, so the `didSet` rules
+    /// above don't react to the intermediate state.
+    private var isAdjustingLanguages = false
 
-    init() {
+    /// Per-language availability for the two menus, relative to the language
+    /// chosen on the other side. Empty until the first check finishes.
+    private(set) var sourceStatuses: [Locale.Language: LanguageAvailability.Status] = [:]
+    private(set) var targetStatuses: [Locale.Language: LanguageAvailability.Status] = [:]
+
+    /// Set when the person picks a language, so the next availability check
+    /// can offer the download prompt for a pair that isn't installed. Not set
+    /// at launch: a restored pair shouldn't prompt before anyone types.
+    private var wantsDownloadCheck = false
+
+    /// Ask the session to download the pair before translating.
+    private var needsPreparation = false
+
+    // MARK: Text
+
+    var inputText = "" {
+        didSet { inputDidChange(from: oldValue) }
+    }
+
+    var trimmedInput: String {
+        inputText.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private(set) var outcome: Outcome?
+
+    /// A translation of the current text is in flight. The previous result
+    /// stays on screen, dimmed, until it arrives.
+    private(set) var isTranslating = false
+
+    /// Shown only once a translation has taken noticeably long, so quick ones
+    /// don't flash a label.
+    private(set) var showsTranslatingIndicator = false
+
+    /// Driving translation through a configuration rather than constructing a
+    /// `TranslationSession` directly lets the framework prompt to download a
+    /// missing language pair instead of failing with an error.
+    private(set) var configuration: TranslationSession.Configuration?
+
+    /// Identifies the latest request, so a slow translation that finishes
+    /// after a newer one started can't overwrite the newer result.
+    private var requestID = 0
+
+    private var debounceTask: Task<Void, Never>?
+    private var indicatorTask: Task<Void, Never>?
+    private var recordTask: Task<Void, Never>?
+    private var copiedTask: Task<Void, Never>?
+
+    // MARK: Recent
+
+    /// The Recent record for what's on screen. One record per editing session,
+    /// updated in place as the text settles, so Recent doesn't fill up with
+    /// every pause while typing.
+    private(set) var currentRecord: TranslationHistory?
+
+    /// A pause ended before the translation arrived; record it when it does.
+    private var wantsRecord = false
+
+    /// Whether the free tier has been charged for this editing session. Live
+    /// translation re-translates on every pause, so charging per request would
+    /// burn the allowance while typing one sentence.
+    private var sessionCounted = false
+
+    private(set) var justCopied = false
+
+    // MARK: - Setup
+
+    init(modelContext: ModelContext, purchases: PurchaseStore) {
+        self.modelContext = modelContext
+        self.purchases = purchases
+
         let defaults = UserDefaults.standard
         sourceLanguage = defaults.string(forKey: DefaultsKey.source)
             .map(LanguageCatalog.language(forIdentifier:))
@@ -84,26 +169,29 @@ final class TranslationModel {
             ?? Locale.current.language
     }
 
-    /// `LanguageAvailability.supportedLanguages` is async, so the pickers start
+    /// `LanguageAvailability.supportedLanguages` is async, so the menus start
     /// empty and fill in once the framework answers.
     func loadSupportedLanguages() async {
+        guard supportedLanguages.isEmpty else { return }
         let languages = await LanguageCatalog.supportedLanguages()
         supportedLanguages = languages
 
-        // A Picker shows no selection when the bound value matches none of its
-        // tags, so both ends have to be pinned to an entry that is really in the
-        // catalog. The stored value may differ from the catalog entry only by
-        // region — either from an earlier launch, or because the device language
-        // carries a region the framework has no model for.
+        // A menu shows no selection when the bound value matches none of its
+        // entries, so both ends have to be pinned to an entry that is really in
+        // the catalog. The stored value may differ from the catalog entry only
+        // by region — either from an earlier launch, or because the device
+        // language carries a region the framework has no model for.
+        isAdjustingLanguages = true
         targetLanguage = resolve(targetLanguage)
             ?? resolve(Locale.current.language)
             ?? languages.first { $0.language.languageCode?.identifier == "en" }?.language
             ?? languages.first?.language
             ?? targetLanguage
-
         if let source = sourceLanguage {
             sourceLanguage = resolve(source)
         }
+        isAdjustingLanguages = false
+        storeLanguages()
     }
 
     /// Finds the catalog entry representing a language, ignoring region.
@@ -122,12 +210,26 @@ final class TranslationModel {
             ?? LanguageCatalog.fallbackName(for: language)
     }
 
-    var trimmedInput: String {
-        inputText.trimmingCharacters(in: .whitespacesAndNewlines)
+    /// The source pane's title: the chosen language, or what was detected.
+    var sourceTitle: String {
+        if let source = sourceLanguage { return name(for: source) }
+        if let detected = outcome?.result?.detectedSource {
+            return "\(name(for: detected)) (Detected)"
+        }
+        return "Detect Language"
     }
 
-    var canTranslate: Bool {
-        !trimmedInput.isEmpty && !phase.isTranslating
+    // MARK: - Languages
+
+    /// Changes to either language also re-run the availability check.
+    var languagePairID: String {
+        let source = sourceLanguage.map(LanguageCatalog.identifier(for:)) ?? "auto"
+        return "\(source)→\(LanguageCatalog.identifier(for: targetLanguage))"
+    }
+
+    /// Availability also has to be re-checked once the catalog arrives.
+    var availabilityKey: String {
+        "\(languagePairID)|\(supportedLanguages.count)"
     }
 
     /// Swapping is only meaningful when both ends are known languages.
@@ -135,21 +237,385 @@ final class TranslationModel {
         sourceLanguage != nil
     }
 
+    /// Swaps the pair and carries the translation across as the new input, so
+    /// the swap reads as a continuation.
     func swapLanguages() {
         guard let source = sourceLanguage else { return }
-        let translation = phase.translation
+        let translation = outcome?.result?.text
+
+        isAdjustingLanguages = true
         sourceLanguage = targetLanguage
         targetLanguage = source
-        // Carry the previous result across so the swap reads as a continuation.
-        if let translation { inputText = translation }
+        isAdjustingLanguages = false
+
+        // The reverse translation is a new entry in Recent, not an edit of the
+        // one it came from.
+        currentRecord = nil
+        if let translation {
+            inputText = translation
+        }
+        languagesDidChange()
     }
 
+    private func languagesDidChange() {
+        storeLanguages()
+        wantsDownloadCheck = true
+        speaker.stop()
+
+        // A saved translation is frozen; changing it starts a new record.
+        if currentRecord?.isSaved == true {
+            currentRecord = nil
+        }
+
+        if trimmedInput.isEmpty {
+            outcome = nil
+        } else {
+            requestTranslation()
+        }
+    }
+
+    /// When the chosen source matches the target and there is no previous
+    /// source to swap in, pick the person's own language, or failing that the
+    /// first other language in the catalog.
+    private func alternativeTarget(to source: Locale.Language) -> Locale.Language {
+        let candidates = [resolve(Locale.current.language)].compactMap { $0 }
+            + supportedLanguages.map(\.language)
+        return candidates.first { $0 != source } ?? source
+    }
+
+    /// Refreshes which languages are installed for each menu, and offers the
+    /// download prompt when the person just picked a pair that isn't.
     func refreshAvailability() async {
-        availability = await LanguageCatalog.status(from: sourceLanguage, to: targetLanguage)
+        guard !supportedLanguages.isEmpty else { return }
+        let source = sourceLanguage
+        let target = targetLanguage
+        let pair = languagePairID
+
+        if wantsDownloadCheck {
+            wantsDownloadCheck = false
+            if let source, await LanguageCatalog.status(from: source, to: target) == .supported {
+                needsPreparation = true
+                requestTranslation(allowEmptyInput: true)
+            }
+        }
+
+        var sources: [Locale.Language: LanguageAvailability.Status] = [:]
+        for entry in supportedLanguages {
+            sources[entry.language] = await status(forSourceCandidate: entry.language, source: source, target: target)
+        }
+        guard !Task.isCancelled, pair == languagePairID else { return }
+        sourceStatuses = sources
+
+        var targets: [Locale.Language: LanguageAvailability.Status] = [:]
+        for entry in supportedLanguages {
+            targets[entry.language] = await status(forTargetCandidate: entry.language, source: source, target: target)
+        }
+        guard !Task.isCancelled, pair == languagePairID else { return }
+        targetStatuses = targets
     }
 
-    private func invalidateResult() {
-        if !phase.isTranslating { phase = .idle }
+    /// Picking the current target as a source swaps the pair, so that entry
+    /// reports the status of the swapped pair.
+    private func status(
+        forSourceCandidate candidate: Locale.Language,
+        source: Locale.Language?,
+        target: Locale.Language
+    ) async -> LanguageAvailability.Status {
+        if candidate == target {
+            guard let source else { return .installed }
+            return await LanguageCatalog.status(from: target, to: source)
+        }
+        return await LanguageCatalog.status(from: candidate, to: target)
+    }
+
+    /// With Detect Language there is no source to check against, so the last
+    /// detected language stands in, then the person's own language.
+    private func status(
+        forTargetCandidate candidate: Locale.Language,
+        source: Locale.Language?,
+        target: Locale.Language
+    ) async -> LanguageAvailability.Status {
+        let from = source
+            ?? outcome?.result?.detectedSource
+            ?? resolve(Locale.current.language)
+            ?? Locale.current.language
+        if candidate == from {
+            return await LanguageCatalog.status(from: target, to: candidate)
+        }
+        return await LanguageCatalog.status(from: from, to: candidate)
+    }
+
+    // MARK: - Typing
+
+    private func inputDidChange(from oldValue: String) {
+        guard inputText != oldValue else { return }
+        debounceTask?.cancel()
+        recordTask?.cancel()
+
+        // A saved translation is frozen; editing it starts a new record.
+        if currentRecord?.isSaved == true {
+            currentRecord = nil
+        }
+
+        let text = trimmedInput
+        guard !text.isEmpty else {
+            endSession()
+            return
+        }
+
+        if oldValue.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            // Text went from empty to something: a new editing session.
+            sessionCounted = false
+            currentRecord = nil
+        }
+
+        if outcome?.result?.sourceText == text {
+            // Only whitespace changed; the result on screen still applies.
+            finishTranslating()
+        } else {
+            debounceTask = Task { [weak self] in
+                try? await Task.sleep(for: Timing.debounce)
+                guard !Task.isCancelled else { return }
+                self?.requestTranslation()
+            }
+        }
+
+        recordTask = Task { [weak self] in
+            try? await Task.sleep(for: Timing.pauseBeforeRecording)
+            guard !Task.isCancelled else { return }
+            self?.recordToRecent()
+        }
+    }
+
+    func clearInput() {
+        inputText = ""
+    }
+
+    private func endSession() {
+        requestID += 1
+        indicatorTask?.cancel()
+        isTranslating = false
+        showsTranslatingIndicator = false
+        outcome = nil
+        configuration = nil
+        currentRecord = nil
+        sessionCounted = false
+        wantsRecord = false
+        speaker.stop()
+    }
+
+    // MARK: - Translating
+
+    /// Whether the free tier allows this session to translate. A session that
+    /// has already been charged keeps working even after the allowance runs out.
+    var needsPro: Bool {
+        !trimmedInput.isEmpty && !sessionCounted && !purchases.canTranslate
+    }
+
+    var canTranslateNow: Bool {
+        !trimmedInput.isEmpty && !needsPro
+    }
+
+    /// Translates the current text right away; typing normally gets here after
+    /// the debounce. Pass `allowEmptyInput` to start a session with nothing to
+    /// translate, which is how the download prompt is shown.
+    func requestTranslation(allowEmptyInput: Bool = false) {
+        debounceTask?.cancel()
+        let text = trimmedInput
+
+        if text.isEmpty {
+            guard allowEmptyInput, needsPreparation else { return }
+        } else {
+            guard !needsPro else {
+                finishTranslating()
+                return
+            }
+            requestID += 1
+            isTranslating = true
+            indicatorTask?.cancel()
+            indicatorTask = Task { [weak self] in
+                try? await Task.sleep(for: Timing.indicatorDelay)
+                guard !Task.isCancelled, let self, self.isTranslating else { return }
+                self.showsTranslatingIndicator = true
+            }
+        }
+
+        let desired = TranslationSession.Configuration(
+            source: sourceLanguage,
+            target: targetLanguage
+        )
+
+        // Re-running with the same pair needs invalidate(); a configuration that
+        // compares equal would not retrigger translationTask.
+        if var current = configuration, current.source == desired.source, current.target == desired.target {
+            current.invalidate()
+            configuration = current
+        } else {
+            configuration = desired
+        }
+    }
+
+    /// Called by the view's `translationTask` whenever the configuration changes.
+    func translate(using session: TranslationSession) async {
+        if needsPreparation {
+            needsPreparation = false
+            do {
+                try await session.prepareTranslation()
+            } catch {
+                // Declining the download is fine; the pair stays selected and
+                // the prompt returns the next time a translation is attempted.
+                Log.translation.notice("Preparation ended: \(String(describing: error), privacy: .public)")
+            }
+        }
+
+        let text = trimmedInput
+        guard !text.isEmpty else { return }
+        let id = requestID
+
+        do {
+            let response = try await session.translate(text)
+            guard id == requestID else { return }
+
+            outcome = .translated(
+                TranslationResult(
+                    sourceText: text,
+                    text: response.targetText,
+                    pronunciation: Pronunciation.latinTranscription(of: response.targetText, in: targetLanguage),
+                    detectedSource: sourceLanguage == nil ? session.sourceLanguage : nil
+                )
+            )
+            finishTranslating()
+
+            if !sessionCounted {
+                sessionCounted = true
+                purchases.recordTranslation()
+            }
+            if wantsRecord {
+                recordToRecent()
+            }
+        } catch is CancellationError {
+            // Superseded by a newer request.
+        } catch {
+            guard id == requestID else { return }
+            let message = TranslationFailure.message(
+                for: error,
+                from: sourceLanguage,
+                to: targetLanguage
+            )
+            Log.translation.error("Translation failed: \(String(describing: error), privacy: .public)")
+            outcome = message.isEmpty ? nil : .failed(message)
+            finishTranslating()
+        }
+    }
+
+    private func finishTranslating() {
+        indicatorTask?.cancel()
+        isTranslating = false
+        showsTranslatingIndicator = false
+    }
+
+    /// The result for exactly the text on screen; `nil` while a newer
+    /// translation is pending, so actions never act on a stale result.
+    var currentResult: TranslationResult? {
+        guard let result = outcome?.result, result.sourceText == trimmedInput else { return nil }
+        return result
+    }
+
+    // MARK: - Actions
+
+    func copyTranslation() {
+        guard let result = currentResult else { return }
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(result.text, forType: .string)
+        recordToRecent()
+
+        justCopied = true
+        copiedTask?.cancel()
+        copiedTask = Task { [weak self] in
+            try? await Task.sleep(for: Timing.copiedFeedback)
+            guard !Task.isCancelled else { return }
+            self?.justCopied = false
+        }
+    }
+
+    var canSpeak: Bool {
+        currentResult != nil && speaker.canSpeak(targetLanguage)
+    }
+
+    func toggleSpeech() {
+        if speaker.isSpeaking {
+            speaker.stop()
+        } else if let result = currentResult {
+            speaker.speak(result.text, in: targetLanguage)
+            recordToRecent()
+        }
+    }
+
+    var isCurrentSaved: Bool {
+        currentRecord?.isSaved ?? false
+    }
+
+    func toggleSaved() {
+        if let record = currentRecord, record.isSaved {
+            record.isSaved = false
+            saveContext()
+            return
+        }
+        recordToRecent()
+        guard let record = currentRecord else { return }
+        record.isSaved = true
+        saveContext()
+    }
+
+    // MARK: - Recent
+
+    /// Writes the translation on screen to Recent, updating this session's
+    /// record if there is one. Waits for the translation if it hasn't arrived.
+    private func recordToRecent() {
+        guard let result = currentResult else {
+            wantsRecord = true
+            return
+        }
+        wantsRecord = false
+
+        // Record identifiers, not localized display names, so history stays
+        // meaningful if the app language changes.
+        let sourceID = (result.detectedSource ?? sourceLanguage)
+            .map(LanguageCatalog.identifier(for:)) ?? "auto"
+        let targetID = LanguageCatalog.identifier(for: targetLanguage)
+
+        if let record = currentRecord, !record.isSaved {
+            record.sourceText = result.sourceText
+            record.translatedText = result.text
+            record.sourceLanguage = sourceID
+            record.targetLanguage = targetID
+            record.createdAt = .now
+        } else {
+            let record = TranslationHistory(
+                sourceText: result.sourceText,
+                translatedText: result.text,
+                sourceLanguage: sourceID,
+                targetLanguage: targetID
+            )
+            modelContext.insert(record)
+            currentRecord = record
+        }
+        saveContext()
+    }
+
+    private func saveContext() {
+        do {
+            try modelContext.save()
+        } catch {
+            Log.history.error("Failed to save history: \(error.localizedDescription, privacy: .public)")
+        }
+    }
+
+    // MARK: - Persistence
+
+    private func storeLanguages() {
+        store(sourceLanguage, forKey: DefaultsKey.source)
+        store(targetLanguage, forKey: DefaultsKey.target)
     }
 
     private func store(_ language: Locale.Language?, forKey key: String) {

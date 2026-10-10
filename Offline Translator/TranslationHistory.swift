@@ -8,6 +8,8 @@
 import Foundation
 import SwiftData
 
+/// One translation the person made. Every record appears in Recent; starring
+/// it also shows it in Saved.
 @Model
 final class TranslationHistory {
     // Every query sorts on createdAt, so index it.
@@ -18,18 +20,24 @@ final class TranslationHistory {
     var sourceLanguage: String
     var targetLanguage: String
     var createdAt: Date
-    
+
+    /// Starred by the person. Defaults so records from earlier versions
+    /// migrate without a schema step.
+    var isSaved: Bool = false
+
     init(
         sourceText: String,
         translatedText: String,
         sourceLanguage: String,
         targetLanguage: String,
-        createdAt: Date = .now
+        createdAt: Date = .now,
+        isSaved: Bool = false
     ) {
         self.sourceText = sourceText
         self.translatedText = translatedText
         self.sourceLanguage = sourceLanguage
         self.targetLanguage = targetLanguage
         self.createdAt = createdAt
+        self.isSaved = isSaved
     }
 }

@@ -3,6 +3,7 @@
 //  TranslatorMac
 //
 
+import AppKit
 import Foundation
 // LanguageAvailability is not yet Sendable-audited, so Swift 6 rejects passing
 // it to its own nonisolated async members. Each instance here is created
@@ -175,8 +176,14 @@ enum LanguageCatalog {
     }
 
     /// Whether the pair is installed, merely supported, or not supported at all.
-    static func status(from source: Locale.Language?, to target: Locale.Language) async -> LanguageAvailability.Status? {
-        guard let source else { return nil }
-        return await LanguageAvailability().status(from: source, to: target)
+    static func status(from source: Locale.Language, to target: Locale.Language) async -> LanguageAvailability.Status {
+        await LanguageAvailability().status(from: source, to: target)
+    }
+
+    /// Language models are downloaded in System Settings, under Language &
+    /// Region → Translation Languages. There is no deeper link than the pane.
+    static func openLanguageSettings() {
+        guard let url = URL(string: "x-apple.systempreferences:com.apple.Localization-Settings.extension") else { return }
+        NSWorkspace.shared.open(url)
     }
 }
