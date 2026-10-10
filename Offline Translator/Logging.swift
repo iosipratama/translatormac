@@ -10,4 +10,5 @@ import os
 enum Log {
     static let translation = Logger(subsystem: "iosipratama.TranslatorMac", category: "translation")
     static let history = Logger(subsystem: "iosipratama.TranslatorMac", category: "history")
+    static let purchases = Logger(subsystem: "iosipratama.TranslatorMac", category: "purchases")
 }

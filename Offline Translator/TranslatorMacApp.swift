@@ -14,6 +14,8 @@ struct TranslatorMacApp: App {
 
     @Environment(\.openWindow) private var openWindow
 
+    @State private var purchases = PurchaseStore()
+
     /// One container shared by every scene. Scene modifiers do not cascade to
     /// sibling scenes, so applying `.modelContainer(for:)` per scene would build
     /// separate containers over the same store and the History window would not
@@ -31,10 +33,14 @@ struct TranslatorMacApp: App {
             ContentView()
         }
         .modelContainer(modelContainer)
+        .environment(purchases)
         .commands {
             CommandGroup(replacing: .appInfo) {
                 Button("About Translate Offline") {
                     openWindow(id: "about")
+                }
+                Button(purchases.hasPro ? "Translate Offline Pro" : "Upgrade to Pro…") {
+                    openWindow(id: "pro")
                 }
                 Button("Rate Translate Offline") {
                     rateApp()
@@ -59,6 +65,15 @@ struct TranslatorMacApp: App {
         .windowResizability(.contentSize)
         .windowStyle(.hiddenTitleBar)
         .defaultSize(width: 360, height: 300)
+        .defaultPosition(.center)
+        .defaultLaunchBehavior(.suppressed)
+
+        Window("Translate Offline Pro", id: "pro") {
+            ProView()
+        }
+        .environment(purchases)
+        .windowResizability(.contentSize)
+        .windowStyle(.hiddenTitleBar)
         .defaultPosition(.center)
         .defaultLaunchBehavior(.suppressed)
 

@@ -1,0 +1,38 @@
+{
+  "identifier" : "5E3A9C21",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "5E3A9C22",
+      "localizations" : [
+        {
+          "description" : "Unlimited translations every day.",
+          "displayName" : "Translate Offline Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "iosipratama.TranslatorMac.pro",
+      "referenceName" : "Translate Offline Pro",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

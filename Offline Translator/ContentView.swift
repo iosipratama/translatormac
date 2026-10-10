@@ -16,6 +16,7 @@ import os
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.openWindow) private var openWindow
+    @Environment(PurchaseStore.self) private var purchases
 
     @State private var model = TranslationModel()
 
@@ -28,7 +29,7 @@ struct ContentView: View {
         VStack(spacing: 16) {
             languageBar
             editors
-            translateButton
+            footer
         }
         .padding()
         .frame(minWidth: 760, minHeight: 380)
@@ -186,6 +187,33 @@ struct ContentView: View {
         }
     }
 
+    private var footer: some View {
+        translateButton
+            .frame(maxWidth: .infinity)
+            .overlay(alignment: .leading) {
+                if !purchases.hasPro {
+                    freeTierStatus
+                }
+            }
+    }
+
+    private var freeTierStatus: some View {
+        HStack(spacing: 6) {
+            if purchases.canTranslate {
+                Text("^[\(purchases.remainingFreeTranslations) free translation](inflect: true) left today")
+            } else {
+                Text("No free translations left today")
+            }
+
+            Button("Upgrade to Pro") {
+                openWindow(id: "pro")
+            }
+            .buttonStyle(.link)
+        }
+        .font(.callout)
+        .foregroundStyle(.secondary)
+    }
+
     private var translateButton: some View {
         Button("Translate", action: requestTranslation)
             .buttonStyle(.borderedProminent)
@@ -204,6 +232,10 @@ struct ContentView: View {
 
     private func requestTranslation() {
         guard model.canTranslate else { return }
+        guard purchases.canTranslate else {
+            openWindow(id: "pro")
+            return
+        }
         model.phase = .translating
 
         let desired = TranslationSession.Configuration(
@@ -231,6 +263,7 @@ struct ContentView: View {
         do {
             let response = try await session.translate(text)
             model.phase = .translated(response.targetText)
+            purchases.recordTranslation()
             save(source: text, translated: response.targetText, resolvedSource: session.sourceLanguage)
         } catch {
             let message = TranslationFailure.message(
