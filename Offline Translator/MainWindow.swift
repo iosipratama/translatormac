@@ -32,9 +32,9 @@ struct MainWindow: View {
                 case .translate:
                     TranslateView(model: model)
                 case .recent:
-                    HistoryListView(scope: .recent)
+                    HistoryListView(scope: .recent, openInTranslate: open)
                 case .saved:
-                    HistoryListView(scope: .saved)
+                    HistoryListView(scope: .saved, openInTranslate: open)
                 }
             }
             // The size goes on the detail, not the split view: on macOS 26 a
@@ -60,5 +60,13 @@ struct MainWindow: View {
         }
         .focusedSceneValue(\.sidebarSelection, $selection)
         .focusedSceneValue(\.translationModel, model)
+    }
+
+    /// Shows the translate screen, with a history entry loaded when given one.
+    private func open(_ entry: TranslationHistory?) {
+        if let entry {
+            model.load(entry)
+        }
+        selection = .translate
     }
 }

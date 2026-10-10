@@ -223,7 +223,7 @@ final class TranslationModel {
 
     /// Changes to either language also re-run the availability check.
     var languagePairID: String {
-        let source = sourceLanguage.map(LanguageCatalog.identifier(for:)) ?? "auto"
+        let source = sourceLanguage.map(LanguageCatalog.identifier(for:)) ?? LanguageCatalog.automaticIdentifier
         return "\(source)→\(LanguageCatalog.identifier(for: targetLanguage))"
     }
 
@@ -581,34 +581,63 @@ final class TranslationModel {
         // Record identifiers, not localized display names, so history stays
         // meaningful if the app language changes.
         let sourceID = (result.detectedSource ?? sourceLanguage)
-            .map(LanguageCatalog.identifier(for:)) ?? "auto"
+            .map(LanguageCatalog.identifier(for:)) ?? LanguageCatalog.automaticIdentifier
         let targetID = LanguageCatalog.identifier(for: targetLanguage)
 
-        if let record = currentRecord, !record.isSaved {
-            record.sourceText = result.sourceText
-            record.translatedText = result.text
-            record.sourceLanguage = sourceID
-            record.targetLanguage = targetID
-            record.createdAt = .now
-        } else {
-            let record = TranslationHistory(
-                sourceText: result.sourceText,
-                translatedText: result.text,
-                sourceLanguage: sourceID,
-                targetLanguage: targetID
-            )
-            modelContext.insert(record)
-            currentRecord = record
+        if let record = currentRecord {
+            // A saved record is frozen and already matches what's on screen.
+            guard !record.isSaved else { return }
+            // This session's record is replaced rather than edited so the
+            // store can fold it into an older entry with the same text.
+            modelContext.delete(record)
         }
-        saveContext()
+        currentRecord = history.record(
+            sourceText: result.sourceText,
+            translatedText: result.text,
+            sourceLanguage: sourceID,
+            targetLanguage: targetID
+        )
+    }
+
+    /// Puts a history entry on the translate screen: its languages, text and
+    /// translation, with the entry itself as the session's record so the star
+    /// reflects it. The free tier was already charged when it was made.
+    func load(_ record: TranslationHistory) {
+        speaker.stop()
+
+        isAdjustingLanguages = true
+        if record.sourceLanguageID == LanguageCatalog.automaticIdentifier {
+            sourceLanguage = nil
+        } else {
+            let source = LanguageCatalog.language(forIdentifier: record.sourceLanguageID)
+            sourceLanguage = resolve(source) ?? source
+        }
+        let target = LanguageCatalog.language(forIdentifier: record.targetLanguageID)
+        targetLanguage = resolve(target) ?? target
+        isAdjustingLanguages = false
+        storeLanguages()
+
+        // The result goes in first so the text change sees it already covers
+        // the input and doesn't schedule a fresh translation.
+        outcome = .translated(
+            TranslationResult(
+                sourceText: record.sourceText,
+                text: record.translatedText,
+                pronunciation: Pronunciation.latinTranscription(of: record.translatedText, in: targetLanguage),
+                detectedSource: nil
+            )
+        )
+        inputText = record.sourceText
+        currentRecord = record
+        sessionCounted = true
+    }
+
+    private var history: HistoryStore {
+        HistoryStore(context: modelContext)
     }
 
     private func saveContext() {
-        do {
-            try modelContext.save()
-        } catch {
-            Log.history.error("Failed to save history: \(error.localizedDescription, privacy: .public)")
-        }
+        history.save()
     }
 
     // MARK: - Persistence

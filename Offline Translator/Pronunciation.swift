@@ -67,7 +67,9 @@ nonisolated enum Pronunciation {
                 kCFStringTokenizerAttributeLatinTranscription
             )
 
-            if let latin = attribute as? String, !latin.isEmpty {
+            // Punctuation comes back as its own "reading"; only a reading with
+            // letters in it counts as a word.
+            if let latin = attribute as? String, latin.contains(where: { $0.isLetter || $0.isNumber }) {
                 // Scripts like Japanese have no spaces between words, so put
                 // one back between consecutive readings.
                 if previousWasWord { output += " " }
@@ -100,7 +102,7 @@ nonisolated enum Pronunciation {
     /// Full-width punctuation that survives transcription, mapped to the Latin
     /// equivalent so the reading looks like a sentence rather than a mix.
     private static let punctuation: [Character: String] = [
-        "。": ".", "．": ".", "、": ",", "，": ",", "！": "!", "？": "?",
+        "。": ".", "｡": ".", "．": ".", "、": ",", "､": ",", "，": ",", "！": "!", "？": "?",
         "：": ":", "；": ";", "「": "“", "」": "”", "『": "“", "』": "”",
         "（": "(", "）": ")", "・": " ", "　": " ",
     ]

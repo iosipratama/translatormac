@@ -27,15 +27,16 @@ struct NavigationCommands: Commands {
 /// place a command lives and every shortcut is discoverable.
 struct TranslationCommands: Commands {
     @FocusedValue(\.translationModel) private var model
+    @FocusedValue(\.copyTranslation) private var copyTranslation
 
     var body: some Commands {
         CommandGroup(after: .pasteboard) {
             Divider()
             Button("Copy Translation") {
-                model?.copyTranslation()
+                copyTranslation?()
             }
             .keyboardShortcut("c", modifiers: [.command, .shift])
-            .disabled(model?.currentResult == nil)
+            .disabled(copyTranslation == nil)
         }
 
         CommandMenu("Translation") {

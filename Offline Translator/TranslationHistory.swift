@@ -40,4 +40,8 @@ final class TranslationHistory {
         self.createdAt = createdAt
         self.isSaved = isSaved
     }
+
+    /// The stored languages as identifiers, whatever version wrote them.
+    var sourceLanguageID: String { LanguageCatalog.normalizedIdentifier(sourceLanguage) }
+    var targetLanguageID: String { LanguageCatalog.normalizedIdentifier(targetLanguage) }
 }

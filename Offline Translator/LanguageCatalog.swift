@@ -157,6 +157,59 @@ enum LanguageCatalog {
         Locale.Language(identifier: id)
     }
 
+    /// History stores "auto" when the source was detected but never resolved.
+    nonisolated static let automaticIdentifier = "auto"
+
+    /// A display name for a stored identifier, without needing the catalog.
+    nonisolated static func name(forIdentifier id: String) -> String {
+        let id = normalizedIdentifier(id)
+        return id == automaticIdentifier
+            ? String(localized: "Detected")
+            : fallbackName(for: language(forIdentifier: id))
+    }
+
+    /// "EN", "JA": the two-letter code for compact labels.
+    nonisolated static func abbreviation(forIdentifier id: String) -> String {
+        let id = normalizedIdentifier(id)
+        guard id != automaticIdentifier,
+              let code = language(forIdentifier: id).languageCode?.identifier else {
+            return String(localized: "Auto")
+        }
+        return code.uppercased()
+    }
+
+    /// Versions up to 1.1 stored the menu's display names in history rather
+    /// than identifiers. Those names were a fixed English list, so they map
+    /// back exactly; anything else is already an identifier.
+    nonisolated static func normalizedIdentifier(_ stored: String) -> String {
+        legacyNames[stored.lowercased()] ?? stored
+    }
+
+    private nonisolated static let legacyNames: [String: String] = [
+        "auto": automaticIdentifier,
+        "arabic": "ar",
+        "chinese (simplified)": "zh-Hans",
+        "chinese (traditional)": "zh-Hant",
+        "dutch": "nl",
+        "english (us)": "en-US",
+        "english (uk)": "en-GB",
+        "french": "fr",
+        "german": "de",
+        "hindi": "hi",
+        "indonesian": "id",
+        "italian": "it",
+        "japanese": "ja",
+        "korean": "ko",
+        "polish": "pl",
+        "portuguese (brazil)": "pt-BR",
+        "russian": "ru",
+        "spanish": "es",
+        "thai": "th",
+        "turkish": "tr",
+        "ukrainian": "uk",
+        "vietnamese": "vi",
+    ]
+
     /// A name for a language that isn't in the catalog, such as one read back
     /// from history after the supported set changed.
     ///

@@ -15,6 +15,9 @@ struct TranslateView: View {
             Divider()
             ResultPane(model: model)
         }
+        .focusedSceneValue(\.copyTranslation, model.currentResult.map { result in
+            CopyTranslationAction(text: result.text) { model.copyTranslation() }
+        })
         .toolbar(removing: .title)
         .toolbar {
             ToolbarItemGroup(placement: .principal) {
