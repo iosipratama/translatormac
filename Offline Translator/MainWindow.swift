@@ -27,16 +27,21 @@ struct MainWindow: View {
         NavigationSplitView {
             AppSidebar(selection: $selection)
         } detail: {
-            switch selection {
-            case .translate:
-                TranslateView(model: model)
-            case .recent:
-                HistoryListView(scope: .recent)
-            case .saved:
-                HistoryListView(scope: .saved)
+            Group {
+                switch selection {
+                case .translate:
+                    TranslateView(model: model)
+                case .recent:
+                    HistoryListView(scope: .recent)
+                case .saved:
+                    HistoryListView(scope: .saved)
+                }
             }
+            // The minimum size goes on the detail, not the split view: on
+            // macOS 26 a frame on NavigationSplitView itself leaves the sidebar
+            // and most of the detail undrawn until the next state change.
+            .frame(minWidth: 600, minHeight: 520)
         }
-        .frame(minWidth: 800, minHeight: 520)
         // Attached here rather than to the translate screen so a translation or
         // download prompt that's underway survives a switch to another screen.
         .translationTask(model.configuration) { session in
