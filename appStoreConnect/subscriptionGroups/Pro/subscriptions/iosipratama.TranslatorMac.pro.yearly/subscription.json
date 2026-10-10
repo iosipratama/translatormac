@@ -1,6 +1,6 @@
 {
-  "familySharable" : false,
-  "groupLevel" : 1,
-  "name" : "Pro Yearly",
-  "subscriptionPeriod" : "ONE_YEAR"
+  "familySharable": false,
+  "groupLevel": 1,
+  "name": "Pro Yearly",
+  "subscriptionPeriod": "ONE_YEAR"
 }

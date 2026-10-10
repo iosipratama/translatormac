@@ -1,9 +1,9 @@
 {
-  "baseTerritory" : "USA",
-  "manualPrices" : [
+  "baseTerritory": "USA",
+  "manualPrices": [
     {
-      "customerPrice" : "14.99",
-      "territory" : "USA"
+      "customerPrice": "14.99",
+      "territory": "USA"
     }
   ]
 }
