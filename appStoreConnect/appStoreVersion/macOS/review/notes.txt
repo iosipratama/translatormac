@@ -1,0 +1,3 @@
+No sign-in is required. The app works fully offline.
+If review needs guidance: open the app, select source/target languages, enter text, and tap Translate.
+
