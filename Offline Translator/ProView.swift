@@ -213,7 +213,7 @@ struct ProView: View {
                 footerSeparator
             }
             if !purchases.hasPro {
-                Button("Restore Purchase") {
+                Button("Restore Purchases") {
                     Task { await purchases.restorePurchases() }
                 }
                 .buttonStyle(.plain)

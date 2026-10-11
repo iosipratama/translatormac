@@ -14,17 +14,18 @@ struct AllSetStep: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 56))
-                .foregroundStyle(.white, .green)
+            statusIcon
+                .frame(width: 56, height: 56)
                 .accessibilityHidden(true)
 
-            Text("You’re all set")
+            Text(title)
                 .font(.title.weight(.bold))
                 .padding(.top, 16)
             Text(subtitle)
                 .font(.body)
                 .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, 6)
 
             if !model.requested.isEmpty {
@@ -43,13 +44,53 @@ struct AllSetStep: View {
         .padding(EdgeInsets(top: 44, leading: 60, bottom: 12, trailing: 60))
     }
 
-    private var subtitle: LocalizedStringKey {
-        if model.isDownloading {
-            return "Downloading… macOS shows the progress."
+    /// The heading follows what's actually happening, so it never says
+    /// "all set" while a download is still running or after one failed.
+    private enum Phase {
+        case downloading
+        case done
+        case partlyDone
+        case nothingChosen
+    }
+
+    private var phase: Phase {
+        if model.requested.isEmpty { return .nothingChosen }
+        if model.isDownloading { return .downloading }
+        return model.hasFailedDownloads ? .partlyDone : .done
+    }
+
+    @ViewBuilder
+    private var statusIcon: some View {
+        switch phase {
+        case .downloading:
+            ProgressView()
+                .controlSize(.large)
+        case .partlyDone:
+            Image(systemName: "exclamationmark.circle.fill")
+                .font(.system(size: 56))
+                .foregroundStyle(.white, .orange)
+        case .done, .nothingChosen:
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 56))
+                .foregroundStyle(.white, .green)
         }
-        return model.requested.isEmpty
-            ? "You can download languages any time from the language menu."
-            : "These languages now work offline on this Mac."
+    }
+
+    private var title: LocalizedStringKey {
+        switch phase {
+        case .downloading: "Downloading languages…"
+        case .partlyDone: "Almost done"
+        case .done, .nothingChosen: "You’re all set"
+        }
+    }
+
+    private var subtitle: LocalizedStringKey {
+        switch phase {
+        case .downloading: "Progress appears in a macOS window."
+        case .done: "These languages now work offline."
+        case .partlyDone: "Some languages didn’t download. Try again, or add them later in Settings."
+        case .nothingChosen: "You can download languages anytime in Settings."
+        }
     }
 
     private var statusList: some View {

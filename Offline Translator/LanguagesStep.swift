@@ -17,7 +17,7 @@ struct LanguagesStep: View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Which languages do you need?")
                 .font(.title2.weight(.bold))
-            Text("Each one downloads once and stays on this Mac. You can add more later from the language menu.")
+            Text("Each one downloads once and stays on this Mac. You can add more later in Settings.")
                 .font(.body)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -27,7 +27,7 @@ struct LanguagesStep: View {
                 .padding(.top, 16)
 
             if !network.isOnline {
-                Label("You’re offline. Connect to download languages, or skip and add them later.", systemImage: "wifi.slash")
+                Label("You’re offline. Connect to download, or skip for now.", systemImage: "wifi.slash")
                     .font(.callout)
                     .foregroundStyle(.secondary)
                     .padding(.top, 10)
@@ -57,7 +57,7 @@ struct LanguagesStep: View {
                         Divider()
                     }
                     if !model.showsAllLanguages {
-                        Button("Show all languages…") {
+                        Button("Show All Languages") {
                             withAnimation(.smooth) { model.showsAllLanguages = true }
                         }
                         .buttonStyle(.accentLink)
@@ -90,7 +90,13 @@ struct LanguagesStep: View {
 
             Spacer()
 
-            Text(choice.isInstalled ? String(localized: "Already on this Mac") : choice.nativeName)
+            Group {
+                if choice.isInstalled {
+                    Text("Already on this Mac")
+                } else {
+                    Text(choice.entry.spokenNativeName)
+                }
+            }
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
@@ -113,7 +119,7 @@ struct LanguagesStep: View {
             Spacer()
 
             if !network.isOnline {
-                Button("Skip", action: onSkip)
+                Button("Skip for Now", action: onSkip)
             }
             Button("Back") {
                 model.goBack()

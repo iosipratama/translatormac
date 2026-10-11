@@ -25,6 +25,14 @@ final class LanguageInventory {
         var id: String { catalog.id }
         var name: String { catalog.name }
         var language: Locale.Language { catalog.language }
+
+        /// The native name, marked with its language so VoiceOver reads
+        /// 日本語 in Japanese rather than spelling it out in English.
+        var spokenNativeName: AttributedString {
+            var text = AttributedString(nativeName)
+            text.languageIdentifier = LanguageCatalog.identifier(for: language)
+            return text
+        }
     }
 
     /// Every supported language, in catalog order. Empty until loaded.

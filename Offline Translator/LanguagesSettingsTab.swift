@@ -74,7 +74,7 @@ struct LanguagesSettingsTab: View {
                     HStack(spacing: 6) {
                         Text(entry.name)
                         if !entry.nativeName.isEmpty {
-                            Text(entry.nativeName)
+                            Text(entry.spokenNativeName)
                                 .foregroundStyle(.secondary)
                         }
                     }

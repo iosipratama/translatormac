@@ -201,14 +201,14 @@ final class PurchaseStore {
             return
         } catch {
             Log.purchases.error("Restore failed: \(error.localizedDescription, privacy: .public)")
-            statusMessage = String(localized: "Purchases couldn’t be restored. Check your internet connection and try again.")
+            statusMessage = String(localized: "Couldn’t restore purchases. Check your connection and try again.")
             return
         }
 
         await refreshAccess()
         statusMessage = hasPro
-            ? String(localized: "Purchases restored.")
-            : String(localized: "Nothing to restore for this Apple Account.")
+            ? String(localized: "Purchases restored")
+            : String(localized: "No Pro purchase found for this Apple Account.")
     }
 
     // MARK: - Entitlements

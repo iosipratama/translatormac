@@ -24,7 +24,7 @@ struct WelcomeStep: View {
             Text("Welcome to Translate Offline")
                 .font(.system(size: 26, weight: .bold))
                 .padding(.top, 18)
-            Text("Private, offline translation for your Mac.")
+            Text("Offline translation on this Mac.")
                 .font(.body)
                 .foregroundStyle(.secondary)
                 .padding(.top, 6)
@@ -32,18 +32,18 @@ struct WelcomeStep: View {
             VStack(alignment: .leading, spacing: 18) {
                 feature(
                     "character.bubble",
-                    title: "Translate as you type",
-                    detail: "Type or paste anything. The translation appears instantly."
+                    title: "Translations appear as you type",
+                    detail: "Type or paste anything."
                 )
                 feature(
                     "arrow.down.circle",
                     title: "Works without internet",
-                    detail: "Download a language once, then use it anywhere, even offline."
+                    detail: "Download a language once, then use it anywhere."
                 )
                 feature(
                     "lock",
-                    title: "Private by design",
-                    detail: "Everything runs on this Mac. Nothing you type is sent anywhere."
+                    title: "Stays on this Mac",
+                    detail: "Nothing you type is sent anywhere."
                 )
             }
             .padding(.top, 32)
@@ -94,7 +94,7 @@ struct WelcomeStep: View {
             HStack(spacing: 4) {
                 Text("Already bought Pro?")
                     .foregroundStyle(.secondary)
-                Button("Restore Purchase") {
+                Button(isRestoring ? "Restoring…" : "Restore Purchases") {
                     Task { await restore() }
                 }
                 .buttonStyle(.accentLink)
@@ -108,8 +108,6 @@ struct WelcomeStep: View {
         isRestoring = true
         defer { isRestoring = false }
         await purchases.restorePurchases()
-        restoreMessage = purchases.hasPro
-            ? String(localized: "Pro is active on this Mac.")
-            : purchases.statusMessage
+        restoreMessage = purchases.statusMessage
     }
 }

@@ -153,6 +153,11 @@ final class OnboardingModel {
         inventory.isDownloadingAnything
     }
 
+    /// At least one requested language didn't download.
+    var hasFailedDownloads: Bool {
+        results.values.contains(.notDownloaded)
+    }
+
     /// Languages still being prepared show no result yet.
     func result(for language: Locale.Language) -> DownloadResult? {
         results[language]

@@ -203,7 +203,7 @@ struct ProSettingsTab: View {
     }
 
     private var restoreButton: some View {
-        Button("Restore Purchase") {
+        Button("Restore Purchases") {
             Task {
                 isRestoring = true
                 await purchases.restorePurchases()
