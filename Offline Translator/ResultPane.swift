@@ -49,7 +49,7 @@ struct ResultPane: View {
                 Button("Unlock Pro") {
                     pro.present()
                 }
-                .buttonStyle(.borderedProminent)
+                .accentProminentButton()
             }
         } else if let outcome = model.outcome {
             switch outcome {
@@ -115,7 +115,7 @@ struct ResultPane: View {
             model.copyTranslation()
         }
         .labelStyle(.titleOnly)
-        .buttonStyle(.borderedProminent)
+        .accentProminentButton()
         .disabled(!hasResult)
         .help("Copy the translation")
         .animation(.smooth, value: model.justCopied)

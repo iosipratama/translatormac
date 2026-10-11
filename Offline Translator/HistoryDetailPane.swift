@@ -102,7 +102,7 @@ struct HistoryDetailPane: View {
 
             Button(justCopied ? "Copied" : "Copy", systemImage: justCopied ? "checkmark" : "document.on.document", action: copy)
                 .labelStyle(.titleOnly)
-                .buttonStyle(.borderedProminent)
+                .accentProminentButton()
                 .help("Copy the translation")
                 .animation(.smooth, value: justCopied)
 

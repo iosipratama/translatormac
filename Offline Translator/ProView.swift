@@ -106,7 +106,7 @@ struct ProView: View {
         HStack(alignment: .firstTextBaseline, spacing: 12) {
             Image(systemName: "checkmark")
                 .font(.system(size: 12, weight: .bold))
-                .foregroundStyle(.tint)
+                .foregroundStyle(Color.accentForeground)
                 .frame(width: 14)
                 .accessibilityHidden(true)
 
@@ -146,7 +146,7 @@ struct ProView: View {
                         .font(.body.weight(.semibold))
                         .frame(maxWidth: .infinity)
                 }
-                .buttonStyle(.borderedProminent)
+                .accentProminentButton()
                 .controlSize(.large)
                 .disabled(purchases.isPurchasing || !AppStore.canMakePayments)
                 .keyboardShortcut(.defaultAction)
@@ -264,10 +264,10 @@ private struct PlanCard: View {
                         Text(badge)
                             .font(.caption2.weight(.bold))
                             .textCase(.uppercase)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(Color.onAccent)
                             .padding(.horizontal, 7)
                             .padding(.vertical, 2)
-                            .background(.tint, in: .capsule)
+                            .background(Color.accent, in: .capsule)
                     }
                 }
 
@@ -296,7 +296,7 @@ private struct PlanCard: View {
             .overlay {
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .strokeBorder(
-                        isSelected ? AnyShapeStyle(.tint) : AnyShapeStyle(.separator),
+                        isSelected ? AnyShapeStyle(Color.accentForeground) : AnyShapeStyle(.separator),
                         lineWidth: isSelected ? 2 : 1
                     )
             }
@@ -311,12 +311,12 @@ private struct PlanCard: View {
     private var radio: some View {
         ZStack {
             Circle()
-                .fill(isSelected ? AnyShapeStyle(.tint) : AnyShapeStyle(.fill.secondary))
+                .fill(isSelected ? AnyShapeStyle(Color.accent) : AnyShapeStyle(.fill.secondary))
             Circle()
                 .strokeBorder(.separator, lineWidth: isSelected ? 0 : 1)
             if isSelected {
                 Circle()
-                    .fill(.white)
+                    .fill(Color.onAccent)
                     .frame(width: 6, height: 6)
             }
         }

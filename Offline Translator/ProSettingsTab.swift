@@ -63,10 +63,10 @@ struct ProSettingsTab: View {
                         Text("Active")
                             .font(.caption2.weight(.bold))
                             .textCase(.uppercase)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(Color.onAccent)
                             .padding(.horizontal, 7)
                             .padding(.vertical, 2)
-                            .background(.tint, in: .capsule)
+                            .background(Color.accent, in: .capsule)
                     }
                 }
                 Text(purchases.hasPro
@@ -196,7 +196,7 @@ struct ProSettingsTab: View {
                     MainWindowAccess.bringForward()
                     pro.present()
                 }
-                .buttonStyle(.borderedProminent)
+                .accentProminentButton()
                 .controlSize(.large)
             }
         }

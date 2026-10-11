@@ -35,7 +35,7 @@ struct AllSetStep: View {
             Spacer(minLength: 16)
 
             Button("Start Translating", action: onFinish)
-                .buttonStyle(.borderedProminent)
+                .accentProminentButton()
                 .controlSize(.large)
                 .keyboardShortcut(.defaultAction)
                 .disabled(model.isDownloading)

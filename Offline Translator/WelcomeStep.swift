@@ -54,7 +54,7 @@ struct WelcomeStep: View {
             Button("Continue") {
                 model.continueFromWelcome()
             }
-            .buttonStyle(.borderedProminent)
+            .accentProminentButton()
             .controlSize(.large)
             .keyboardShortcut(.defaultAction)
 
@@ -68,7 +68,7 @@ struct WelcomeStep: View {
         HStack(alignment: .top, spacing: 14) {
             Image(systemName: systemImage)
                 .font(.system(size: 22))
-                .foregroundStyle(.tint)
+                .foregroundStyle(Color.accentForeground)
                 .frame(width: 32)
                 .accessibilityHidden(true)
 
@@ -97,7 +97,7 @@ struct WelcomeStep: View {
                 Button("Restore Purchase") {
                     Task { await restore() }
                 }
-                .buttonStyle(.link)
+                .buttonStyle(.accentLink)
                 .disabled(isRestoring)
             }
             .font(.caption)

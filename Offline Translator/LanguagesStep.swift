@@ -60,7 +60,7 @@ struct LanguagesStep: View {
                         Button("Show all languages…") {
                             withAnimation(.smooth) { model.showsAllLanguages = true }
                         }
-                        .buttonStyle(.link)
+                        .buttonStyle(.accentLink)
                         .padding(.horizontal, 12)
                         .frame(height: rowHeight - 2)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -121,7 +121,7 @@ struct LanguagesStep: View {
             Button("Download") {
                 model.startDownloads()
             }
-            .buttonStyle(.borderedProminent)
+            .accentProminentButton()
             .keyboardShortcut(.defaultAction)
             .disabled(model.selectedCount == 0 || !network.isOnline)
         }

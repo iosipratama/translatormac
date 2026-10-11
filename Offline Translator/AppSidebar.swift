@@ -19,6 +19,9 @@ struct AppSidebar: View {
                     .tag(item)
             }
         }
+        // Sidebar icons take the tint; the deeper variant keeps them legible
+        // on the light sidebar.
+        .tint(Color.accentForeground)
         .navigationSplitViewColumnWidth(min: 180, ideal: 200, max: 280)
         .safeAreaInset(edge: .bottom) {
             if !purchases.hasPro {
@@ -42,9 +45,9 @@ private struct ProUnlockCard: View {
             HStack(spacing: 10) {
                 Image(systemName: "bolt.fill")
                     .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Color.onAccent)
                     .frame(width: 28, height: 28)
-                    .background(.tint, in: .rect(cornerRadius: 7))
+                    .background(Color.accent, in: .rect(cornerRadius: 7))
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Unlock Pro")

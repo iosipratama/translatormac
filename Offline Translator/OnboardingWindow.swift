@@ -83,7 +83,7 @@ private struct PageDots: View {
         HStack(spacing: 6) {
             ForEach(0..<count, id: \.self) { index in
                 Circle()
-                    .fill(index == current ? AnyShapeStyle(.tint) : AnyShapeStyle(.quaternary))
+                    .fill(index == current ? AnyShapeStyle(Color.accentForeground) : AnyShapeStyle(.quaternary))
                     .frame(width: 6, height: 6)
             }
         }

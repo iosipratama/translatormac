@@ -304,7 +304,7 @@ private struct SaveStar: View {
         .toggleStyle(.button)
         .buttonStyle(.plain)
         .labelStyle(.iconOnly)
-        .foregroundStyle(entry.isSaved ? AnyShapeStyle(.yellow) : AnyShapeStyle(.secondary))
+        .foregroundStyle(entry.isSaved ? AnyShapeStyle(Color.accentForeground) : AnyShapeStyle(.secondary))
         .help(entry.isSaved ? "Remove from Saved" : "Save")
     }
 }
