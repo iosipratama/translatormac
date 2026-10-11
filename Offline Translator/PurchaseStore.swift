@@ -188,7 +188,8 @@ final class PurchaseStore {
             }
         } catch {
             Log.purchases.error("Purchase failed: \(error.localizedDescription, privacy: .public)")
-            statusMessage = String(localized: "The purchase couldn’t be completed. \(error.localizedDescription)")
+            // The detail is in the log; on screen, a plain next step.
+            statusMessage = String(localized: "Couldn’t complete the purchase. Try again in a moment.")
         }
     }
 
@@ -288,7 +289,7 @@ final class PurchaseStore {
     private func handle(_ verification: VerificationResult<StoreKit.Transaction>) async {
         guard case .verified(let transaction) = verification else {
             Log.purchases.error("Transaction failed verification")
-            statusMessage = String(localized: "The purchase couldn’t be verified. Try Restore Purchases.")
+            statusMessage = String(localized: "Couldn’t verify the purchase. Click Restore Purchases to try again.")
             return
         }
 

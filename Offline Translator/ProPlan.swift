@@ -64,7 +64,7 @@ enum ProPlan: String, CaseIterable, Identifiable, Sendable {
         switch self {
         case .weekly: "Renews automatically each week until you cancel. Cancel anytime in App Store settings."
         case .yearly: "Renews automatically each year until you cancel. Cancel anytime in App Store settings."
-        case .lifetime: "One payment. No renewals. Includes all future updates."
+        case .lifetime: "One payment. No renewals."
         }
     }
 
@@ -86,7 +86,7 @@ enum ProPlan: String, CaseIterable, Identifiable, Sendable {
             let monthly = (product.price / 12).formatted(product.priceFormatStyle)
             return String(localized: "About \(monthly) a month")
         case .lifetime:
-            return String(localized: "Pay once, own it forever")
+            return String(localized: "One-time purchase")
         }
     }
 }

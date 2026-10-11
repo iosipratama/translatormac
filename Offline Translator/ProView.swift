@@ -15,6 +15,7 @@ struct ProView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var selectedPlan = PurchaseStore.offeredPlans.first ?? .lifetime
+    @State private var isRestoring = false
 
     private let width: CGFloat = 540
 
@@ -94,10 +95,12 @@ struct ProView: View {
 
     private var benefits: some View {
         VStack(alignment: .leading, spacing: 12) {
-            benefit("Unlimited translations", detail: "the free plan has \(PlanLimits.freeTranslationsPerDay) a day")
-            benefit("Full history", detail: "the free plan keeps the last \(PlanLimits.freeHistory)")
-            benefit("Unlimited saved", detail: "the free plan keeps \(PlanLimits.freeSaved)")
-            benefit("Every language Apple offers", detail: "translated on this Mac, offline")
+            // Only what Pro adds, each against the free plan's limit. Every
+            // language is on the free plan too, so it isn't listed here.
+            benefit("Unlimited translations", detail: "Free plan: \(PlanLimits.freeTranslationsPerDay) a day")
+            benefit("\(PlanLimits.proHistory) translations in Recent", detail: "Free plan: \(PlanLimits.freeHistory)")
+            benefit("Unlimited saved translations", detail: "Free plan: \(PlanLimits.freeSaved)")
+            benefit("Future Pro features", detail: "Included as they ship")
         }
         .frame(maxWidth: 400)
     }
@@ -159,7 +162,7 @@ struct ProView: View {
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
                 } else {
-                    Text("Purchases are turned off on this Mac.")
+                    Text("Purchases are turned off in Screen Time on this Mac.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -168,7 +171,7 @@ struct ProView: View {
                     .controlSize(.small)
                     .frame(height: 32)
             } else {
-                Text("The App Store can’t be reached right now.")
+                Text("Couldn’t reach the App Store. Check your connection and try again.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
                 Button("Try Again") {
@@ -182,19 +185,24 @@ struct ProView: View {
 
     private var ownedState: some View {
         VStack(spacing: 8) {
-            Label("Pro is unlocked", systemImage: "checkmark.seal.fill")
+            Label("Pro is active", systemImage: "checkmark.seal.fill")
                 .font(.headline)
                 .foregroundStyle(.green)
 
             Group {
                 if purchases.hasRedundantSubscription {
-                    Text("Lifetime is yours. Your yearly plan is still running — cancel it under Manage Subscription, since Apple doesn’t do that automatically.")
+                    Text("Your yearly plan is still active. Cancel it under Manage Subscription, since Apple doesn’t cancel it automatically.")
                 } else if purchases.isEarlySupporter && !purchases.ownsPro {
                     Text("Thanks for buying Translate Offline early. Pro comes with your original purchase.")
                 } else if let expiration = purchases.subscriptionExpiration {
-                    Text("Thank you for supporting Translate Offline. Your plan renews on \(expiration, format: .dateTime.day().month().year()).")
+                    // A cancelled plan ends rather than renews.
+                    if purchases.subscriptionWillRenew {
+                        Text("Thanks for supporting Translate Offline. Renews on \(expiration, format: .dateTime.day().month().year()).")
+                    } else {
+                        Text("Thanks for supporting Translate Offline. Ends on \(expiration, format: .dateTime.day().month().year()).")
+                    }
                 } else {
-                    Text("Thank you for supporting Translate Offline. Enjoy unlimited translations.")
+                    Text("Thanks for supporting Translate Offline.")
                 }
             }
             .font(.callout)
@@ -209,15 +217,19 @@ struct ProView: View {
     private var footer: some View {
         HStack(spacing: 6) {
             if purchases.activePlan?.isSubscription == true || purchases.hasRedundantSubscription {
-                footerLink("Manage Subscription", destination: AppLinks.manageSubscriptions)
+                footerLink("Manage Subscription…", destination: AppLinks.manageSubscriptions)
                 footerSeparator
             }
             if !purchases.hasPro {
-                Button("Restore Purchases") {
-                    Task { await purchases.restorePurchases() }
+                Button(isRestoring ? "Restoring…" : "Restore Purchases") {
+                    Task {
+                        isRestoring = true
+                        await purchases.restorePurchases()
+                        isRestoring = false
+                    }
                 }
                 .buttonStyle(.plain)
-                .disabled(purchases.isPurchasing)
+                .disabled(isRestoring || purchases.isPurchasing)
                 footerSeparator
             }
             footerLink("Terms of Use", destination: AppLinks.termsOfUse)
