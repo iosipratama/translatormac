@@ -1,0 +1,2893 @@
+{
+  "appId": "6757454429",
+  "derived": {
+    "appStoreVersionScreenshotSets": {
+      "MAC_OS:1.1:en-US:APP_DESKTOP": {
+        "screenshots": [
+          {
+            "fileName": "Screen 1.jpg",
+            "fileSize": 638534,
+            "id": "c7f10d6d-25ab-4415-b617-f4559b84d9fe",
+            "renditionChecksum": "1cd218e8dd4a7fd3ce313136eca29427",
+            "sourceFileChecksum": "dcd48da70a7eaf0494b8b88c58446be3"
+          },
+          {
+            "fileName": "Screen 2.jpg",
+            "fileSize": 744438,
+            "id": "3cdeff9c-8bc9-425e-b608-c524a98974eb",
+            "renditionChecksum": "b1065ed3f64f3e8f89f827e94a101e48",
+            "sourceFileChecksum": "31f968c5e51b13ee2e210794d1f1c79a"
+          },
+          {
+            "fileName": "Screen 3.jpg",
+            "fileSize": 726731,
+            "id": "07b463ec-0254-47e8-81d5-0da7bff464b9",
+            "renditionChecksum": "3b4bfd4c3e328d0188393b74339831d2",
+            "sourceFileChecksum": "d0b4a4adb6d08900cb975db8cb86d36b"
+          }
+        ],
+        "setID": "22af85eb-de97-4b97-9033-29dcef88127e"
+      }
+    },
+    "inAppPurchasePricing": {
+      "iosipratama.TranslatorMac.pro": {
+        "automaticPrices": [
+          {
+            "customerPrice": "14.99",
+            "territory": "AFG"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "AGO"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "AIA"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "ALB"
+          },
+          {
+            "customerPrice": "59.99",
+            "territory": "ARE"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "ARG"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "ARM"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "ATG"
+          },
+          {
+            "customerPrice": "22.99",
+            "territory": "AUS"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "AUT"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "AZE"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "BEL"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "BEN"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "BFA"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "BGR"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "BHR"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "BHS"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "BIH"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "BLR"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "BLZ"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "BMU"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "BOL"
+          },
+          {
+            "customerPrice": "99.9",
+            "territory": "BRA"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "BRB"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "BRN"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "BTN"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "BWA"
+          },
+          {
+            "customerPrice": "19.99",
+            "territory": "CAN"
+          },
+          {
+            "customerPrice": "14",
+            "territory": "CHE"
+          },
+          {
+            "customerPrice": "17990",
+            "territory": "CHL"
+          },
+          {
+            "customerPrice": "98",
+            "territory": "CHN"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "CIV"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "CMR"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "COD"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "COG"
+          },
+          {
+            "customerPrice": "69900",
+            "territory": "COL"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "CPV"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "CRI"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "CYM"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "CYP"
+          },
+          {
+            "customerPrice": "399",
+            "territory": "CZE"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "DEU"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "DMA"
+          },
+          {
+            "customerPrice": "129",
+            "territory": "DNK"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "DOM"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "DZA"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "ECU"
+          },
+          {
+            "customerPrice": "799.99",
+            "territory": "EGY"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "ESP"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "EST"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "FIN"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "FJI"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "FRA"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "FSM"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "GAB"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "GBR"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "GEO"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "GHA"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "GMB"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "GNB"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "GRC"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "GRD"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "GTM"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "GUY"
+          },
+          {
+            "customerPrice": "118",
+            "territory": "HKG"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "HND"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "HRV"
+          },
+          {
+            "customerPrice": "6990",
+            "territory": "HUN"
+          },
+          {
+            "customerPrice": "299000",
+            "territory": "IDN"
+          },
+          {
+            "customerPrice": "1499",
+            "territory": "IND"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "IRL"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "IRQ"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "ISL"
+          },
+          {
+            "customerPrice": "49.9",
+            "territory": "ISR"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "ITA"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "JAM"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "JOR"
+          },
+          {
+            "customerPrice": "2500",
+            "territory": "JPN"
+          },
+          {
+            "customerPrice": "8990",
+            "territory": "KAZ"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "KEN"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "KGZ"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "KHM"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "KNA"
+          },
+          {
+            "customerPrice": "25000",
+            "territory": "KOR"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "KWT"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "LAO"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "LBN"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "LBR"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "LBY"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "LCA"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "LKA"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "LTU"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "LUX"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "LVA"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "MAC"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "MAR"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "MDA"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "MDG"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "MDV"
+          },
+          {
+            "customerPrice": "299",
+            "territory": "MEX"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "MKD"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "MLI"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "MLT"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "MMR"
+          },
+          {
+            "customerPrice": "12.99",
+            "territory": "MNE"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "MNG"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "MOZ"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "MRT"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "MSR"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "MUS"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "MWI"
+          },
+          {
+            "customerPrice": "69.9",
+            "territory": "MYS"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "NAM"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "NER"
+          },
+          {
+            "customerPrice": "24900",
+            "territory": "NGA"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "NIC"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "NLD"
+          },
+          {
+            "customerPrice": "199",
+            "territory": "NOR"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "NPL"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "NRU"
+          },
+          {
+            "customerPrice": "29.99",
+            "territory": "NZL"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "OMN"
+          },
+          {
+            "customerPrice": "3900",
+            "territory": "PAK"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "PAN"
+          },
+          {
+            "customerPrice": "69.9",
+            "territory": "PER"
+          },
+          {
+            "customerPrice": "999",
+            "territory": "PHL"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "PLW"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "PNG"
+          },
+          {
+            "customerPrice": "69.99",
+            "territory": "POL"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "PRT"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "PRY"
+          },
+          {
+            "customerPrice": "49.99",
+            "territory": "QAT"
+          },
+          {
+            "customerPrice": "79.99",
+            "territory": "ROU"
+          },
+          {
+            "customerPrice": "1290",
+            "territory": "RUS"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "RWA"
+          },
+          {
+            "customerPrice": "59.99",
+            "territory": "SAU"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "SEN"
+          },
+          {
+            "customerPrice": "19.98",
+            "territory": "SGP"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "SLB"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "SLE"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "SLV"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "SRB"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "STP"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "SUR"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "SVK"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "SVN"
+          },
+          {
+            "customerPrice": "199",
+            "territory": "SWE"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "SWZ"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "SYC"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "TCA"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "TCD"
+          },
+          {
+            "customerPrice": "499",
+            "territory": "THA"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "TJK"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "TKM"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "TON"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "TTO"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "TUN"
+          },
+          {
+            "customerPrice": "799.99",
+            "territory": "TUR"
+          },
+          {
+            "customerPrice": "490",
+            "territory": "TWN"
+          },
+          {
+            "customerPrice": "39900",
+            "territory": "TZA"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "UGA"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "UKR"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "URY"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "UZB"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "VCT"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "VEN"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "VGB"
+          },
+          {
+            "customerPrice": "499000",
+            "territory": "VNM"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "VUT"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "XKS"
+          },
+          {
+            "customerPrice": "14.99",
+            "territory": "YEM"
+          },
+          {
+            "customerPrice": "299.99",
+            "territory": "ZAF"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "ZMB"
+          },
+          {
+            "customerPrice": "17.99",
+            "territory": "ZWE"
+          }
+        ]
+      }
+    },
+    "pricing": {
+      "automaticPrices": [
+        {
+          "customerPrice": "4.99",
+          "territory": "AFG"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "AGO"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "AIA"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "ALB"
+        },
+        {
+          "customerPrice": "19.99",
+          "territory": "ARE"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "ARG"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "ARM"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "ATG"
+        },
+        {
+          "customerPrice": "7.99",
+          "territory": "AUS"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "AUT"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "AZE"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "BEL"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "BEN"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "BFA"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "BGR"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "BHR"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "BHS"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "BIH"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "BLR"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "BLZ"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "BMU"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "BOL"
+        },
+        {
+          "customerPrice": "29.9",
+          "territory": "BRA"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "BRB"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "BRN"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "BTN"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "BWA"
+        },
+        {
+          "customerPrice": "6.99",
+          "territory": "CAN"
+        },
+        {
+          "customerPrice": "4",
+          "territory": "CHE"
+        },
+        {
+          "customerPrice": "5990",
+          "territory": "CHL"
+        },
+        {
+          "customerPrice": "38",
+          "territory": "CHN"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "CIV"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "CMR"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "COD"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "COG"
+        },
+        {
+          "customerPrice": "24900",
+          "territory": "COL"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "CPV"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "CRI"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "CYM"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "CYP"
+        },
+        {
+          "customerPrice": "129",
+          "territory": "CZE"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "DEU"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "DMA"
+        },
+        {
+          "customerPrice": "39",
+          "territory": "DNK"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "DOM"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "DZA"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "ECU"
+        },
+        {
+          "customerPrice": "249.99",
+          "territory": "EGY"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "ESP"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "EST"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "FIN"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "FJI"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "FRA"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "FSM"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "GAB"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "GBR"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "GEO"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "GHA"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "GMB"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "GNB"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "GRC"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "GRD"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "GTM"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "GUY"
+        },
+        {
+          "customerPrice": "38",
+          "territory": "HKG"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "HND"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "HRV"
+        },
+        {
+          "customerPrice": "1990",
+          "territory": "HUN"
+        },
+        {
+          "customerPrice": "99000",
+          "territory": "IDN"
+        },
+        {
+          "customerPrice": "499",
+          "territory": "IND"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "IRL"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "IRQ"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "ISL"
+        },
+        {
+          "customerPrice": "14.9",
+          "territory": "ISR"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "ITA"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "JAM"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "JOR"
+        },
+        {
+          "customerPrice": "800",
+          "territory": "JPN"
+        },
+        {
+          "customerPrice": "2990",
+          "territory": "KAZ"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "KEN"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "KGZ"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "KHM"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "KNA"
+        },
+        {
+          "customerPrice": "7700",
+          "territory": "KOR"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "KWT"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "LAO"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "LBN"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "LBR"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "LBY"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "LCA"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "LKA"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "LTU"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "LUX"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "LVA"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "MAC"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "MAR"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "MDA"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "MDG"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "MDV"
+        },
+        {
+          "customerPrice": "99",
+          "territory": "MEX"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "MKD"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "MLI"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "MLT"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "MMR"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "MNE"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "MNG"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "MOZ"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "MRT"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "MSR"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "MUS"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "MWI"
+        },
+        {
+          "customerPrice": "22.9",
+          "territory": "MYS"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "NAM"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "NER"
+        },
+        {
+          "customerPrice": "7900",
+          "territory": "NGA"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "NIC"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "NLD"
+        },
+        {
+          "customerPrice": "59",
+          "territory": "NOR"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "NPL"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "NRU"
+        },
+        {
+          "customerPrice": "9.99",
+          "territory": "NZL"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "OMN"
+        },
+        {
+          "customerPrice": "1300",
+          "territory": "PAK"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "PAN"
+        },
+        {
+          "customerPrice": "22.9",
+          "territory": "PER"
+        },
+        {
+          "customerPrice": "299",
+          "territory": "PHL"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "PLW"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "PNG"
+        },
+        {
+          "customerPrice": "24.99",
+          "territory": "POL"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "PRT"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "PRY"
+        },
+        {
+          "customerPrice": "19.99",
+          "territory": "QAT"
+        },
+        {
+          "customerPrice": "29.99",
+          "territory": "ROU"
+        },
+        {
+          "customerPrice": "449",
+          "territory": "RUS"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "RWA"
+        },
+        {
+          "customerPrice": "19.99",
+          "territory": "SAU"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "SEN"
+        },
+        {
+          "customerPrice": "6.98",
+          "territory": "SGP"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "SLB"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "SLE"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "SLV"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "SRB"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "STP"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "SUR"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "SVK"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "SVN"
+        },
+        {
+          "customerPrice": "69",
+          "territory": "SWE"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "SWZ"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "SYC"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "TCA"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "TCD"
+        },
+        {
+          "customerPrice": "199",
+          "territory": "THA"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "TJK"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "TKM"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "TON"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "TTO"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "TUN"
+        },
+        {
+          "customerPrice": "249.99",
+          "territory": "TUR"
+        },
+        {
+          "customerPrice": "150",
+          "territory": "TWN"
+        },
+        {
+          "customerPrice": "14900",
+          "territory": "TZA"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "UGA"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "UKR"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "URY"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "UZB"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "VCT"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "VEN"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "VGB"
+        },
+        {
+          "customerPrice": "149000",
+          "territory": "VNM"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "VUT"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "XKS"
+        },
+        {
+          "customerPrice": "4.99",
+          "territory": "YEM"
+        },
+        {
+          "customerPrice": "99.99",
+          "territory": "ZAF"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "ZMB"
+        },
+        {
+          "customerPrice": "5.99",
+          "territory": "ZWE"
+        }
+      ]
+    }
+  },
+  "formatVersion": 1,
+  "gitignore": "created",
+  "resources": {
+    "ageRatingDeclaration": {
+      "fields": {
+        "advertising": false,
+        "ageAssurance": false,
+        "ageRatingOverrideV2": "NONE",
+        "alcoholTobaccoOrDrugUseOrReferences": "NONE",
+        "contests": "NONE",
+        "gambling": false,
+        "gamblingSimulated": "NONE",
+        "gunsOrOtherWeapons": "NONE",
+        "healthOrWellnessTopics": false,
+        "horrorOrFearThemes": "NONE",
+        "koreaAgeRatingOverride": "NONE",
+        "lootBox": false,
+        "matureOrSuggestiveThemes": "NONE",
+        "medicalOrTreatmentInformation": "NONE",
+        "messagingAndChat": false,
+        "parentalControls": false,
+        "profanityOrCrudeHumor": "NONE",
+        "sexualContentGraphicAndNudity": "NONE",
+        "sexualContentOrNudity": "NONE",
+        "socialMedia": false,
+        "socialMediaAgeRestricted": false,
+        "unrestrictedWebAccess": false,
+        "userGeneratedContent": false,
+        "violenceCartoonOrFantasy": "NONE",
+        "violenceRealistic": "NONE",
+        "violenceRealisticProlongedGraphicOrSadistic": "NONE"
+      },
+      "id": "ba7a9e6e-5691-43cf-ab20-d12b5d4470f9",
+      "type": "ageRatingDeclarations"
+    },
+    "app": {
+      "fields": {
+        "contentRightsDeclaration": "DOES_NOT_USE_THIRD_PARTY_CONTENT",
+        "primaryLocale": "en-US"
+      },
+      "id": "6757454429",
+      "type": "apps"
+    },
+    "appInfo": {
+      "fields": {
+        "primaryCategory": "UTILITIES",
+        "secondaryCategory": "PRODUCTIVITY"
+      },
+      "id": "ba7a9e6e-5691-43cf-ab20-d12b5d4470f9",
+      "type": "appInfos"
+    },
+    "appInfoLocalization:en-US": {
+      "fields": {
+        "name": "Translate Offline",
+        "privacyPolicyUrl": "https://mekarya.studio/privacy/translate-offline",
+        "subtitle": "Translate without internet"
+      },
+      "id": "c1651992-10c4-4072-a64f-fb1ced0e650e",
+      "type": "appInfoLocalizations"
+    },
+    "appStoreReviewDetail:MAC_OS:1.1": {
+      "fields": {
+        "contactEmail": "pratamaiosi@gmail.com",
+        "contactFirstName": "Iosi Pratama",
+        "contactLastName": "Putra",
+        "contactPhone": "+6285121965123",
+        "demoAccountRequired": false,
+        "notes": "No sign-in is required. The app works fully offline.\nIf review needs guidance: open the app, select source/target languages, enter text, and tap Translate.\n"
+      },
+      "id": "1ad90b04-3bb9-49c6-bfd7-d04a8cb905f5",
+      "type": "appStoreReviewDetails"
+    },
+    "appStoreVersion:MAC_OS:1.1": {
+      "fields": {
+        "copyright": "© 2026 Iosi Pratama Putra",
+        "releaseType": "AFTER_APPROVAL",
+        "versionString": "1.1"
+      },
+      "id": "c64ebaf3-3589-4609-b90f-cf0c86113cfb",
+      "type": "appStoreVersions"
+    },
+    "appStoreVersionLocalization:MAC_OS:1.1:en-US": {
+      "fields": {
+        "description": "Translate Offline is a fast, privacy-focused translation app that works without an internet connection. \n\n• Offline translation — use it anywhere, even with no Wi-Fi\n• Private by design — your text stays on your device\n• Quick input — type or paste and get instant results\n• Simple workflow — swap languages, copy results, and keep going. \n\nSupported languages include: English, Japanese, Spanish, French, German, Chinese, Korean, and more.\n\nGreat for travel, studying, and everyday writing. \n\nIf you have feedback or feature requests, contact support using the link below. ",
+        "keywords": "offline translator,translation,translate,languages,language,dictionary,phrasebook,offline,privacy",
+        "marketingUrl": "https://mekarya.studio/apps/translate-offline",
+        "promotionalText": "New in this update: Japanese translation support.",
+        "supportUrl": "https://mekarya.studio/support/translate-offline",
+        "whatsNew": "Simpler language names\n\nLanguages now read as \"Danish\" and \"Spanish\" instead of \"Danish (Latin, Denmark)\", with Chinese (Simplified) and Chinese (Traditional) clearly separated. The list also keeps itself up to date as macOS adds new languages.\n\nAlso in this update\n\n• Copy a translation with a single click, from the main window or from History\n• Your language choices are remembered between launches\n• History shows the language pair and when each translation happened\n• Download a missing language directly from the app\n• Clearer messages when a language pair isn't supported or isn't downloaded yet\n• The panels no longer resize when a translation arrives\n• Press Command-Y to open History\n• Improved VoiceOver support throughout"
+      },
+      "id": "8275951c-7f34-45ca-903c-981927fa21c9",
+      "type": "appStoreVersionLocalizations"
+    },
+    "appStoreVersionScreenshotSet:MAC_OS:1.1:en-US:APP_DESKTOP": {
+      "fields": {
+        "screenshots": [
+          {
+            "file": "Screen 1.jpg",
+            "fileSize": 638534,
+            "sourceFileChecksum": "dcd48da70a7eaf0494b8b88c58446be3"
+          },
+          {
+            "file": "Screen 2.jpg",
+            "fileSize": 744438,
+            "sourceFileChecksum": "31f968c5e51b13ee2e210794d1f1c79a"
+          },
+          {
+            "file": "Screen 3.jpg",
+            "fileSize": 726731,
+            "sourceFileChecksum": "d0b4a4adb6d08900cb975db8cb86d36b"
+          }
+        ]
+      },
+      "id": "22af85eb-de97-4b97-9033-29dcef88127e",
+      "type": "appScreenshotSets"
+    },
+    "availability": {
+      "fields": {
+        "territories": [
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "AFG"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "AGO"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "AIA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "ALB"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "ARE"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "ARG"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "ARM"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "ATG"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "AUS"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "AUT"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "AZE"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "BEL"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "BEN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "BFA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "BGR"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "BHR"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "BHS"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "BIH"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "BLR"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "BLZ"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "BMU"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "BOL"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "BRA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "BRB"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "BRN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "BTN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "BWA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "CAN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "CHE"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "CHL"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "CHN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "CIV"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "CMR"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "COD"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "COG"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "COL"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "CPV"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "CRI"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "CYM"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "CYP"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "CZE"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "DEU"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "DMA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "DNK"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "DOM"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "DZA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "ECU"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "EGY"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "ESP"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "EST"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "FIN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "FJI"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "FRA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "FSM"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "GAB"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "GBR"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "GEO"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "GHA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "GMB"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "GNB"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "GRC"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "GRD"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "GTM"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "GUY"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "HKG"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "HND"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "HRV"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "HUN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "IDN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "IND"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "IRL"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "IRQ"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "ISL"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "ISR"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "ITA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "JAM"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "JOR"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "JPN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "KAZ"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "KEN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "KGZ"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "KHM"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "KNA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "KOR"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "KWT"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "LAO"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "LBN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "LBR"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "LBY"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "LCA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "LKA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "LTU"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "LUX"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "LVA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MAC"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MAR"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MDA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MDG"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MDV"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MEX"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MKD"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MLI"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MLT"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MMR"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MNE"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MNG"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MOZ"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MRT"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MSR"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MUS"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MWI"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "MYS"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "NAM"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "NER"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "NGA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "NIC"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "NLD"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "NOR"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "NPL"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "NRU"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "NZL"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "OMN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "PAK"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "PAN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "PER"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "PHL"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "PLW"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "PNG"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "POL"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "PRT"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "PRY"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "QAT"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "ROU"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "RUS"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "RWA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "SAU"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "SEN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "SGP"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "SLB"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "SLE"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "SLV"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "SRB"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "STP"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "SUR"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "SVK"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "SVN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "SWE"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "SWZ"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "SYC"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "TCA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "TCD"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "THA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "TJK"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "TKM"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "TON"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "TTO"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "TUN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "TUR"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "TWN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "TZA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "UGA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "UKR"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "URY"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "USA"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "UZB"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "VCT"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "VEN"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "VGB"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "VNM"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "VUT"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "XKS"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "YEM"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "ZAF"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "ZMB"
+          },
+          {
+            "available": true,
+            "preOrderEnabled": false,
+            "releaseDate": "2026-01-13",
+            "territory": "ZWE"
+          }
+        ]
+      },
+      "id": "6757454429",
+      "type": "appAvailabilities"
+    },
+    "inAppPurchase:iosipratama.TranslatorMac.pro": {
+      "fields": {
+        "familySharable": false,
+        "inAppPurchaseType": "NON_CONSUMABLE",
+        "name": "Pro Lifetime",
+        "reviewNote": "Translate Offline is free with 10 translations a day. Pro removes the daily limit. The purchase sheet opens from the “Unlock Pro” card at the bottom of the sidebar, from the “Unlock Pro” button shown in the result pane once the daily limit is reached, or from the app menu: Translate Offline › Upgrade to Pro…. Lifetime is the one-time option on that sheet."
+      },
+      "id": "6821364848",
+      "type": "inAppPurchases"
+    },
+    "inAppPurchaseLocalization:iosipratama.TranslatorMac.pro:en-US": {
+      "fields": {
+        "description": "Unlimited translations, forever. Pay once.",
+        "name": "Translate Offline Pro"
+      },
+      "id": "f868e2ee-7c10-489f-878d-b89d8ffccd15",
+      "type": "inAppPurchaseLocalizations"
+    },
+    "inAppPurchasePricing:iosipratama.TranslatorMac.pro": {
+      "fields": {
+        "baseTerritory": "USA",
+        "manualPrices": [
+          {
+            "customerPrice": "14.99",
+            "territory": "USA"
+          }
+        ]
+      },
+      "id": "6821364848",
+      "type": "inAppPurchasePriceSchedules"
+    },
+    "pricing": {
+      "fields": {
+        "baseTerritory": "USA",
+        "manualPrices": [
+          {
+            "customerPrice": "4.99",
+            "territory": "USA"
+          }
+        ]
+      },
+      "id": "6757454429",
+      "type": "appPriceSchedules"
+    },
+    "subscription:iosipratama.TranslatorMac.pro.yearly": {
+      "fields": {
+        "familySharable": false,
+        "groupLevel": 1,
+        "name": "Pro Yearly",
+        "reviewNote": "Translate Offline is free with 10 translations a day. Pro removes the daily limit. The purchase sheet opens from the “Unlock Pro” card at the bottom of the sidebar, from the “Unlock Pro” button shown in the result pane once the daily limit is reached, or from the app menu: Translate Offline › Upgrade to Pro…. Yearly is the subscription option on that sheet.",
+        "subscriptionPeriod": "ONE_YEAR"
+      },
+      "id": "6821364859",
+      "type": "subscriptions"
+    },
+    "subscriptionAvailability:iosipratama.TranslatorMac.pro.yearly": {
+      "fields": {
+        "availableInNewTerritories": true,
+        "availableTerritories": [
+          "AFG",
+          "AGO",
+          "AIA",
+          "ALB",
+          "ARE",
+          "ARG",
+          "ARM",
+          "ATG",
+          "AUS",
+          "AUT",
+          "AZE",
+          "BEL",
+          "BEN",
+          "BFA",
+          "BGR",
+          "BHR",
+          "BHS",
+          "BIH",
+          "BLR",
+          "BLZ",
+          "BMU",
+          "BOL",
+          "BRA",
+          "BRB",
+          "BRN",
+          "BTN",
+          "BWA",
+          "CAN",
+          "CHE",
+          "CHL",
+          "CHN",
+          "CIV",
+          "CMR",
+          "COD",
+          "COG",
+          "COL",
+          "CPV",
+          "CRI",
+          "CYM",
+          "CYP",
+          "CZE",
+          "DEU",
+          "DMA",
+          "DNK",
+          "DOM",
+          "DZA",
+          "ECU",
+          "EGY",
+          "ESP",
+          "EST",
+          "FIN",
+          "FJI",
+          "FRA",
+          "FSM",
+          "GAB",
+          "GBR",
+          "GEO",
+          "GHA",
+          "GMB",
+          "GNB",
+          "GRC",
+          "GRD",
+          "GTM",
+          "GUY",
+          "HKG",
+          "HND",
+          "HRV",
+          "HUN",
+          "IDN",
+          "IND",
+          "IRL",
+          "IRQ",
+          "ISL",
+          "ISR",
+          "ITA",
+          "JAM",
+          "JOR",
+          "JPN",
+          "KAZ",
+          "KEN",
+          "KGZ",
+          "KHM",
+          "KNA",
+          "KOR",
+          "KWT",
+          "LAO",
+          "LBN",
+          "LBR",
+          "LBY",
+          "LCA",
+          "LKA",
+          "LTU",
+          "LUX",
+          "LVA",
+          "MAC",
+          "MAR",
+          "MDA",
+          "MDG",
+          "MDV",
+          "MEX",
+          "MKD",
+          "MLI",
+          "MLT",
+          "MMR",
+          "MNE",
+          "MNG",
+          "MOZ",
+          "MRT",
+          "MSR",
+          "MUS",
+          "MWI",
+          "MYS",
+          "NAM",
+          "NER",
+          "NGA",
+          "NIC",
+          "NLD",
+          "NOR",
+          "NPL",
+          "NRU",
+          "NZL",
+          "OMN",
+          "PAK",
+          "PAN",
+          "PER",
+          "PHL",
+          "PLW",
+          "PNG",
+          "POL",
+          "PRT",
+          "PRY",
+          "QAT",
+          "ROU",
+          "RUS",
+          "RWA",
+          "SAU",
+          "SEN",
+          "SGP",
+          "SLB",
+          "SLE",
+          "SLV",
+          "SRB",
+          "STP",
+          "SUR",
+          "SVK",
+          "SVN",
+          "SWE",
+          "SWZ",
+          "SYC",
+          "TCA",
+          "TCD",
+          "THA",
+          "TJK",
+          "TKM",
+          "TON",
+          "TTO",
+          "TUN",
+          "TUR",
+          "TWN",
+          "TZA",
+          "UGA",
+          "UKR",
+          "URY",
+          "USA",
+          "UZB",
+          "VCT",
+          "VEN",
+          "VGB",
+          "VNM",
+          "VUT",
+          "XKS",
+          "YEM",
+          "ZAF",
+          "ZMB",
+          "ZWE"
+        ]
+      },
+      "id": "6821364859",
+      "type": "subscriptionAvailabilities"
+    },
+    "subscriptionGracePeriod": {
+      "fields": {
+        "optIn": false,
+        "sandboxOptIn": false
+      },
+      "id": "6757454429",
+      "type": "subscriptionGracePeriods"
+    },
+    "subscriptionGroup:Pro": {
+      "fields": {
+        "referenceName": "Pro"
+      },
+      "id": "22462378",
+      "type": "subscriptionGroups"
+    },
+    "subscriptionGroupLocalization:Pro:en-US": {
+      "fields": {
+        "customAppName": "Translate Offline",
+        "name": "Translate Offline Pro"
+      },
+      "id": "f892cf3d-3133-4f60-b8da-347e4ace6402",
+      "type": "subscriptionGroupLocalizations"
+    },
+    "subscriptionLocalization:iosipratama.TranslatorMac.pro.yearly:en-US": {
+      "fields": {
+        "description": "Unlimited translations for a year.",
+        "name": "Pro Yearly"
+      },
+      "id": "a402852e-f727-4632-b790-2b0443833a4c",
+      "type": "subscriptionLocalizations"
+    },
+    "subscriptionPricing:iosipratama.TranslatorMac.pro.yearly": {
+      "fields": {
+        "baseTerritory": "USA",
+        "prices": [
+          {
+            "customerPrice": "9.99",
+            "territory": "USA"
+          }
+        ]
+      },
+      "id": "6821364859",
+      "type": "subscriptionPrices"
+    }
+  }
+}

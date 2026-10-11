@@ -1,0 +1,64 @@
+//
+//  TranslateView.swift
+//  TranslatorMac
+//
+
+import SwiftUI
+
+/// The translate screen: two panes, with the language controls in the toolbar.
+struct TranslateView: View {
+    @Bindable var model: TranslationModel
+
+    var body: some View {
+        HStack(spacing: 0) {
+            SourcePane(model: model)
+            Divider()
+            ResultPane(model: model)
+        }
+        .focusedSceneValue(\.copyTranslation, model.currentResult.map { result in
+            CopyTranslationAction(text: result.text) { model.copyTranslation() }
+        })
+        .toolbar(removing: .title)
+        .toolbar {
+            ToolbarItemGroup(placement: .principal) {
+                LanguageMenu(
+                    title: "Translate from",
+                    help: "Language of your text",
+                    selection: $model.sourceLanguage,
+                    selectedName: model.sourceLanguage.map(model.name(for:)) ?? String(localized: "Detect Language"),
+                    languages: model.supportedLanguages,
+                    statuses: model.sourceStatuses,
+                    allowsDetection: true
+                )
+
+                Button("Swap Languages", systemImage: "arrow.left.arrow.right") {
+                    withAnimation(.snappy) { model.swapLanguages() }
+                }
+                .disabled(!model.canSwapLanguages)
+                .help(model.canSwapLanguages
+                      ? "Swap languages (⌘⇧S)"
+                      : "Choose a language to translate from first")
+
+                LanguageMenu(
+                    title: "Translate to",
+                    help: "Language to translate into",
+                    selection: targetSelection,
+                    selectedName: model.name(for: model.targetLanguage),
+                    languages: model.supportedLanguages,
+                    statuses: model.targetStatuses,
+                    allowsDetection: false
+                )
+            }
+        }
+    }
+
+    /// The target can't be "detect", but the menu is shared with the source
+    /// side, so it speaks optional.
+    private var targetSelection: Binding<Locale.Language?> {
+        Binding {
+            model.targetLanguage
+        } set: { language in
+            if let language { model.targetLanguage = language }
+        }
+    }
+}

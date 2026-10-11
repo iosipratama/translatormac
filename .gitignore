@@ -1,0 +1,8 @@
+# Local build and distribution artifacts produced by the asc CLI
+.asc/
+
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
