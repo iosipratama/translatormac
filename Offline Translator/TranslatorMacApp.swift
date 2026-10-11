@@ -85,7 +85,6 @@ struct TranslatorMacApp: App {
         .modelContainer(modelContainer)
         .windowResizability(.contentSize)
         .windowStyle(.hiddenTitleBar)
-        .defaultSize(width: 360, height: 300)
         .defaultPosition(.center)
         .restorationBehavior(.disabled)
         .defaultLaunchBehavior(.suppressed)

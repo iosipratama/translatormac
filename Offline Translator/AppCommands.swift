@@ -22,17 +22,9 @@ struct AppMenuCommands: Commands {
             }
 
             Button("Rate Translate Offline") {
-                rateApp()
+                NSWorkspace.shared.open(AppLinks.appStoreReview)
             }
         }
-    }
-
-    private func rateApp() {
-        let appID = "6757454429"
-        let review = "id\(appID)?mt=12&action=write-review"
-        guard let url = URL(string: "macappstore://itunes.apple.com/app/\(review)")
-                ?? URL(string: "https://apps.apple.com/app/\(review)") else { return }
-        NSWorkspace.shared.open(url)
     }
 }
 
