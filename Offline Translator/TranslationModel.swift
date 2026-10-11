@@ -23,7 +23,7 @@ final class TranslationModel {
     /// can't both be live at once.
     enum Outcome: Equatable {
         case translated(TranslationResult)
-        case failed(String)
+        case failed(TranslationFailure)
 
         var result: TranslationResult? {
             if case .translated(let result) = self { return result }
@@ -214,9 +214,9 @@ final class TranslationModel {
     var sourceTitle: String {
         if let source = sourceLanguage { return name(for: source) }
         if let detected = outcome?.result?.detectedSource {
-            return "\(name(for: detected)) (Detected)"
+            return String(localized: "\(name(for: detected)) (detected)")
         }
-        return "Detect Language"
+        return String(localized: "Detect Language")
     }
 
     // MARK: - Languages
@@ -395,6 +395,13 @@ final class TranslationModel {
         inputText = ""
     }
 
+    /// Shows the system download prompt for the current pair, then
+    /// translates what's on screen once it's there.
+    func downloadCurrentPair() {
+        needsPreparation = true
+        requestTranslation(allowEmptyInput: true)
+    }
+
     /// Settings › General › "Translate as you type".
     var translatesAsYouType: Bool {
         UserDefaults.standard.bool(forKey: SettingsKey.liveTranslate)
@@ -511,13 +518,9 @@ final class TranslationModel {
             // Superseded by a newer request.
         } catch {
             guard id == requestID else { return }
-            let message = TranslationFailure.message(
-                for: error,
-                from: sourceLanguage,
-                to: targetLanguage
-            )
+            let failure = TranslationFailure.from(error, from: sourceLanguage, to: targetLanguage)
             Log.translation.error("Translation failed: \(String(describing: error), privacy: .public)")
-            outcome = message.isEmpty ? nil : .failed(message)
+            outcome = failure.map(Outcome.failed)
             finishTranslating()
         }
     }

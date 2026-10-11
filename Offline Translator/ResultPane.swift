@@ -44,9 +44,9 @@ struct ResultPane: View {
             PaneMessage(
                 systemImage: "bolt.fill",
                 title: "You’ve used today’s free translations",
-                description: "Unlock Pro for unlimited translations. Free translations come back tomorrow."
+                description: Text("Free translations reset at midnight. Pro removes the daily limit.")
             ) {
-                Button("Unlock Pro") {
+                Button("Unlock Pro…") {
                     pro.present()
                 }
                 .accentProminentButton()
@@ -55,24 +55,31 @@ struct ResultPane: View {
             switch outcome {
             case .translated(let result):
                 translation(result)
-            case .failed(let message):
+            case .failed(let failure):
                 PaneMessage(
                     systemImage: "exclamationmark.triangle",
                     title: "Couldn’t translate",
-                    description: LocalizedStringKey(message)
-                )
+                    description: Text(verbatim: failure.message)
+                ) {
+                    if failure.offersDownload {
+                        Button("Download") {
+                            model.downloadCurrentPair()
+                        }
+                        .accentProminentButton()
+                    }
+                }
             }
         } else if model.trimmedInput.isEmpty {
             PaneMessage(
                 systemImage: "character.bubble",
-                title: translatesAsYouType ? "The translation appears as you type" : "Press ⌘⏎ to translate",
-                description: "Everything runs on this Mac. Nothing you type is sent anywhere."
+                title: translatesAsYouType ? "Translations appear as you type" : "Press ⌘⏎ to translate",
+                description: Text("Nothing you type leaves this Mac.")
             )
         } else if !translatesAsYouType, !model.isTranslating {
             PaneMessage(
                 systemImage: "return",
                 title: "Press ⌘⏎ to translate",
-                description: "Translate as you type is off in Settings."
+                description: Text("“Translate as you type” is off in Settings.")
             )
         } else {
             // The first translation of a session is on its way; the header
@@ -117,17 +124,17 @@ struct ResultPane: View {
         .labelStyle(.titleOnly)
         .accentProminentButton()
         .disabled(!hasResult)
-        .help("Copy the translation")
+        .help("Copy the translation (⌘⇧C)")
         .animation(.smooth, value: model.justCopied)
 
-        Button(isSpeaking ? "Stop Speaking" : "Speak", systemImage: isSpeaking ? "stop.fill" : "speaker.wave.2") {
+        Button(isSpeaking ? "Stop" : "Speak", systemImage: isSpeaking ? "stop.fill" : "speaker.wave.2") {
             model.toggleSpeech()
         }
         .labelStyle(.iconOnly)
         .disabled(!model.canSpeak && !isSpeaking)
         .help(speakHelp)
 
-        Toggle("Save", systemImage: model.isCurrentSaved ? "star.fill" : "star", isOn: Binding(
+        Toggle(model.isCurrentSaved ? "Remove from Saved" : "Save", systemImage: model.isCurrentSaved ? "star.fill" : "star", isOn: Binding(
             get: { model.isCurrentSaved },
             set: { _ in
                 if !model.toggleSaved() { pro.present() }
@@ -136,14 +143,14 @@ struct ResultPane: View {
         .toggleStyle(.button)
         .labelStyle(.iconOnly)
         .disabled(!hasResult)
-        .help(model.isCurrentSaved ? "Remove from Saved" : "Save this translation")
+        .help(model.isCurrentSaved ? "Remove from Saved (⌘D)" : "Save (⌘D)")
     }
 
     private var speakHelp: LocalizedStringKey {
         if model.speaker.isSpeaking { return "Stop speaking" }
         if model.currentResult != nil, !model.canSpeak {
-            return "No voice for \(model.name(for: model.targetLanguage)) is installed on this Mac"
+            return "No \(model.name(for: model.targetLanguage)) voice is on this Mac. Add one in System Settings › Accessibility › Read & Speak."
         }
-        return "Read the translation aloud"
+        return "Speak the translation (⌥⌘S)"
     }
 }

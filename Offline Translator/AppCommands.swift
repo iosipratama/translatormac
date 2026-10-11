@@ -13,9 +13,12 @@ struct AppMenuCommands: Commands {
 
     var body: some Commands {
         CommandGroup(after: .appInfo) {
-            Button(purchases.hasPro ? "Translate Offline Pro" : "Upgrade to Pro…") {
-                MainWindowAccess.bringForward()
-                pro.present()
+            // Pro owners find their plan in Settings › Pro instead.
+            if !purchases.hasPro {
+                Button("Unlock Pro…") {
+                    MainWindowAccess.bringForward()
+                    pro.present()
+                }
             }
 
             Button("Rate Translate Offline") {
@@ -69,6 +72,7 @@ struct NavigationCommands: Commands {
 /// place a command lives and every shortcut is discoverable.
 struct TranslationCommands: Commands {
     @FocusedValue(\.translationModel) private var model
+    @Environment(\.openSettings) private var openSettings
     @FocusedValue(\.copyTranslation) private var copyTranslation
 
     var body: some Commands {
@@ -118,7 +122,7 @@ struct TranslationCommands: Commands {
             Divider()
 
             Button("Manage Languages…") {
-                LanguageCatalog.openLanguageSettings()
+                SettingsNavigation.show(.languages, using: openSettings)
             }
         }
     }

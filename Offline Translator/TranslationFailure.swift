@@ -8,45 +8,66 @@ import Foundation
 // Sendable-audited.
 @preconcurrency import Translation
 
-/// Maps errors thrown by the Translation framework onto messages worth showing.
-///
-/// The previous implementation funnelled every failure into "this language pair
-/// is not downloaded yet", which sent people to System Settings to install a
-/// model that, for an unsupported pairing, does not exist.
-nonisolated enum TranslationFailure {
+/// An error from the Translation framework, as the person should see it:
+/// what happened and what to do next, with no codes or framework terms.
+nonisolated struct TranslationFailure: Equatable {
+    var message: String
+    /// The pair just isn't downloaded, so the screen can offer to fetch it.
+    var offersDownload: Bool
 
-    static func message(for error: any Error, from source: Locale.Language?, to target: Locale.Language) -> String {
-        let sourceName = source.map(LanguageCatalog.fallbackName(for:)) ?? "the detected language"
+    /// `nil` when there's nothing worth showing, such as a superseded request.
+    static func from(_ error: any Error, from source: Locale.Language?, to target: Locale.Language) -> TranslationFailure? {
         let targetName = LanguageCatalog.fallbackName(for: target)
+        let sourceName = source.map(LanguageCatalog.fallbackName(for:))
+            ?? String(localized: "the detected language")
 
         switch error {
         case is CancellationError:
-            return ""
+            return nil
 
         case TranslationError.notInstalled:
-            return """
-            The \(sourceName) → \(targetName) model isn't downloaded yet.
-
-            Open System Settings → Translation Languages to download it.
-            """
+            let message = source.map {
+                String(localized: "\(LanguageCatalog.fallbackName(for: $0)) → \(targetName) isn’t downloaded yet.")
+            } ?? String(localized: "\(targetName) isn’t downloaded yet.")
+            return TranslationFailure(message: message, offersDownload: true)
 
         case TranslationError.unsupportedLanguagePairing:
-            return "Translating \(sourceName) to \(targetName) isn't supported."
+            return TranslationFailure(
+                message: String(localized: "Translation between \(sourceName) and \(targetName) isn’t available."),
+                offersDownload: false
+            )
 
         case TranslationError.unsupportedSourceLanguage:
-            return "\(sourceName.prefix(1).uppercased() + sourceName.dropFirst()) isn't supported as a source language."
+            return TranslationFailure(
+                message: String(localized: "Translating from \(sourceName) isn’t available."),
+                offersDownload: false
+            )
 
         case TranslationError.unsupportedTargetLanguage:
-            return "\(targetName) isn't supported as a target language."
+            return TranslationFailure(
+                message: String(localized: "Translating into \(targetName) isn’t available."),
+                offersDownload: false
+            )
 
         case TranslationError.unableToIdentifyLanguage:
-            return "Couldn't detect the language of that text. Choose a source language instead of Automatic."
+            return TranslationFailure(
+                message: String(localized: "Couldn’t tell which language this is. Choose it from the menu on the left."),
+                offersDownload: false
+            )
 
         case TranslationError.nothingToTranslate:
-            return "There's nothing to translate."
+            return TranslationFailure(
+                message: String(localized: "There’s nothing to translate."),
+                offersDownload: false
+            )
 
         default:
-            return (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
+            // The framework's own description can be technical; the person
+            // gets a plain next step instead, and the log keeps the detail.
+            return TranslationFailure(
+                message: String(localized: "Couldn’t translate this. Try again, or try a shorter piece of text."),
+                offersDownload: false
+            )
         }
     }
 }

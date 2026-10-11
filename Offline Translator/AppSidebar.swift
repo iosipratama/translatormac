@@ -68,6 +68,6 @@ private struct ProUnlockCard: View {
         .buttonStyle(.plain)
         .accessibilityLabel("Unlock Pro")
         .accessibilityHint("Yearly or lifetime")
-        .help("Unlimited translations, yearly or for good")
+        .help("Show Pro plans")
     }
 }

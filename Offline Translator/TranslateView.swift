@@ -22,9 +22,10 @@ struct TranslateView: View {
         .toolbar {
             ToolbarItemGroup(placement: .principal) {
                 LanguageMenu(
-                    title: "Translate From",
+                    title: "Translate from",
+                    help: "Language of your text",
                     selection: $model.sourceLanguage,
-                    selectedName: model.sourceLanguage.map(model.name(for:)) ?? "Detect Language",
+                    selectedName: model.sourceLanguage.map(model.name(for:)) ?? String(localized: "Detect Language"),
                     languages: model.supportedLanguages,
                     statuses: model.sourceStatuses,
                     allowsDetection: true
@@ -35,11 +36,12 @@ struct TranslateView: View {
                 }
                 .disabled(!model.canSwapLanguages)
                 .help(model.canSwapLanguages
-                      ? "Swap the source and target languages"
-                      : "Choose a source language to swap")
+                      ? "Swap languages (⌘⇧S)"
+                      : "Choose a language to translate from first")
 
                 LanguageMenu(
-                    title: "Translate To",
+                    title: "Translate to",
+                    help: "Language to translate into",
                     selection: targetSelection,
                     selectedName: model.name(for: model.targetLanguage),
                     languages: model.supportedLanguages,

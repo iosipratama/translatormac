@@ -11,7 +11,12 @@ import SwiftUI
 /// A toolbar pop-up listing the catalog, grouped by whether each language is
 /// already on this Mac.
 struct LanguageMenu: View {
+    @Environment(\.openSettings) private var openSettings
+
+    /// The menu's name for VoiceOver and its hidden picker label.
     var title: LocalizedStringKey
+    /// The tooltip, which describes the menu rather than repeating its name.
+    var help: LocalizedStringKey
     @Binding var selection: Locale.Language?
     var selectedName: String
     var languages: [TranslationLanguage]
@@ -59,7 +64,7 @@ struct LanguageMenu: View {
             Divider()
 
             Button("Manage Languages…") {
-                LanguageCatalog.openLanguageSettings()
+                SettingsNavigation.show(.languages, using: openSettings)
             }
         } label: {
             Text(selectedName)
@@ -69,7 +74,7 @@ struct LanguageMenu: View {
         }
         .menuIndicator(.visible)
         .disabled(languages.isEmpty)
-        .help(title)
+        .help(help)
         .accessibilityLabel(title)
     }
 

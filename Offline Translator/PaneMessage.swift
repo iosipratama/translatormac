@@ -11,7 +11,7 @@ import SwiftUI
 struct PaneMessage<Action: View>: View {
     var systemImage: String
     var title: LocalizedStringKey
-    var description: LocalizedStringKey
+    var description: Text
     @ViewBuilder var action: Action
 
     var body: some View {
@@ -25,7 +25,7 @@ struct PaneMessage<Action: View>: View {
                 Text(title)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.secondary)
-                Text(description)
+                description
                     .font(.callout)
                     .foregroundStyle(.tertiary)
             }
@@ -42,7 +42,7 @@ struct PaneMessage<Action: View>: View {
 }
 
 extension PaneMessage where Action == EmptyView {
-    init(systemImage: String, title: LocalizedStringKey, description: LocalizedStringKey) {
+    init(systemImage: String, title: LocalizedStringKey, description: Text) {
         self.init(systemImage: systemImage, title: title, description: description) {
             EmptyView()
         }
