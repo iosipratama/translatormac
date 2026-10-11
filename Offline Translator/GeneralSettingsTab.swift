@@ -37,9 +37,12 @@ struct GeneralSettingsTab: View {
 
             LabeledContent("Translation:") {
                 VStack(alignment: .leading, spacing: 8) {
-                    Toggle("Translate as you type", isOn: $translatesAsYouType)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Toggle("Translate as you type", isOn: $translatesAsYouType)
+                        note("Otherwise, press ⌘⏎ to translate.")
+                            .padding(.leading, 20)
+                    }
                     Toggle("Show pronunciation", isOn: $showsPronunciation)
-                    note("When “Translate as you type” is off, press ⌘⏎ to translate.")
                 }
             }
 
@@ -84,9 +87,11 @@ struct GeneralSettingsTab: View {
     }
 
     private var historyNote: LocalizedStringKey {
-        purchases.hasPro
-            ? "Keeps your newest \(PlanLimits.proHistory) translations on this Mac. Saved items are never removed."
-            : "Keeps your last \(PlanLimits.freeHistory) translations on this Mac. Saved items are never removed."
+        // With history off, describing what's kept would be untrue.
+        guard keepsHistory else { return "New translations aren’t added to Recent." }
+        return purchases.hasPro
+            ? "Keeps your last \(PlanLimits.proHistory) translations on this Mac. Saved translations are never removed."
+            : "Keeps your last \(PlanLimits.freeHistory) translations on this Mac. Saved translations are never removed."
     }
 
     private func note(_ text: LocalizedStringKey) -> some View {

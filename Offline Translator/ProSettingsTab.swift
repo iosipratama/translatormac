@@ -71,7 +71,7 @@ struct ProSettingsTab: View {
                 }
                 Text(purchases.hasPro
                      ? "Thanks for supporting the app."
-                     : "Upgrade for unlimited translations, history and saved items.")
+                     : "Pro removes the limits below.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -84,7 +84,7 @@ struct ProSettingsTab: View {
         VStack(alignment: .leading, spacing: 12) {
             meter("Translations today", value: purchases.translationsUsedToday, max: PlanLimits.freeTranslationsPerDay)
             meter("Saved translations", value: saved.count, max: PlanLimits.freeSaved)
-            Text("History keeps your last \(PlanLimits.freeHistory) translations. Daily count resets at midnight.")
+            Text("Recent keeps your last \(PlanLimits.freeHistory) translations. Free translations reset at midnight.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -126,7 +126,7 @@ struct ProSettingsTab: View {
                 )
             }
             Divider()
-            planRow("Includes", value: String(localized: "Unlimited translations, history and saved"))
+            planRow("Includes", value: String(localized: "Unlimited translations, history and Saved"))
         }
         .background(.background, in: .rect(cornerRadius: 8))
         .overlay {
@@ -139,8 +139,9 @@ struct ProSettingsTab: View {
         if let plan = purchases.activePlan {
             return String(localized: plan.title)
         }
-        // Early supporters have the original purchase, which is for good.
-        return String(localized: ProPlan.lifetime.title)
+        // Early supporters never bought the Lifetime product; their Pro
+        // comes from buying the app when it was paid, and the row says so.
+        return String(localized: "Lifetime (original purchase)")
     }
 
     private func planRow(_ label: LocalizedStringKey, value: String) -> some View {
@@ -170,7 +171,7 @@ struct ProSettingsTab: View {
                     }
                 }
                 if purchases.hasRedundantSubscription {
-                    Text("Your yearly plan is still running alongside Lifetime. Cancel it under Manage Subscription — Apple doesn’t do that automatically.")
+                    Text("Your yearly plan is still active. Cancel it under Manage Subscription, since Apple doesn’t cancel it automatically.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -203,7 +204,7 @@ struct ProSettingsTab: View {
     }
 
     private var restoreButton: some View {
-        Button("Restore Purchases") {
+        Button(isRestoring ? "Restoring…" : "Restore Purchases") {
             Task {
                 isRestoring = true
                 await purchases.restorePurchases()

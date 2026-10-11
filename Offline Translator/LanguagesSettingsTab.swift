@@ -20,22 +20,28 @@ struct LanguagesSettingsTab: View {
         }
     }
 
+    private var downloadedCount: Int {
+        inventory.entries.count(where: \.isInstalled)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .firstTextBaseline) {
-                Text("Languages on this Mac")
+                Text("All languages")
                     .font(.headline)
                 Spacer()
-                Text("Download once, use offline")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                if !inventory.isLoading {
+                    Text("\(downloadedCount) on this Mac")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             }
 
             table
                 .frame(height: 300)
 
             HStack(alignment: .center, spacing: 16) {
-                Text("macOS stores these languages for all apps. To remove one, use System Settings › General › Language & Region › Translation Languages.")
+                Text("Languages are shared with other apps on this Mac. To remove one, go to System Settings › General › Language & Region › Translation Languages.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -84,6 +90,9 @@ struct LanguagesSettingsTab: View {
                     if entry.isInstalled {
                         Label("Ready", systemImage: "checkmark")
                             .foregroundStyle(.green)
+                    } else if inventory.isDownloading(entry.language) {
+                        Text("Downloading…")
+                            .foregroundStyle(.secondary)
                     } else {
                         Text("Not downloaded")
                             .foregroundStyle(.secondary)
