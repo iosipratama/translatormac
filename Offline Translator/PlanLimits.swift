@@ -26,12 +26,14 @@ enum SettingsKey {
     static let speechRate = "speechRate"
     static let keepHistory = "keepHistory"
     static let settingsTab = "settingsTab"
+    static let appearance = "appearance"
 
     static let defaults: [String: Any] = [
         liveTranslate: true,
         showPronunciation: true,
         speechRate: 0.45,
         keepHistory: true,
+        appearance: AppTheme.automatic.rawValue,
     ]
 
     static func registerDefaults() {

@@ -16,6 +16,7 @@ struct GeneralSettingsTab: View {
     @AppStorage(SettingsKey.showPronunciation) private var showsPronunciation = true
     @AppStorage(SettingsKey.speechRate) private var speechRate = 0.45
     @AppStorage(SettingsKey.keepHistory) private var keepsHistory = true
+    @AppStorage(SettingsKey.appearance) private var theme: AppTheme = .automatic
 
     @State private var showClearConfirm = false
     @State private var sampleSpeaker = TranslationSpeaker()
@@ -26,6 +27,14 @@ struct GeneralSettingsTab: View {
 
     var body: some View {
         Form {
+            Picker("Appearance:", selection: $theme) {
+                ForEach(AppTheme.allCases) { theme in
+                    Text(theme.title).tag(theme)
+                }
+            }
+            .pickerStyle(.segmented)
+            .fixedSize()
+
             LabeledContent("Translation:") {
                 VStack(alignment: .leading, spacing: 8) {
                     Toggle("Translate as you type", isOn: $translatesAsYouType)
@@ -60,6 +69,9 @@ struct GeneralSettingsTab: View {
             }
         }
         .formStyle(.columns)
+        .onChange(of: theme) { _, theme in
+            theme.apply()
+        }
         .padding(EdgeInsets(top: 24, leading: 32, bottom: 24, trailing: 32))
         .alert("Clear all history?", isPresented: $showClearConfirm) {
             Button("Clear History", role: .destructive) {

@@ -27,6 +27,7 @@ struct TranslatorMacApp: App {
 
     init() {
         SettingsKey.registerDefaults()
+        AppTheme.stored.apply()
         didFinishOnboarding = OnboardingModel.didFinish
         do {
             modelContainer = try ModelContainer(for: TranslationHistory.self)
