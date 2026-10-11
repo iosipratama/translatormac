@@ -93,7 +93,7 @@ struct HistoryDetailPane: View {
     private var footer: some View {
         HStack(spacing: 8) {
             Button("Open in Translate", action: onOpen)
-                .help("Load this translation on the translate screen")
+                .help("Show this translation in Translate")
             Text("or double-click the row")
                 .font(.caption)
                 .foregroundStyle(.tertiary)
@@ -103,39 +103,40 @@ struct HistoryDetailPane: View {
             Button(justCopied ? "Copied" : "Copy", systemImage: justCopied ? "checkmark" : "document.on.document", action: copy)
                 .labelStyle(.titleOnly)
                 .accentProminentButton()
-                .help("Copy the translation")
+                .help("Copy the translation (⌘⇧C)")
                 .animation(.smooth, value: justCopied)
 
             Button(
-                speaker.isSpeaking ? "Stop Speaking" : "Speak",
+                speaker.isSpeaking ? "Stop" : "Speak",
                 systemImage: speaker.isSpeaking ? "stop.fill" : "speaker.wave.2",
                 action: toggleSpeech
             )
             .labelStyle(.iconOnly)
             .disabled(!speaker.isSpeaking && !speaker.canSpeak(targetLanguage))
-            .help(speaker.isSpeaking ? "Stop speaking" : "Read the translation aloud")
+            .help(speaker.isSpeaking ? "Stop speaking" : "Speak the translation")
 
             switch scope {
             case .recent:
-                Toggle("Save", systemImage: entry.isSaved ? "star.fill" : "star", isOn: Binding(
+                Toggle(entry.isSaved ? "Remove from Saved" : "Save", systemImage: entry.isSaved ? "star.fill" : "star", isOn: Binding(
                     get: { entry.isSaved },
                     set: { onSetSaved($0) }
                 ))
                 .toggleStyle(.button)
                 .labelStyle(.iconOnly)
-                .help(entry.isSaved ? "Remove from Saved" : "Save this translation")
+                .help(entry.isSaved ? "Remove from Saved" : "Save")
 
                 Button("Delete", systemImage: "trash", role: .destructive, action: onDelete)
                     .labelStyle(.iconOnly)
-                    .help("Remove from history")
+                    // Deleting here removes a starred entry from Saved too.
+                    .help(entry.isSaved ? "Delete this translation, including from Saved" : "Delete this translation")
 
             case .saved:
                 // Spelled out: here it's the one action that changes what
                 // this screen keeps, and it stays undoable.
-                Button("Unsave") {
+                Button("Remove from Saved") {
                     onSetSaved(false)
                 }
-                .help("Remove from Saved. It stays in Recent.")
+                .help("Moves it back to Recent")
             }
         }
         .padding(.horizontal, PaneMetrics.inset)

@@ -94,7 +94,7 @@ struct HistoryStore {
                 self.setSaved(entry, isSaved, undoManager: undoManager)
             }
         }
-        undoManager.setActionName(isSaved ? String(localized: "Save Translation") : String(localized: "Unsave Translation"))
+        undoManager.setActionName(isSaved ? String(localized: "Save Translation") : String(localized: "Remove from Saved"))
     }
 
     func delete(_ entries: [TranslationHistory]) {

@@ -64,7 +64,7 @@ struct HistoryListView: View {
             }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Saved translations are kept.")
+            Text("This removes every translation in Recent. Saved translations are kept.")
         }
     }
 }

@@ -10,21 +10,12 @@ import Foundation
 nonisolated enum HistoryDate {
 
     static func label(for date: Date, now: Date = .now, calendar: Calendar = .current) -> String {
-        let seconds = now.timeIntervalSince(date)
-
-        if seconds < 60 {
-            return String(localized: "Just now")
-        }
-        if seconds < 3600 {
-            let minutes = Int(seconds / 60)
-            return String(localized: "\(minutes) min ago")
-        }
-        if calendar.isDateInToday(date) {
-            let hours = Int(seconds / 3600)
-            return String(localized: "\(hours) hr ago")
-        }
-        if calendar.isDateInYesterday(date) {
-            return String(localized: "Yesterday")
+        // Today and yesterday read relatively, in the system's own wording
+        // and grammar for every language: "5 min. ago", "yesterday".
+        if calendar.isDateInToday(date) || calendar.isDateInYesterday(date) {
+            var style = Date.RelativeFormatStyle(presentation: .named, unitsStyle: .abbreviated)
+            style.calendar = calendar
+            return date.formatted(style)
         }
 
         let sameYear = calendar.isDate(date, equalTo: now, toGranularity: .year)

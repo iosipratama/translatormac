@@ -18,6 +18,8 @@ struct HistoryContent: View {
     @Environment(\.undoManager) private var undoManager
     @Environment(PurchaseStore.self) private var purchases
     @Environment(ProPresentation.self) private var pro
+    @Environment(\.openSettings) private var openSettings
+    @AppStorage(SettingsKey.keepHistory) private var keepsHistory = true
     @State private var speaker = TranslationSpeaker()
 
     @Query private var items: [TranslationHistory]
@@ -186,7 +188,7 @@ struct HistoryContent: View {
                     delete(entries)
                 }
             case .saved:
-                Button("Unsave") {
+                Button("Remove from Saved") {
                     setSaved(entries, false)
                 }
             }
@@ -244,6 +246,9 @@ struct HistoryContent: View {
         HStack {
             if !searchText.isEmpty {
                 Text("^[\(items.count) result](inflect: true)")
+            } else if scope == .saved, let limit = purchases.savedLimit {
+                // The free plan's limit, shown before it's reached.
+                Text("\(items.count) of \(limit) saved · never deleted automatically")
             } else if scope == .saved {
                 Text("\(items.count) saved · never deleted automatically")
             } else {
@@ -266,11 +271,22 @@ struct HistoryContent: View {
             ContentUnavailableView.search(text: searchText)
         } else {
             switch scope {
+            case .recent where !keepsHistory:
+                // Saying translations will show up here would be untrue.
+                ContentUnavailableView {
+                    Label("History is off", systemImage: "clock")
+                } description: {
+                    Text("Turn on “Keep a history of translations” in Settings to see translations here.")
+                } actions: {
+                    Button("Open Settings…") {
+                        SettingsNavigation.show(.general, using: openSettings)
+                    }
+                }
             case .recent:
                 ContentUnavailableView {
                     Label("No translations yet", systemImage: "clock")
                 } description: {
-                    Text("Translations you copy, save, or pause on show up here. They stay on this Mac.")
+                    Text("Translations you make show up here. They stay on this Mac.")
                 } actions: {
                     Button("Start Translating") {
                         openInTranslate(nil)
@@ -297,7 +313,7 @@ private struct SaveStar: View {
     var onChange: (Bool) -> Void
 
     var body: some View {
-        Toggle("Save", systemImage: entry.isSaved ? "star.fill" : "star", isOn: Binding(
+        Toggle(entry.isSaved ? "Remove from Saved" : "Save", systemImage: entry.isSaved ? "star.fill" : "star", isOn: Binding(
             get: { entry.isSaved },
             set: { onChange($0) }
         ))
