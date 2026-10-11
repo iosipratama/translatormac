@@ -16,6 +16,8 @@ struct HistoryContent: View {
 
     @Environment(\.modelContext) private var modelContext
     @Environment(\.undoManager) private var undoManager
+    @Environment(PurchaseStore.self) private var purchases
+    @Environment(ProPresentation.self) private var pro
     @State private var speaker = TranslationSpeaker()
 
     @Query private var items: [TranslationHistory]
@@ -212,7 +214,11 @@ struct HistoryContent: View {
         if scope == .saved, !isSaved {
             moveSelectionPast(entries)
         }
-        for entry in entries {
+        for entry in entries where entry.isSaved != isSaved {
+            if isSaved, !store.canSave(limit: purchases.savedLimit) {
+                pro.present()
+                return
+            }
             store.setSaved(entry, isSaved, undoManager: undoManager)
         }
     }

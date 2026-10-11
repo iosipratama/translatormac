@@ -19,6 +19,7 @@ struct HistoryDetailPane: View {
 
     @State private var justCopied = false
     @State private var copiedTask: Task<Void, Never>?
+    @AppStorage(SettingsKey.showPronunciation) private var showsPronunciation = true
 
     private let height: CGFloat = 236
 
@@ -39,7 +40,9 @@ struct HistoryDetailPane: View {
                 column(
                     title: LanguageCatalog.name(forIdentifier: entry.targetLanguageID),
                     text: entry.translatedText,
-                    pronunciation: Pronunciation.latinTranscription(of: entry.translatedText, in: targetLanguage)
+                    pronunciation: showsPronunciation
+                        ? Pronunciation.latinTranscription(of: entry.translatedText, in: targetLanguage)
+                        : nil
                 )
             }
 

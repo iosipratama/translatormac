@@ -12,10 +12,40 @@ import os
 /// starred. Views query the store directly; this is only for writing.
 struct HistoryStore {
 
-    /// Unsaved entries beyond this many are dropped, oldest first.
-    static let recentLimit = 500
-
     var context: ModelContext
+
+    /// Unsaved entries beyond this many are dropped, oldest first. Depends on
+    /// the plan, so callers that record pass it in.
+    var recentLimit: Int = PlanLimits.proHistory
+
+    init(context: ModelContext, recentLimit: Int = PlanLimits.proHistory) {
+        self.context = context
+        self.recentLimit = recentLimit
+    }
+
+    /// How many entries are starred.
+    func savedCount() -> Int {
+        let descriptor = FetchDescriptor<TranslationHistory>(predicate: #Predicate { $0.isSaved })
+        return (try? context.fetchCount(descriptor)) ?? 0
+    }
+
+    /// How many unsaved entries Recent holds.
+    func recentCount() -> Int {
+        let descriptor = FetchDescriptor<TranslationHistory>(predicate: #Predicate { !$0.isSaved })
+        return (try? context.fetchCount(descriptor)) ?? 0
+    }
+
+    /// Whether another entry can be starred under a plan's limit.
+    func canSave(limit: Int?) -> Bool {
+        guard let limit else { return true }
+        return savedCount() < limit
+    }
+
+    /// Enforces the limit, for when the plan changes or the limit shrinks.
+    func pruneRecent() {
+        prune()
+        save()
+    }
 
     /// Adds a translation to Recent. If the same text in the same pair is
     /// already there, that entry is refreshed and moved to the top instead,
@@ -110,13 +140,15 @@ struct HistoryStore {
     /// Drops the oldest unsaved entries past the limit. Saved entries never
     /// count toward it.
     private func prune() {
-        var descriptor = FetchDescriptor<TranslationHistory>(
+        // Fetched in full and trimmed here rather than through fetchOffset,
+        // which SwiftData has been seen to ignore — and ignoring it would
+        // delete everything.
+        let descriptor = FetchDescriptor<TranslationHistory>(
             predicate: #Predicate { !$0.isSaved },
             sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
         )
-        descriptor.fetchOffset = Self.recentLimit
-        guard let overflow = try? context.fetch(descriptor), !overflow.isEmpty else { return }
-        for entry in overflow {
+        guard let unsaved = try? context.fetch(descriptor), unsaved.count > recentLimit else { return }
+        for entry in unsaved.dropFirst(recentLimit) {
             context.delete(entry)
         }
     }

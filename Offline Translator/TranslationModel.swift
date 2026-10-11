@@ -372,6 +372,10 @@ final class TranslationModel {
         if outcome?.result?.sourceText == text {
             // Only whitespace changed; the result on screen still applies.
             finishTranslating()
+        } else if !translatesAsYouType {
+            // Typing waits for ⌘⏎; a stale result shouldn't linger as if live.
+            outcome = nil
+            finishTranslating()
         } else {
             debounceTask = Task { [weak self] in
                 try? await Task.sleep(for: Timing.debounce)
@@ -389,6 +393,16 @@ final class TranslationModel {
 
     func clearInput() {
         inputText = ""
+    }
+
+    /// Settings › General › "Translate as you type".
+    var translatesAsYouType: Bool {
+        UserDefaults.standard.bool(forKey: SettingsKey.liveTranslate)
+    }
+
+    /// Settings › General › "Keep a history of translations".
+    private var keepsHistory: Bool {
+        UserDefaults.standard.bool(forKey: SettingsKey.keepHistory)
     }
 
     private func endSession() {
@@ -555,26 +569,34 @@ final class TranslationModel {
         currentRecord?.isSaved ?? false
     }
 
-    func toggleSaved() {
+    /// Returns `false` when the free plan's saved limit is reached and the
+    /// star stays empty; the caller offers Pro.
+    @discardableResult
+    func toggleSaved() -> Bool {
         if let record = currentRecord, record.isSaved {
             history.setSaved(record, false)
-            return
+            return true
         }
-        recordToRecent()
-        guard let record = currentRecord else { return }
+        guard history.canSave(limit: purchases.savedLimit) else { return false }
+        recordToRecent(force: true)
+        guard let record = currentRecord else { return true }
         history.setSaved(record, true)
+        return true
     }
 
     // MARK: - Recent
 
     /// Writes the translation on screen to Recent, updating this session's
     /// record if there is one. Waits for the translation if it hasn't arrived.
-    private func recordToRecent() {
+    /// With history off nothing is written unless forced, which saving does:
+    /// a starred entry has to exist somewhere.
+    private func recordToRecent(force: Bool = false) {
         guard let result = currentResult else {
             wantsRecord = true
             return
         }
         wantsRecord = false
+        guard keepsHistory || force else { return }
 
         // Record identifiers, not localized display names, so history stays
         // meaningful if the app language changes.
@@ -631,7 +653,7 @@ final class TranslationModel {
     }
 
     private var history: HistoryStore {
-        HistoryStore(context: modelContext)
+        HistoryStore(context: modelContext, recentLimit: purchases.historyLimit)
     }
 
     // MARK: - Persistence

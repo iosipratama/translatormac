@@ -13,7 +13,6 @@ extension FocusedValues {
     /// Edit › Copy Translation, provided by whichever screen is showing, so
     /// it copies the selected history entry as readily as the live result.
     @Entry var copyTranslation: CopyTranslationAction?
-    @Entry var proPresentation: ProPresentation?
 }
 
 /// A menu action compared by what it would copy, so the menu only

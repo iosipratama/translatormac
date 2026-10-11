@@ -18,7 +18,7 @@ final class PurchaseStore {
     static let offeredPlans: [ProPlan] = [.yearly, .lifetime]
 
     /// Free translations per calendar day without Pro.
-    static let dailyFreeLimit = 10
+    static let dailyFreeLimit = PlanLimits.freeTranslationsPerDay
 
     /// The first version given away for free. Versions before it were paid, so
     /// anyone whose original download predates it already bought the app and
@@ -47,6 +47,14 @@ final class PurchaseStore {
     /// lifetime or no plan.
     private(set) var subscriptionExpiration: Date?
 
+    /// Whether the subscription is set to renew; `false` once it's been
+    /// cancelled, so the date reads as an end rather than a renewal.
+    private(set) var subscriptionWillRenew = true
+
+    /// A subscription is still running alongside a lifetime purchase, which
+    /// Apple doesn't cancel on its own.
+    private(set) var hasRedundantSubscription = false
+
     /// Bought the app back when it was paid.
     private(set) var isEarlySupporter: Bool {
         didSet { UserDefaults.standard.set(isEarlySupporter, forKey: DefaultsKey.isEarlySupporter) }
@@ -71,6 +79,20 @@ final class PurchaseStore {
 
     var remainingFreeTranslations: Int {
         allowance.remaining(limit: Self.dailyFreeLimit, on: .now)
+    }
+
+    var translationsUsedToday: Int {
+        allowance.used(on: .now)
+    }
+
+    /// How many Recent entries to keep for this person.
+    var historyLimit: Int {
+        hasPro ? PlanLimits.proHistory : PlanLimits.freeHistory
+    }
+
+    /// How many entries can be starred; `nil` means no limit.
+    var savedLimit: Int? {
+        hasPro ? nil : PlanLimits.freeSaved
     }
 
     var canTranslate: Bool {
@@ -139,6 +161,7 @@ final class PurchaseStore {
             for plan in Self.offeredPlans where byPlan[plan] == nil {
                 Log.purchases.error("The App Store returned no product for \(plan.productID, privacy: .public)")
             }
+            await refreshRenewal()
         } catch {
             Log.purchases.error("Failed to load products: \(error.localizedDescription, privacy: .public)")
         }
@@ -183,9 +206,9 @@ final class PurchaseStore {
         }
 
         await refreshAccess()
-        if !hasPro {
-            statusMessage = String(localized: "No Pro purchase was found for this Apple Account.")
-        }
+        statusMessage = hasPro
+            ? String(localized: "Purchases restored.")
+            : String(localized: "Nothing to restore for this Apple Account.")
     }
 
     // MARK: - Entitlements
@@ -200,10 +223,14 @@ final class PurchaseStore {
     private func refreshOwnership() async {
         var plan: ProPlan?
         var expiration: Date?
+        var subscriptionSeen = false
         for await result in StoreKit.Transaction.currentEntitlements {
             guard case .verified(let transaction) = result,
                   transaction.revocationDate == nil,
                   let found = ProPlan(productID: transaction.productID) else { continue }
+            if found.isSubscription {
+                subscriptionSeen = true
+            }
             if found == .lifetime || plan == nil {
                 plan = found
                 expiration = found.isSubscription ? transaction.expirationDate : nil
@@ -211,6 +238,29 @@ final class PurchaseStore {
         }
         activePlan = plan
         subscriptionExpiration = expiration
+        hasRedundantSubscription = plan == .lifetime && subscriptionSeen
+        await refreshRenewal()
+    }
+
+    /// Whether the subscription will renew comes from its status, which needs
+    /// the product; until products load the answer stays optimistic.
+    private func refreshRenewal() async {
+        guard let plan = activePlan, plan.isSubscription,
+              let subscription = products[plan]?.subscription else {
+            subscriptionWillRenew = true
+            return
+        }
+        do {
+            let statuses = try await subscription.status
+            for status in statuses {
+                if case .verified(let renewal) = status.renewalInfo {
+                    subscriptionWillRenew = renewal.willAutoRenew
+                    return
+                }
+            }
+        } catch {
+            Log.purchases.error("Failed to read subscription status: \(error.localizedDescription, privacy: .public)")
+        }
     }
 
     private func refreshEarlySupporter() async {

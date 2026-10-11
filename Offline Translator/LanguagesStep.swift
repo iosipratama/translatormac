@@ -81,7 +81,7 @@ struct LanguagesStep: View {
 
     private func row(for choice: OnboardingModel.Choice) -> some View {
         HStack(spacing: 8) {
-            Toggle(choice.entry.name, isOn: Binding(
+            Toggle(choice.name, isOn: Binding(
                 get: { choice.isInstalled || model.selection.contains(choice.id) },
                 set: { _ in model.toggle(choice) }
             ))

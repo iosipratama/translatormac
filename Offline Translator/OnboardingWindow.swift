@@ -41,7 +41,7 @@ struct OnboardingWindow: View {
         }
         .frame(width: Self.size.width, height: Self.size.height)
         .animation(.smooth, value: model.step)
-        .translationTask(model.configuration) { session in
+        .translationTask(model.inventory.configuration) { session in
             await model.prepare(using: session)
         }
         .task {
@@ -68,12 +68,7 @@ struct OnboardingWindow: View {
     /// flow was reopened from the Help menu the existing one comes forward
     /// instead.
     private func showMainWindow() {
-        let existing = NSApp.windows.first {
-            $0.isVisible && $0.identifier?.rawValue.hasPrefix("main") == true
-        }
-        if let existing {
-            existing.makeKeyAndOrderFront(nil)
-        } else {
+        if !MainWindowAccess.bringForward() {
             openWindow(id: "main")
         }
     }

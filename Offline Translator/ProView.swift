@@ -10,6 +10,7 @@ import SwiftUI
 /// The Pro sheet: what Pro gives, the plans, and one button.
 struct ProView: View {
     @Environment(PurchaseStore.self) private var purchases
+    @Environment(ProPresentation.self) private var presentation
     @Environment(\.purchase) private var purchase
     @Environment(\.dismiss) private var dismiss
 
@@ -64,6 +65,9 @@ struct ProView: View {
         }
         .animation(.smooth, value: purchases.hasPro)
         .task {
+            if let plan = presentation.preferredPlan, PurchaseStore.offeredPlans.contains(plan) {
+                selectedPlan = plan
+            }
             await purchases.loadProducts()
         }
     }
@@ -90,10 +94,10 @@ struct ProView: View {
 
     private var benefits: some View {
         VStack(alignment: .leading, spacing: 12) {
-            benefit("Unlimited translations", detail: "the free plan has \(PurchaseStore.dailyFreeLimit) a day")
+            benefit("Unlimited translations", detail: "the free plan has \(PlanLimits.freeTranslationsPerDay) a day")
+            benefit("Full history", detail: "the free plan keeps the last \(PlanLimits.freeHistory)")
+            benefit("Unlimited saved", detail: "the free plan keeps \(PlanLimits.freeSaved)")
             benefit("Every language Apple offers", detail: "translated on this Mac, offline")
-            benefit("History and Saved", detail: "star as many translations as you like")
-            benefit("All future updates", detail: "new features included as they ship")
         }
         .frame(maxWidth: 400)
     }
@@ -183,7 +187,9 @@ struct ProView: View {
                 .foregroundStyle(.green)
 
             Group {
-                if purchases.isEarlySupporter && !purchases.ownsPro {
+                if purchases.hasRedundantSubscription {
+                    Text("Lifetime is yours. Your yearly plan is still running — cancel it under Manage Subscription, since Apple doesn’t do that automatically.")
+                } else if purchases.isEarlySupporter && !purchases.ownsPro {
                     Text("Thanks for buying Translate Offline early. Pro comes with your original purchase.")
                 } else if let expiration = purchases.subscriptionExpiration {
                     Text("Thank you for supporting Translate Offline. Your plan renews on \(expiration, format: .dateTime.day().month().year()).")
@@ -202,7 +208,7 @@ struct ProView: View {
 
     private var footer: some View {
         HStack(spacing: 6) {
-            if purchases.activePlan?.isSubscription == true {
+            if purchases.activePlan?.isSubscription == true || purchases.hasRedundantSubscription {
                 footerLink("Manage Subscription", destination: AppLinks.manageSubscriptions)
                 footerSeparator
             }

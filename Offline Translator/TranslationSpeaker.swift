@@ -33,8 +33,16 @@ final class TranslationSpeaker {
 
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = voice
+        utterance.rate = Self.rate(forSetting: UserDefaults.standard.double(forKey: SettingsKey.speechRate))
         isSpeaking = true
         synthesizer.speak(utterance)
+    }
+
+    /// Maps the 0…1 "Slow ↔ Fast" setting onto the synthesizer's range.
+    static func rate(forSetting value: Double) -> Float {
+        let clamped = Float(min(max(value, 0), 1))
+        return AVSpeechUtteranceMinimumSpeechRate
+            + clamped * (AVSpeechUtteranceMaximumSpeechRate - AVSpeechUtteranceMinimumSpeechRate)
     }
 
     func stop() {

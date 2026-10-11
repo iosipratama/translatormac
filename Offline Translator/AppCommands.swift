@@ -9,15 +9,14 @@ import SwiftUI
 /// App menu: Pro and rating, after the About item.
 struct AppMenuCommands: Commands {
     var purchases: PurchaseStore
-
-    @FocusedValue(\.proPresentation) private var pro
+    var pro: ProPresentation
 
     var body: some Commands {
         CommandGroup(after: .appInfo) {
             Button(purchases.hasPro ? "Translate Offline Pro" : "Upgrade to Pro…") {
-                pro?.present()
+                MainWindowAccess.bringForward()
+                pro.present()
             }
-            .disabled(pro == nil)
 
             Button("Rate Translate Offline") {
                 rateApp()

@@ -10,6 +10,8 @@ struct ResultPane: View {
     var model: TranslationModel
 
     @Environment(ProPresentation.self) private var pro
+    @AppStorage(SettingsKey.showPronunciation) private var showsPronunciation = true
+    @AppStorage(SettingsKey.liveTranslate) private var translatesAsYouType = true
 
     var body: some View {
         VStack(spacing: 0) {
@@ -63,8 +65,14 @@ struct ResultPane: View {
         } else if model.trimmedInput.isEmpty {
             PaneMessage(
                 systemImage: "character.bubble",
-                title: "The translation appears as you type",
+                title: translatesAsYouType ? "The translation appears as you type" : "Press ⌘⏎ to translate",
                 description: "Everything runs on this Mac. Nothing you type is sent anywhere."
+            )
+        } else if !translatesAsYouType, !model.isTranslating {
+            PaneMessage(
+                systemImage: "return",
+                title: "Press ⌘⏎ to translate",
+                description: "Translate as you type is off in Settings."
             )
         } else {
             // The first translation of a session is on its way; the header
@@ -81,7 +89,7 @@ struct ResultPane: View {
                     .lineSpacing(6)
                     .textSelection(.enabled)
 
-                if let pronunciation = result.pronunciation {
+                if showsPronunciation, let pronunciation = result.pronunciation {
                     Text(pronunciation)
                         .font(.callout)
                         .foregroundStyle(.secondary)
@@ -121,7 +129,9 @@ struct ResultPane: View {
 
         Toggle("Save", systemImage: model.isCurrentSaved ? "star.fill" : "star", isOn: Binding(
             get: { model.isCurrentSaved },
-            set: { _ in model.toggleSaved() }
+            set: { _ in
+                if !model.toggleSaved() { pro.present() }
+            }
         ))
         .toggleStyle(.button)
         .labelStyle(.iconOnly)
