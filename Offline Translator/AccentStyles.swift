@@ -17,9 +17,26 @@ extension View {
     /// pinned rather than left to the system accent, so the main button is
     /// the app's yellow even on a Mac with another accent chosen.
     func accentProminentButton() -> some View {
-        buttonStyle(.borderedProminent)
-            .tint(Color.accent)
-            .foregroundStyle(Color.onAccent)
+        modifier(AccentProminentButton())
+    }
+}
+
+private struct AccentProminentButton: ViewModifier {
+    @Environment(\.isEnabled) private var isEnabled
+
+    func body(content: Content) -> some View {
+        // A disabled button has no fill, so the dark label would vanish on a
+        // dark window; leave it to the system's own disabled look.
+        if isEnabled {
+            content
+                .buttonStyle(.borderedProminent)
+                .tint(Color.accent)
+                .foregroundStyle(Color.onAccent)
+        } else {
+            content
+                .buttonStyle(.borderedProminent)
+                .tint(Color.accent)
+        }
     }
 }
 
