@@ -1,14 +1,11 @@
-Simpler language names
+A redesigned Translate Offline
 
-Languages now read as "Danish" and "Spanish" instead of "Danish (Latin, Denmark)", with Chinese (Simplified) and Chinese (Traditional) clearly separated. The list also keeps itself up to date as macOS adds new languages.
+• Translates as you type, in a new window with a sidebar
+• Recent and Saved: find past translations and keep the phrases you reuse
+• Pronunciation for languages like Japanese and Chinese, plus read-aloud
+• Best quality: on Macs with Apple Intelligence, more natural translations, still fully offline
+• Settings › Languages shows exactly which languages are on your Mac, with one-click downloads
+• New Settings for appearance, translation quality, speaking speed, and history
+• Full menu bar commands and keyboard shortcuts
 
-Also in this update
-
-• Copy a translation with a single click, from the main window or from History
-• Your language choices are remembered between launches
-• History shows the language pair and when each translation happened
-• Download a missing language directly from the app
-• Clearer messages when a language pair isn't supported or isn't downloaded yet
-• The panels no longer resize when a translation arrives
-• Press Command-Y to open History
-• Improved VoiceOver support throughout
+Translate Offline is now free with 20 translations a day, and Pro removes the limit. Bought the app before this update? Thank you: Pro is already yours.
