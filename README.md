@@ -12,7 +12,8 @@ A simple macOS app for offline text translation using Apple's on-device translat
                         
 ### Requirements
 - macOS 26+
-- On-device language models installed 
+- On-device language models installed, from System Settings or the app's own download prompt
+- The app always asks the Translation framework for its traditional per-language models (`.lowLatency`), not Apple Intelligence; see `LanguageCatalog.availability()` for why
 
 
 ### In-app purchases

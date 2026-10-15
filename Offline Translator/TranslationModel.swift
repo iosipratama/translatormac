@@ -461,7 +461,7 @@ final class TranslationModel {
             }
         }
 
-        let desired = TranslationSession.Configuration(
+        let desired = LanguageCatalog.configuration(
             source: sourceLanguage,
             target: targetLanguage
         )

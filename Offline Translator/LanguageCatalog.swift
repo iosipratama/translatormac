@@ -43,8 +43,40 @@ enum LanguageCatalog {
     /// The calls that touch `LanguageAvailability` stay on the main actor; only
     /// the Sendable results cross out.
     static func supportedLanguages() async -> [TranslationLanguage] {
-        let supported = await LanguageAvailability().supportedLanguages
+        let supported = await availability().supportedLanguages
         return catalog(from: supported)
+    }
+
+    // MARK: - Which models
+
+    /// The framework's traditional per-language models, which this app is
+    /// built around: a language is downloaded once, in System Settings or from
+    /// the app, and then works offline, fast enough to translate as you type.
+    ///
+    /// Apps built with the macOS 26.4 SDK or later default to `.highFidelity`,
+    /// which translates with Apple Intelligence instead. On a Mac with Apple
+    /// Intelligence enabled every language then reports as installed with
+    /// nothing to download — so Settings › Languages showed "Ready" for all 26,
+    /// the download prompts never appeared, and each translation took a couple
+    /// of seconds. Asking for the models explicitly keeps the app behaving the
+    /// same whichever SDK it's built with.
+    static func availability() -> LanguageAvailability {
+        if #available(macOS 26.4, *) {
+            LanguageAvailability(preferredStrategy: .lowLatency)
+        } else {
+            LanguageAvailability()
+        }
+    }
+
+    /// A session for the pair that uses the same models the availability checks
+    /// look at, so a language the menu calls installed is the one that
+    /// translates.
+    static func configuration(source: Locale.Language?, target: Locale.Language?) -> TranslationSession.Configuration {
+        var configuration = TranslationSession.Configuration(source: source, target: target)
+        if #available(macOS 26.4, *) {
+            configuration.preferredStrategy = .lowLatency
+        }
+        return configuration
     }
 
     /// Split out from `supportedLanguages()` so the grouping rules don't depend
@@ -230,7 +262,7 @@ enum LanguageCatalog {
 
     /// Whether the pair is installed, merely supported, or not supported at all.
     static func status(from source: Locale.Language, to target: Locale.Language) async -> LanguageAvailability.Status {
-        await LanguageAvailability().status(from: source, to: target)
+        await availability().status(from: source, to: target)
     }
 
     /// Language models are downloaded in System Settings, under Language &
