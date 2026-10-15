@@ -81,6 +81,13 @@ final class LanguageInventory {
         entries = built
     }
 
+    /// Starts over from the catalog, for when the models in use change.
+    func reload() async {
+        catalog = []
+        entries = []
+        await refresh()
+    }
+
     func entry(for language: Locale.Language) -> Entry? {
         entries.first { $0.language == language }
     }

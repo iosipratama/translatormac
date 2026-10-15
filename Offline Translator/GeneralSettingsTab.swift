@@ -17,6 +17,7 @@ struct GeneralSettingsTab: View {
     @AppStorage(SettingsKey.speechRate) private var speechRate = 0.45
     @AppStorage(SettingsKey.keepHistory) private var keepsHistory = true
     @AppStorage(SettingsKey.appearance) private var theme: AppTheme = .automatic
+    @AppStorage(SettingsKey.translationQuality) private var quality: TranslationQuality = .fast
 
     @State private var showClearConfirm = false
     @State private var sampleSpeaker = TranslationSpeaker()
@@ -43,6 +44,21 @@ struct GeneralSettingsTab: View {
                             .padding(.leading, 20)
                     }
                     Toggle("Show pronunciation", isOn: $showsPronunciation)
+                }
+            }
+
+            LabeledContent("Quality:") {
+                VStack(alignment: .leading, spacing: 6) {
+                    Picker("Translation quality", selection: shownQuality) {
+                        ForEach(TranslationQuality.allCases) { quality in
+                            Text(quality.title).tag(quality)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .labelsHidden()
+                    .fixedSize()
+                    .disabled(!TranslationQuality.isBestAvailable)
+                    note(qualityNote)
                 }
             }
 
@@ -83,6 +99,26 @@ struct GeneralSettingsTab: View {
             Button("Cancel", role: .cancel) {}
         } message: {
             Text("This removes every translation in Recent. Saved translations are kept.")
+        }
+    }
+
+    /// Shows Fast while Best quality can't take effect, so the picker matches
+    /// what translation actually uses; the stored choice is kept for later.
+    private var shownQuality: Binding<TranslationQuality> {
+        Binding {
+            TranslationQuality.isBestAvailable ? quality : .fast
+        } set: { quality = $0 }
+    }
+
+    private var qualityNote: LocalizedStringKey {
+        if let reason = TranslationQuality.bestUnavailableReason {
+            return "Uses the languages downloaded to this Mac. \(reason)"
+        }
+        switch quality {
+        case .fast:
+            return "Uses the languages downloaded to this Mac. Quick enough to translate as you type."
+        case .best:
+            return "Uses Apple Intelligence for more natural translations in every language, with nothing to download. Each one takes a moment longer. Still works offline."
         }
     }
 

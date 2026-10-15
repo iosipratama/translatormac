@@ -44,7 +44,7 @@ front() { osascript -e "tell application \"System Events\" to set frontmost of (
 # Starts a fresh copy (the text box has focus right after launch) at 1000×587.
 launch() {
     [[ -n $PID ]] && { kill $PID 2>/dev/null; sleep 1.5 }
-    "$APP/Contents/MacOS/Translate Offline" -screenshotMode YES -appearance $MODE \
+    "$APP/Contents/MacOS/Translate Offline" -screenshotMode YES -translationQuality fast -appearance $MODE \
         -sourceLanguage $1 -targetLanguage $2 -liveTranslate YES -showPronunciation YES >/dev/null 2>&1 &
     PID=$!
     sleep 5

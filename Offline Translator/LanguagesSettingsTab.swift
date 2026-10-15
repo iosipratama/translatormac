@@ -12,6 +12,7 @@ import SwiftUI
 struct LanguagesSettingsTab: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var inventory = LanguageInventory()
+    @AppStorage(SettingsKey.translationQuality) private var quality: TranslationQuality = .fast
 
     /// Ready languages first, then the rest in catalog order.
     private var rows: [LanguageInventory.Entry] {
@@ -37,6 +38,13 @@ struct LanguagesSettingsTab: View {
                 }
             }
 
+            if TranslationQuality.effective == .best {
+                Text("Best quality is on, so Apple Intelligence translates every language without a download. Downloaded languages are used when quality is set to Fast.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
             table
                 .frame(height: 300)
 
@@ -59,6 +67,9 @@ struct LanguagesSettingsTab: View {
         }
         .task {
             await inventory.refresh()
+        }
+        .onChange(of: quality) {
+            Task { await inventory.reload() }
         }
         // Languages can be added or removed in System Settings meanwhile.
         .onChange(of: scenePhase) { _, phase in

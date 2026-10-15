@@ -49,20 +49,16 @@ enum LanguageCatalog {
 
     // MARK: - Which models
 
-    /// The framework's traditional per-language models, which this app is
-    /// built around: a language is downloaded once, in System Settings or from
-    /// the app, and then works offline, fast enough to translate as you type.
+    /// Availability for the models chosen in Settings (see `TranslationQuality`).
     ///
-    /// Apps built with the macOS 26.4 SDK or later default to `.highFidelity`,
-    /// which translates with Apple Intelligence instead. On a Mac with Apple
-    /// Intelligence enabled every language then reports as installed with
-    /// nothing to download — so Settings › Languages showed "Ready" for all 26,
-    /// the download prompts never appeared, and each translation took a couple
-    /// of seconds. Asking for the models explicitly keeps the app behaving the
-    /// same whichever SDK it's built with.
+    /// The strategy is always passed explicitly. Apps built with the macOS 26.4
+    /// SDK or later otherwise default to `.highFidelity`, the Apple Intelligence
+    /// models, which report every language as installed — so with Fast chosen,
+    /// Settings › Languages would claim all of them are "Ready" and the
+    /// download prompts would never appear.
     static func availability() -> LanguageAvailability {
         if #available(macOS 26.4, *) {
-            LanguageAvailability(preferredStrategy: .lowLatency)
+            LanguageAvailability(preferredStrategy: TranslationQuality.effective.strategy)
         } else {
             LanguageAvailability()
         }
@@ -74,7 +70,7 @@ enum LanguageCatalog {
     static func configuration(source: Locale.Language?, target: Locale.Language?) -> TranslationSession.Configuration {
         var configuration = TranslationSession.Configuration(source: source, target: target)
         if #available(macOS 26.4, *) {
-            configuration.preferredStrategy = .lowLatency
+            configuration.preferredStrategy = TranslationQuality.effective.strategy
         }
         return configuration
     }
