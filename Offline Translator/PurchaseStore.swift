@@ -62,7 +62,7 @@ final class PurchaseStore {
 
     var ownsPro: Bool { activePlan != nil }
 
-    var hasPro: Bool { true }
+    var hasPro: Bool { ownsPro || isEarlySupporter }
 
     private(set) var isPurchasing = false
 
