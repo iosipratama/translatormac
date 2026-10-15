@@ -68,7 +68,24 @@ final class LanguageInventory {
                 isInstalled: status == .installed
             ))
         }
+
+        // The Mac's own language is the other half of every pair checked
+        // above, so it's on this Mac whenever any of them is. Its own check
+        // had to pick some other partner, which may be one that isn't
+        // downloaded: on an English Mac, English was checked against Arabic.
+        if let device = deviceLanguage,
+           let index = built.firstIndex(where: { $0.language == device }),
+           built.contains(where: \.isInstalled) {
+            built[index].isInstalled = true
+        }
         entries = built
+    }
+
+    /// Starts over from the catalog, for when the models in use change.
+    func reload() async {
+        catalog = []
+        entries = []
+        await refresh()
     }
 
     func entry(for language: Locale.Language) -> Entry? {
@@ -135,7 +152,7 @@ final class LanguageInventory {
         let next = queue.removeFirst()
         downloading = next
 
-        let desired = TranslationSession.Configuration(source: partner(for: next), target: next)
+        let desired = LanguageCatalog.configuration(source: partner(for: next), target: next)
         if var current = configuration, current.source == desired.source, current.target == desired.target {
             current.invalidate()
             configuration = current

@@ -114,6 +114,14 @@ nonisolated enum Pronunciation {
             result += punctuation[character] ?? String(character)
         }
 
+        // A small っ that ends one token comes back as "~tsu", when it really
+        // doubles the next consonant: "hai~tsu te" reads "haitte", and before
+        // "ch" Hepburn writes "tch". Any left over has nothing to double.
+        result = result.replacing(/~tsu\s*(ch|[bcdfghjkmnpqrstvwxyz])/) { match in
+            match.output.1 == "ch" ? "tch" : "\(match.output.1)\(match.output.1)"
+        }
+        result = result.replacing("~tsu", with: "")
+
         // A space after sentence punctuation, and never more than one in a row.
         result = result.replacing(/([.,!?;:])(?=\S)/) { "\($0.output.1) " }
         result = result.replacing(/\s+/, with: " ")

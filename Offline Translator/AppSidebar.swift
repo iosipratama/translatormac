@@ -50,9 +50,9 @@ private struct ProUnlockCard: View {
                     .background(Color.accent, in: .rect(cornerRadius: 7))
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Unlock Pro")
+                    Text("No daily limit")
                         .font(.subheadline.weight(.semibold))
-                    Text("Yearly or lifetime")
+                    Text("Unlock Pro")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -67,7 +67,7 @@ private struct ProUnlockCard: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Unlock Pro")
-        .accessibilityHint("Yearly or lifetime")
+        .accessibilityHint("No daily limit")
         .help("Show Pro plans")
     }
 }

@@ -16,6 +16,7 @@ struct MainWindow: View {
 
     @State private var model: TranslationModel
     @State private var selection: SidebarItem = .translate
+    @AppStorage(SettingsKey.translationQuality) private var quality: TranslationQuality = .fast
 
     /// The model outlives the translate screen so switching to Recent and back
     /// keeps the text and result. `State` only reads this value the first time
@@ -42,7 +43,7 @@ struct MainWindow: View {
             // frame on NavigationSplitView itself lays the content out at the
             // split view's own screen-tall measurement and centers it, pushing
             // the headers and footers out of view until the next layout.
-            .frame(minWidth: 600, idealWidth: 800, minHeight: 520, idealHeight: 660)
+            .frame(minWidth: 600, idealWidth: 800, minHeight: ScreenshotMode.isEnabled ? 400 : 520, idealHeight: 660)
         }
         // Attached here rather than to the translate screen so a translation or
         // download prompt that's underway survives a switch to another screen.
@@ -54,6 +55,9 @@ struct MainWindow: View {
         }
         .task(id: model.availabilityKey) {
             await model.refreshAvailability()
+        }
+        .onChange(of: quality) {
+            Task { await model.translationQualityDidChange() }
         }
         .onChange(of: purchases.canTranslate) { _, canTranslate in
             // Buying Pro while blocked should pick up where typing left off.

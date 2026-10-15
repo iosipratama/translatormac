@@ -30,7 +30,7 @@ struct TranslatorMacApp: App {
         AppTheme.stored.apply()
         didFinishOnboarding = OnboardingModel.didFinish
         do {
-            modelContainer = try ModelContainer(for: TranslationHistory.self)
+            modelContainer = try ScreenshotMode.sampleContainer() ?? ModelContainer(for: TranslationHistory.self)
         } catch {
             fatalError("Failed to open the translation history store: \(error)")
         }

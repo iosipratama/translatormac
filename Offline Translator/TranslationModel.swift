@@ -194,6 +194,20 @@ final class TranslationModel {
         storeLanguages()
     }
 
+    /// Settings › General › Quality changed. The other models support a
+    /// different set of languages and report different ones as installed, so
+    /// start again from the catalog and translate what's on screen again.
+    func translationQualityDidChange() async {
+        configuration = nil
+        sourceStatuses = [:]
+        targetStatuses = [:]
+        supportedLanguages = []
+        await loadSupportedLanguages()
+        if !trimmedInput.isEmpty {
+            requestTranslation()
+        }
+    }
+
     /// Finds the catalog entry representing a language, ignoring region.
     private func resolve(_ language: Locale.Language) -> Locale.Language? {
         let key = LanguageCatalog.groupKey(for: language)
@@ -229,7 +243,7 @@ final class TranslationModel {
 
     /// Availability also has to be re-checked once the catalog arrives.
     var availabilityKey: String {
-        "\(languagePairID)|\(supportedLanguages.count)"
+        "\(languagePairID)|\(supportedLanguages.count)|\(TranslationQuality.effective.rawValue)"
     }
 
     /// Swapping is only meaningful when both ends are known languages.
@@ -461,7 +475,7 @@ final class TranslationModel {
             }
         }
 
-        let desired = TranslationSession.Configuration(
+        let desired = LanguageCatalog.configuration(
             source: sourceLanguage,
             target: targetLanguage
         )

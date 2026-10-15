@@ -43,8 +43,36 @@ enum LanguageCatalog {
     /// The calls that touch `LanguageAvailability` stay on the main actor; only
     /// the Sendable results cross out.
     static func supportedLanguages() async -> [TranslationLanguage] {
-        let supported = await LanguageAvailability().supportedLanguages
+        let supported = await availability().supportedLanguages
         return catalog(from: supported)
+    }
+
+    // MARK: - Which models
+
+    /// Availability for the models chosen in Settings (see `TranslationQuality`).
+    ///
+    /// The strategy is always passed explicitly. Apps built with the macOS 26.4
+    /// SDK or later otherwise default to `.highFidelity`, the Apple Intelligence
+    /// models, which report every language as installed — so with Fast chosen,
+    /// Settings › Languages would claim all of them are "Ready" and the
+    /// download prompts would never appear.
+    static func availability() -> LanguageAvailability {
+        if #available(macOS 26.4, *) {
+            LanguageAvailability(preferredStrategy: TranslationQuality.effective.strategy)
+        } else {
+            LanguageAvailability()
+        }
+    }
+
+    /// A session for the pair that uses the same models the availability checks
+    /// look at, so a language the menu calls installed is the one that
+    /// translates.
+    static func configuration(source: Locale.Language?, target: Locale.Language?) -> TranslationSession.Configuration {
+        var configuration = TranslationSession.Configuration(source: source, target: target)
+        if #available(macOS 26.4, *) {
+            configuration.preferredStrategy = TranslationQuality.effective.strategy
+        }
+        return configuration
     }
 
     /// Split out from `supportedLanguages()` so the grouping rules don't depend
@@ -230,7 +258,7 @@ enum LanguageCatalog {
 
     /// Whether the pair is installed, merely supported, or not supported at all.
     static func status(from source: Locale.Language, to target: Locale.Language) async -> LanguageAvailability.Status {
-        await LanguageAvailability().status(from: source, to: target)
+        await availability().status(from: source, to: target)
     }
 
     /// Language models are downloaded in System Settings, under Language &
