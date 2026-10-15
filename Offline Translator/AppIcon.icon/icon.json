@@ -1,19 +1,31 @@
 {
   "fill" : {
-    "solid" : "srgb:0.11000,0.11000,0.11000,1.00000"
+    "automatic-gradient" : "extended-gray:0.00000,1.00000"
   },
   "groups" : [
     {
       "layers" : [
         {
-          "glass" : false,
-          "image-name" : "foreground-1.svg",
-          "name" : "foreground-1"
+          "image-name" : "translate from.svg",
+          "name" : "translate from",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              -16,
+              -89
+            ]
+          }
         },
         {
-          "glass" : false,
-          "image-name" : "foreground-2.svg",
-          "name" : "foreground-2"
+          "image-name" : "to.svg",
+          "name" : "to",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              128,
+              182
+            ]
+          }
         }
       ],
       "shadow" : {
@@ -22,7 +34,7 @@
       },
       "translucency" : {
         "enabled" : true,
-        "value" : 0.5
+        "value" : 0.3
       }
     }
   ],
