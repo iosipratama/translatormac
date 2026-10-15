@@ -42,7 +42,7 @@ struct MainWindow: View {
             // frame on NavigationSplitView itself lays the content out at the
             // split view's own screen-tall measurement and centers it, pushing
             // the headers and footers out of view until the next layout.
-            .frame(minWidth: 600, idealWidth: 800, minHeight: 520, idealHeight: 660)
+            .frame(minWidth: 600, idealWidth: 800, minHeight: ScreenshotMode.isEnabled ? 400 : 520, idealHeight: 660)
         }
         // Attached here rather than to the translate screen so a translation or
         // download prompt that's underway survives a switch to another screen.

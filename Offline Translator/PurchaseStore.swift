@@ -62,7 +62,7 @@ final class PurchaseStore {
 
     var ownsPro: Bool { activePlan != nil }
 
-    var hasPro: Bool { ownsPro || isEarlySupporter }
+    var hasPro: Bool { ownsPro || isEarlySupporter || ScreenshotMode.isEnabled }
 
     private(set) var isPurchasing = false
 
