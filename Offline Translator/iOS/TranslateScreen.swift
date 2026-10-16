@@ -26,6 +26,7 @@ struct TranslateScreen: View {
     @FocusState private var isEditing: Bool
     @State private var pickerSide: LanguageSide?
     @State private var isShowingToSomeone = false
+    @State private var isShowingCamera = false
     @State private var toast: ToastMessage?
     @State private var savedCount = 0
     @State private var copiedCount = 0
@@ -87,7 +88,7 @@ struct TranslateScreen: View {
                     BottomControls(mic: micMode) {
                         isEditing = true
                     } camera: {
-                        comingSoon("Camera translation is coming soon")
+                        isShowingCamera = true
                     } press: {
                         pressMic()
                     } release: {
@@ -111,6 +112,9 @@ struct TranslateScreen: View {
         }
         .fullScreenCover(isPresented: $isShowingToSomeone) {
             ShowToSomeoneView(model: model)
+        }
+        .fullScreenCover(isPresented: $isShowingCamera) {
+            CameraScreen(model: model)
         }
         .onChange(of: isEditing) { _, isEditing in
             if isEditing {
@@ -558,9 +562,5 @@ struct TranslateScreen: View {
             let name = model.sourceLanguage.map(model.name(for:)) ?? ""
             toast = ToastMessage(text: "Voice isn’t available offline for \(name) yet. You can still type.")
         }
-    }
-
-    private func comingSoon(_ text: LocalizedStringResource) {
-        toast = ToastMessage(text: text)
     }
 }

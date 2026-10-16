@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Point your camera at signs and menus to translate them. Photos are processed on this iPhone and never leave it.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Hold to talk and hear the translation. Your voice is processed on this iPhone and never leaves it.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
