@@ -51,6 +51,9 @@ final class PurchaseStore {
     /// cancelled, so the date reads as an end rather than a renewal.
     private(set) var subscriptionWillRenew = true
 
+    /// When Lifetime was bought; `nil` for subscriptions or no plan.
+    private(set) var lifetimePurchaseDate: Date?
+
     /// A subscription is still running alongside a lifetime purchase, which
     /// Apple doesn't cancel on its own.
     private(set) var hasRedundantSubscription = false
@@ -224,6 +227,7 @@ final class PurchaseStore {
     private func refreshOwnership() async {
         var plan: ProPlan?
         var expiration: Date?
+        var purchased: Date?
         var subscriptionSeen = false
         for await result in StoreKit.Transaction.currentEntitlements {
             guard case .verified(let transaction) = result,
@@ -235,10 +239,12 @@ final class PurchaseStore {
             if found == .lifetime || plan == nil {
                 plan = found
                 expiration = found.isSubscription ? transaction.expirationDate : nil
+                purchased = found.isSubscription ? nil : transaction.purchaseDate
             }
         }
         activePlan = plan
         subscriptionExpiration = expiration
+        lifetimePurchaseDate = purchased
         hasRedundantSubscription = plan == .lifetime && subscriptionSeen
         await refreshRenewal()
     }

@@ -51,7 +51,8 @@ enum TranslationQuality: String, CaseIterable, Identifiable {
 
     /// Why Best quality can't be chosen, or `nil` when it can.
     static var bestUnavailableReason: String? {
-        guard #available(macOS 26.4, iOS 26.4, *) else {
+        #if os(macOS)
+        guard #available(macOS 26.4, *) else {
             return String(localized: "Best quality needs macOS 26.4 or later.")
         }
         switch SystemLanguageModel.default.availability {
@@ -66,6 +67,23 @@ enum TranslationQuality: String, CaseIterable, Identifiable {
         case .unavailable:
             return String(localized: "Best quality isn’t available on this Mac right now.")
         }
+        #else
+        guard #available(iOS 26.4, *) else {
+            return String(localized: "Best quality needs iOS 26.4 or later.")
+        }
+        switch SystemLanguageModel.default.availability {
+        case .available:
+            return nil
+        case .unavailable(.deviceNotEligible):
+            return String(localized: "Best quality needs an iPhone that supports Apple Intelligence.")
+        case .unavailable(.appleIntelligenceNotEnabled):
+            return String(localized: "Best quality needs Apple Intelligence, which you can turn on in Settings.")
+        case .unavailable(.modelNotReady):
+            return String(localized: "Best quality will be available once Apple Intelligence finishes setting up.")
+        case .unavailable:
+            return String(localized: "Best quality isn’t available on this iPhone right now.")
+        }
+        #endif
     }
 
     @available(macOS 26.4, iOS 26.4, *)
