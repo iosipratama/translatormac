@@ -17,6 +17,8 @@ struct RootView: View {
 
     @State private var model: TranslationModel
     @State private var path: [AppRoute] = []
+    /// Which languages are downloaded, for Settings and its Languages page.
+    @State private var inventory = LanguageInventory()
     @AppStorage(SettingsKey.translationQuality) private var quality: TranslationQuality = .fast
     @AppStorage(SettingsKey.appearance) private var theme: AppTheme = .automatic
 
@@ -38,7 +40,9 @@ struct RootView: View {
                             path.append(.settings)
                         }
                     case .settings:
-                        placeholder("Settings", systemImage: "slider.horizontal.3")
+                        SettingsScreen(model: model, inventory: inventory)
+                    case .languages:
+                        LanguagesScreen(model: model, inventory: inventory)
                     }
                 }
         }
@@ -69,13 +73,5 @@ struct RootView: View {
             ProPlaceholderSheet()
         }
         .preferredColorScheme(theme.colorScheme)
-    }
-
-    /// Stands in for a screen until it's designed and built.
-    private func placeholder(_ title: LocalizedStringKey, systemImage: String) -> some View {
-        ContentUnavailableView(title, systemImage: systemImage, description: Text("Coming soon"))
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(.canvas)
-            .navigationTitle(title)
     }
 }

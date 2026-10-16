@@ -11,4 +11,5 @@ enum AppRoute: Hashable {
     /// Library on a given tab, or on the one used last when `nil`.
     case library(LibraryTab?)
     case settings
+    case languages
 }
