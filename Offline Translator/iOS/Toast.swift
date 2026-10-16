@@ -10,6 +10,7 @@ import SwiftUI
 struct ToastMessage: Identifiable, Equatable {
     var id = UUID()
     var text: LocalizedStringResource
+    var systemImage: String?
     var action: Action?
 
     struct Action {
@@ -46,6 +47,7 @@ private struct ToastPresenter: ViewModifier {
                     ToastView(message: message) {
                         self.message = nil
                     }
+                    .padding(.horizontal, 20)
                     .padding(.bottom, bottomPadding)
                     .transition(reduceMotion ? .opacity : .move(edge: .bottom).combined(with: .opacity))
                     .task(id: message.id) {
@@ -70,8 +72,15 @@ private struct ToastView: View {
 
     var body: some View {
         HStack(spacing: 16) {
-            Text(message.text)
+            HStack(spacing: 10) {
+                if let systemImage = message.systemImage {
+                    Image(systemName: systemImage)
+                        .accessibilityHidden(true)
+                }
+                Text(message.text)
+            }
             if let action = message.action {
+                Spacer(minLength: 0)
                 Button {
                     action.perform()
                     dismiss()
@@ -85,7 +94,8 @@ private struct ToastView: View {
         .font(.subheadline.weight(.medium))
         .foregroundStyle(.onInverse)
         .padding(.horizontal, 20)
-        .padding(.vertical, 12)
+        .padding(.vertical, 14)
+        .frame(maxWidth: message.action == nil ? nil : .infinity)
         .background(.inverse, in: .capsule)
         .shadow(color: .black.opacity(0.15), radius: 12, y: 4)
     }

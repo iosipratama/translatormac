@@ -13,6 +13,7 @@ import SwiftUI
 /// translation engine every screen shares.
 struct RootView: View {
     @Environment(PurchaseStore.self) private var purchases
+    @Environment(ProPresentation.self) private var pro
 
     @State private var model: TranslationModel
     @State private var path: [AppRoute] = []
@@ -27,7 +28,7 @@ struct RootView: View {
 
     var body: some View {
         NavigationStack(path: $path) {
-            TranslateScreen(model: model)
+            TranslateScreen(model: model) { path.append($0) }
                 .navigationDestination(for: AppRoute.self) { route in
                     switch route {
                     case .library:
@@ -48,6 +49,7 @@ struct RootView: View {
         }
         .task {
             await model.loadSupportedLanguages()
+            await model.chooseStartingPair()
         }
         .task(id: model.availabilityKey) {
             await model.refreshAvailability()
@@ -58,6 +60,9 @@ struct RootView: View {
         .onChange(of: purchases.canTranslate) { _, canTranslate in
             // Buying Pro while blocked should pick up where typing left off.
             if canTranslate { model.requestTranslation() }
+        }
+        .sheet(isPresented: Bindable(pro).isPresented) {
+            ProPlaceholderSheet()
         }
         .preferredColorScheme(theme.colorScheme)
     }
