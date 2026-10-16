@@ -480,6 +480,7 @@ final class TranslationModel {
         currentRecord = nil
         sessionCounted = false
         wantsRecord = false
+        wantsSpeech = false
         speaker.stop()
     }
 
@@ -572,6 +573,10 @@ final class TranslationModel {
             if wantsRecord {
                 recordToRecent()
             }
+            if wantsSpeech {
+                wantsSpeech = false
+                toggleSpeech()
+            }
         } catch is CancellationError {
             // Superseded by a newer request.
         } catch {
@@ -635,6 +640,19 @@ final class TranslationModel {
         speaksSlowly.toggle()
         guard speaker.isSpeaking, let result = currentResult else { return }
         speaker.speak(result.text, in: targetLanguage, rateMultiplier: speaksSlowly ? 0.5 : 1)
+    }
+
+    /// Set while waiting to read a translation that's still on its way.
+    private var wantsSpeech = false
+
+    /// Reads the translation aloud as soon as it's ready, as after speaking
+    /// on iPhone.
+    func speakWhenTranslated() {
+        if currentResult != nil {
+            if !speaker.isSpeaking { toggleSpeech() }
+        } else {
+            wantsSpeech = true
+        }
     }
 
     /// The translation was shown full-screen to someone: it counts as made.
