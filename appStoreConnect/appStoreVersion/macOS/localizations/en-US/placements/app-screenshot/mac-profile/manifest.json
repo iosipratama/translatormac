@@ -1,13 +1,9 @@
 {
   "placements": [
-    {
-      "fileName": "Screen 1.jpg"
-    },
-    {
-      "fileName": "Screen 2.jpg"
-    },
-    {
-      "fileName": "Screen 3.jpg"
-    }
+    { "fileName": "screen-1.png" },
+    { "fileName": "screen-2.png" },
+    { "fileName": "screen-3.png" },
+    { "fileName": "screen-4.png" },
+    { "fileName": "screen-5.png" }
   ]
 }
