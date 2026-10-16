@@ -91,7 +91,9 @@ struct CameraScreen: View {
             LanguagePickerSheet(model: model, side: side)
         }
         .sheet(isPresented: $isShowingPro) {
-            ProPlaceholderSheet()
+            PaywallSheet {
+                toast = ToastMessage(text: "You’re Pro", systemImage: "checkmark.seal.fill")
+            }
         }
         .sensoryFeedback(.success, trigger: copiedCount)
     }

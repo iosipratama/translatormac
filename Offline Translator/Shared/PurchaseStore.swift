@@ -295,7 +295,7 @@ final class PurchaseStore {
     private func handle(_ verification: VerificationResult<StoreKit.Transaction>) async {
         guard case .verified(let transaction) = verification else {
             Log.purchases.error("Transaction failed verification")
-            statusMessage = String(localized: "Couldn’t verify the purchase. Click Restore Purchases to try again.")
+            statusMessage = String(localized: "Couldn’t verify the purchase. Use Restore Purchases to try again.")
             return
         }
 

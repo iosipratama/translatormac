@@ -2,32 +2,11 @@
 //  OnboardingChrome.swift
 //  TranslatorMac
 //
-//  Pieces every onboarding step shares: the big yellow button, the page
-//  dots, and the app's mark.
+//  Pieces every onboarding step shares: the page dots, the app's mark,
+//  and language status rows.
 //
 
 import SwiftUI
-
-/// The full-width yellow capsule that moves the flow forward.
-struct OnboardingButton: View {
-    var title: LocalizedStringKey
-    var action: () -> Void
-
-    @Environment(\.isEnabled) private var isEnabled
-
-    var body: some View {
-        Button(action: action) {
-            Text(title)
-                .font(.headline)
-                .frame(maxWidth: .infinity, minHeight: 54)
-                .contentShape(.capsule)
-        }
-        .buttonStyle(.glassProminent)
-        .buttonBorderShape(.capsule)
-        .tint(isEnabled ? Color.accent : Color.raised)
-        .foregroundStyle(isEnabled ? AnyShapeStyle(.onAccent) : AnyShapeStyle(.textFaint))
-    }
-}
 
 /// Three dots for the three steps, the current one stretched.
 struct OnboardingDots: View {

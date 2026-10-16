@@ -72,7 +72,7 @@ struct OnboardingDownloads: View {
             VStack(spacing: 14) {
                 if isFinished {
                     // Something didn't download; the title says so.
-                    OnboardingButton(title: "Continue") { acceptedFailures = true }
+                    PrimaryCapsuleButton(title: "Continue") { acceptedFailures = true }
                 } else {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Downloading \(min(done + 1, total)) of \(total)…")
@@ -153,7 +153,7 @@ struct OnboardingDownloads: View {
         }
         .scrollBounceBehavior(.basedOnSize)
         .safeAreaBar(edge: .bottom) {
-            OnboardingButton(title: "Start Translating", action: finish)
+            PrimaryCapsuleButton(title: "Start Translating", action: finish)
                 .padding(.horizontal, 24)
                 .padding(.bottom, 8)
         }

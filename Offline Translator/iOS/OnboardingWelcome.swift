@@ -59,7 +59,7 @@ struct OnboardingWelcome: View {
         .scrollBounceBehavior(.basedOnSize)
         .safeAreaBar(edge: .bottom) {
             VStack(spacing: 18) {
-                OnboardingButton(title: "Continue", action: next)
+                PrimaryCapsuleButton(title: "Continue", action: next)
                 OnboardingDots(current: 0)
             }
             .padding(.horizontal, 24)

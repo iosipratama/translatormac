@@ -63,7 +63,7 @@ struct OnboardingLanguages: View {
                     .font(.footnote)
                     .foregroundStyle(.textMuted)
                     .contentTransition(.numericText())
-                OnboardingButton(title: downloadTitle, action: download)
+                PrimaryCapsuleButton(title: downloadTitle, action: download)
                     .disabled(onboarding.selectedCount == 0 || !network.isOnline)
                 OnboardingDots(current: 1)
             }

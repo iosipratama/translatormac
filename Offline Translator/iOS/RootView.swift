@@ -19,6 +19,7 @@ struct RootView: View {
     @State private var path: [AppRoute] = []
     /// Which languages are downloaded, for Settings and its Languages page.
     @State private var inventory = LanguageInventory()
+    @State private var toast: ToastMessage?
     @AppStorage(SettingsKey.translationQuality) private var quality: TranslationQuality = .fast
     @AppStorage(SettingsKey.appearance) private var theme: AppTheme = .automatic
     @AppStorage(OnboardingModel.didFinishKey) private var didFinishOnboarding = false
@@ -77,8 +78,11 @@ struct RootView: View {
             }
         }
         .sheet(isPresented: Bindable(pro).isPresented) {
-            ProPlaceholderSheet()
+            PaywallSheet {
+                toast = ToastMessage(text: "You’re Pro", systemImage: "checkmark.seal.fill")
+            }
         }
+        .toast($toast, bottomPadding: 24)
         .preferredColorScheme(theme.colorScheme)
     }
 
