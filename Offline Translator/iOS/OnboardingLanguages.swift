@@ -65,7 +65,6 @@ struct OnboardingLanguages: View {
                     .contentTransition(.numericText())
                 PrimaryCapsuleButton(title: downloadTitle, action: download)
                     .disabled(onboarding.selectedCount == 0 || !network.isOnline)
-                OnboardingDots(current: 1)
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 8)

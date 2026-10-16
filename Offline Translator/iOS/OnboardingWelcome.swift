@@ -58,14 +58,15 @@ struct OnboardingWelcome: View {
         }
         .scrollBounceBehavior(.basedOnSize)
         .safeAreaBar(edge: .bottom) {
-            VStack(spacing: 18) {
-                PrimaryCapsuleButton(title: "Continue", action: next)
-                OnboardingDots(current: 0)
-            }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 8)
+            // Measured from the bottom of the screen, not the home
+            // indicator, so it sits at the same place on every iPhone.
+            PrimaryCapsuleButton(title: "Continue", action: next)
+                .padding(.horizontal, 28)
+                .padding(.bottom, 62)
+                .ignoresSafeArea(.container, edges: .bottom)
         }
         .background(.canvas)
+
         .toolbar(.hidden, for: .navigationBar)
         .onAppear {
             withAnimation(reduceMotion ? .none : .smooth(duration: 0.6)) { hasAppeared = true }

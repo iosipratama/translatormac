@@ -2,42 +2,22 @@
 //  OnboardingChrome.swift
 //  TranslatorMac
 //
-//  Pieces every onboarding step shares: the page dots, the app's mark,
-//  and language status rows.
+//  Pieces the onboarding steps share: the app's mark and language status
+//  rows.
 //
 
 import SwiftUI
 
-/// Three dots for the three steps, the current one stretched.
-struct OnboardingDots: View {
-    var current: Int
-    var count = 3
-
-    var body: some View {
-        HStack(spacing: 6) {
-            ForEach(0..<count, id: \.self) { index in
-                Capsule()
-                    .fill(index == current ? AnyShapeStyle(Color.accent) : AnyShapeStyle(.lineStrong))
-                    .frame(width: index == current ? 20 : 6, height: 6)
-            }
-        }
-        .animation(.snappy, value: current)
-        .accessibilityElement()
-        .accessibilityLabel("Step \(current + 1) of \(count)")
-    }
-}
-
-/// The app's mark: "文A" on a yellow tile.
+/// The app's icon, as on the Home Screen, following Light and Dark.
 struct AppMark: View {
-    var size: CGFloat = 88
+    var size: CGFloat = 96
 
     var body: some View {
-        Text(verbatim: "文A")
-            .font(.system(size: size * 0.36, weight: .heavy))
-            .foregroundStyle(.onAccent)
+        Image(.appMark)
+            .resizable()
+            .interpolation(.high)
             .frame(width: size, height: size)
-            .background(Color.accent, in: .rect(cornerRadius: size * 0.27))
-            .shadow(color: Color.accent.opacity(0.35), radius: 18, y: 8)
+            .shadow(color: .black.opacity(0.18), radius: 16, y: 8)
             .accessibilityHidden(true)
     }
 }

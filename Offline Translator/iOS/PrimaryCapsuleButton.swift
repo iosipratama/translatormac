@@ -16,8 +16,8 @@ struct PrimaryCapsuleButton: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.headline)
-                .frame(maxWidth: .infinity, minHeight: 54)
+                .font(.body.weight(.semibold))
+                .frame(maxWidth: .infinity, minHeight: 57)
                 .contentShape(.capsule)
         }
         .buttonStyle(.glassProminent)

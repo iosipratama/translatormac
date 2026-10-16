@@ -84,7 +84,6 @@ struct OnboardingDownloads: View {
                     }
                     .animation(.smooth, value: done)
                 }
-                OnboardingDots(current: 2)
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 8)
