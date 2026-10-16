@@ -1,6 +1,12 @@
 # Translate Offline
 
-A simple macOS app for offline text translation using Apple's on-device translation framework.
+A simple macOS and iPhone app for offline text translation using Apple's on-device translation framework.
+
+### Project layout
+One multiplatform target (`TranslatorMac`, bundle ID `iosipratama.TranslatorMac`), so Pro is a universal purchase across Mac and iPhone.
+- `Offline Translator/Shared/`: models used by both apps (translation engine, history, Pro, settings keys)
+- `Offline Translator/Mac/`: the Mac app's windows, menus and screens; not compiled for iOS
+- `Offline Translator/iOS/`: the iPhone app's screens; not compiled for macOS
 
 ### Features
 - Offline translation, powered by Apple's on-device models

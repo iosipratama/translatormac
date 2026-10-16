@@ -3,7 +3,11 @@
 //  TranslatorMac
 //
 
+#if os(macOS)
 import AppKit
+#else
+import UIKit
+#endif
 import Foundation
 // LanguageAvailability is not yet Sendable-audited, so Swift 6 rejects passing
 // it to its own nonisolated async members. Each instance here is created
@@ -57,7 +61,7 @@ enum LanguageCatalog {
     /// Settings › Languages would claim all of them are "Ready" and the
     /// download prompts would never appear.
     static func availability() -> LanguageAvailability {
-        if #available(macOS 26.4, *) {
+        if #available(macOS 26.4, iOS 26.4, *) {
             LanguageAvailability(preferredStrategy: TranslationQuality.effective.strategy)
         } else {
             LanguageAvailability()
@@ -69,7 +73,7 @@ enum LanguageCatalog {
     /// translates.
     static func configuration(source: Locale.Language?, target: Locale.Language?) -> TranslationSession.Configuration {
         var configuration = TranslationSession.Configuration(source: source, target: target)
-        if #available(macOS 26.4, *) {
+        if #available(macOS 26.4, iOS 26.4, *) {
             configuration.preferredStrategy = TranslationQuality.effective.strategy
         }
         return configuration
@@ -263,8 +267,15 @@ enum LanguageCatalog {
 
     /// Language models are downloaded in System Settings, under Language &
     /// Region → Translation Languages. There is no deeper link than the pane.
+    /// iOS has no public link to its Translate settings, so on iPhone this
+    /// opens the app's own page in Settings.
     static func openLanguageSettings() {
+        #if os(macOS)
         guard let url = URL(string: "x-apple.systempreferences:com.apple.Localization-Settings.extension") else { return }
         NSWorkspace.shared.open(url)
+        #else
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        UIApplication.shared.open(url)
+        #endif
     }
 }

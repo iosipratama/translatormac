@@ -45,13 +45,13 @@ enum TranslationQuality: String, CaseIterable, Identifiable {
     /// Best quality needs the Translation framework's strategies (macOS 26.4)
     /// and Apple Intelligence turned on and ready.
     static var isBestAvailable: Bool {
-        guard #available(macOS 26.4, *) else { return false }
+        guard #available(macOS 26.4, iOS 26.4, *) else { return false }
         return SystemLanguageModel.default.isAvailable
     }
 
     /// Why Best quality can't be chosen, or `nil` when it can.
     static var bestUnavailableReason: String? {
-        guard #available(macOS 26.4, *) else {
+        guard #available(macOS 26.4, iOS 26.4, *) else {
             return String(localized: "Best quality needs macOS 26.4 or later.")
         }
         switch SystemLanguageModel.default.availability {
@@ -68,7 +68,7 @@ enum TranslationQuality: String, CaseIterable, Identifiable {
         }
     }
 
-    @available(macOS 26.4, *)
+    @available(macOS 26.4, iOS 26.4, *)
     var strategy: TranslationSession.Strategy {
         switch self {
         case .fast: .lowLatency

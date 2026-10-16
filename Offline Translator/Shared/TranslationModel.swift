@@ -3,7 +3,6 @@
 //  TranslatorMac
 //
 
-import AppKit
 import Foundation
 import SwiftData
 // See LanguageCatalog.swift: the Translation framework is not yet
@@ -556,8 +555,7 @@ final class TranslationModel {
 
     func copyTranslation() {
         guard let result = currentResult else { return }
-        NSPasteboard.general.clearContents()
-        NSPasteboard.general.setString(result.text, forType: .string)
+        Clipboard.copy(result.text)
         recordToRecent()
 
         justCopied = true
