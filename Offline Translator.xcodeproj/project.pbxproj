@@ -274,6 +274,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2026 Iosi Pratama Putra";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				"INFOPLIST_FILE[sdk=iphone*]" = "Config/iOS-Info.plist";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -339,6 +340,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2026 Iosi Pratama Putra";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				"INFOPLIST_FILE[sdk=iphone*]" = "Config/iOS-Info.plist";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (

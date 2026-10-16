@@ -7,6 +7,7 @@ One multiplatform target (`TranslatorMac`, bundle ID `iosipratama.TranslatorMac`
 - `Offline Translator/Shared/`: models used by both apps (translation engine, history, Pro, settings keys)
 - `Offline Translator/Mac/`: the Mac app's windows, menus and screens; not compiled for iOS
 - `Offline Translator/iOS/`: the iPhone app's screens; not compiled for macOS
+- `Config/iOS-Info.plist`: Info.plist entries only the iPhone app has, such as the microphone and speech recognition purpose strings
 
 ### iPhone design tokens
 Colors live in `Assets.xcassets/Palette` with light and dark values; use the generated symbols (`.canvas`, `.textMuted`, …). Some design-spec names would clash with SwiftUI's own (`secondary`, `background`), so they're renamed:

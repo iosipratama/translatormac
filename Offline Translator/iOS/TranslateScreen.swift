@@ -5,6 +5,7 @@
 
 import SwiftData
 import SwiftUI
+import os
 
 /// The root screen: type, speak or point the camera, and read the
 /// translation. Library and Settings push from its toolbar.
@@ -17,6 +18,8 @@ struct TranslateScreen: View {
     var open: (AppRoute) -> Void
 
     @Environment(ProPresentation.self) private var pro
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.openURL) private var openURL
 
     @Query(Self.recentDescriptor) private var recent: [TranslationHistory]
 
@@ -27,7 +30,23 @@ struct TranslateScreen: View {
     @State private var savedCount = 0
     @State private var copiedCount = 0
 
+    @State private var voice = VoiceCapture()
+    /// Whether the source language has an on-device speech model.
+    @State private var isVoiceAvailable = true
+    /// The text on screen was spoken, until it's edited.
+    @State private var isSpoken = false
+    @State private var voiceNotice: VoiceNotice?
+    @State private var pressedAt: Date?
+    @State private var listenCount = 0
+
     @AppStorage(SettingsKey.showPronunciation) private var showsPronunciation = true
+    @AppStorage(SettingsKey.autoSpeakVoice) private var speaksAfterVoice = true
+
+    /// What the source area says after a voice attempt that didn't work.
+    private enum VoiceNotice {
+        case noSpeech
+        case micOff
+    }
 
     private static var recentDescriptor: FetchDescriptor<TranslationHistory> {
         var descriptor = FetchDescriptor<TranslationHistory>(sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
@@ -65,12 +84,18 @@ struct TranslateScreen: View {
             if !isEditing {
                 VStack(spacing: 22) {
                     LanguagePairCard(model: model) { pickerSide = $0 }
-                    BottomControls(showsMicHint: recent.isEmpty && !hasInput) {
+                    BottomControls(mic: micMode) {
                         isEditing = true
-                    } talk: {
-                        comingSoon("Voice translation is coming soon")
                     } camera: {
                         comingSoon("Camera translation is coming soon")
+                    } press: {
+                        pressMic()
+                    } release: {
+                        releaseMic()
+                    } cancel: {
+                        cancelMic()
+                    } explainMic: {
+                        explainMic()
                     }
                 }
                 .padding(.horizontal, 20)
@@ -88,11 +113,34 @@ struct TranslateScreen: View {
             ShowToSomeoneView(model: model)
         }
         .onChange(of: isEditing) { _, isEditing in
+            if isEditing {
+                // Typed text is no longer what was spoken.
+                isSpoken = false
+                voiceNotice = nil
+                return
+            }
             // Done, or a tap outside the field: the translation counts as made.
-            guard !isEditing, hasInput else { return }
+            guard hasInput else { return }
             model.settle()
             if model.needsPro { pro.present() }
         }
+        .task(id: model.languagePairID) {
+            isVoiceAvailable = model.sourceLanguage.map(voice.isAvailableOffline(for:)) ?? false
+        }
+        .onChange(of: scenePhase) { _, phase in
+            // Listening stops when the app leaves the screen; permissions may
+            // have changed in Settings meanwhile.
+            if phase == .active {
+                voice.refreshPermission()
+                if voice.permission != .denied, voiceNotice == .micOff { voiceNotice = nil }
+            } else if voice.isListening {
+                cancelMic()
+            }
+        }
+        .onDisappear {
+            if voice.isListening { cancelMic() }
+        }
+        .sensoryFeedback(.impact(weight: .light), trigger: listenCount)
         .sensoryFeedback(.success, trigger: savedCount)
         .sensoryFeedback(.success, trigger: copiedCount)
     }
@@ -145,9 +193,9 @@ struct TranslateScreen: View {
     private var sourceSection: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                SectionLabel(model.sourceTitle)
+                SectionLabel(sourceLabel)
                 Spacer()
-                if hasInput {
+                if hasInput, !voice.isListening {
                     Button {
                         model.clearInput()
                         isEditing = true
@@ -164,18 +212,99 @@ struct TranslateScreen: View {
             }
             .frame(minHeight: 28)
 
-            TextField("Text to translate", text: input, prompt: Text("Enter text").foregroundStyle(.textFaint), axis: .vertical)
-                .font(sourceFont)
-                .foregroundStyle(isEditing || !hasInput ? AnyShapeStyle(.textPrimary) : AnyShapeStyle(.textSecondary))
-                .tint(Color.accent)
-                .lineLimit(1...8)
-                .focused($isEditing)
-                .submitLabel(.done)
+            if voice.isListening {
+                listeningTranscript
+            } else if voiceNotice == .noSpeech, !hasInput, !isEditing {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Didn’t catch that")
+                        .font(.title.weight(.semibold))
+                        .foregroundStyle(.textPrimary)
+                    Text("Hold the button while you talk, then let go. Speak close to your iPhone if it’s noisy.")
+                        .font(.body)
+                        .foregroundStyle(.textMuted)
+                }
+            } else {
+                TextField("Text to translate", text: input, prompt: Text("Enter text").foregroundStyle(.textFaint), axis: .vertical)
+                    .font(sourceFont)
+                    .foregroundStyle(isEditing || !hasInput ? AnyShapeStyle(.textPrimary) : AnyShapeStyle(.textSecondary))
+                    .tint(Color.accent)
+                    .lineLimit(1...8)
+                    .focused($isEditing)
+                    .submitLabel(.done)
+            }
+
+            if voiceNotice == .micOff, !hasInput, !voice.isListening {
+                micOffCard
+                    .padding(.top, 14)
+            }
         }
         .padding(.bottom, hasInput ? 20 : 24)
         .frame(minHeight: hasInput ? nil : 150, alignment: .top)
         .contentShape(.rect)
-        .onTapGesture { isEditing = true }
+        .onTapGesture {
+            guard !voice.isListening else { return }
+            if voiceNotice == .noSpeech {
+                // The field comes back first, then takes focus.
+                voiceNotice = nil
+                Task { isEditing = true }
+            } else {
+                isEditing = true
+            }
+        }
+    }
+
+    /// "ENGLISH", "ENGLISH · ● LISTENING", "ENGLISH · SPOKEN".
+    private var sourceLabel: Text {
+        let name = model.sourceTitle
+        if voice.isListening {
+            return Text("\(name) · \(Text("● Listening").foregroundStyle(.danger))")
+        }
+        if isSpoken, hasInput {
+            return Text("\(name) · Spoken")
+        }
+        return Text(name)
+    }
+
+    /// Settled words in full ink, the newest ones still being worked out in
+    /// grey, over the waveform.
+    private var listeningTranscript: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            if voice.transcript.isEmpty {
+                Text("Listening…")
+                    .foregroundStyle(.textFaint)
+            } else {
+                Text("\(Text(voice.settledText).foregroundStyle(.textPrimary))\(Text(voice.pendingText).foregroundStyle(.textMuted))")
+            }
+            VoiceWaveform(levels: voice.levels)
+        }
+        .font(.title.weight(.semibold))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(voice.transcript.isEmpty ? Text("Listening") : Text(voice.transcript))
+    }
+
+    private var micOffCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Microphone is off")
+                .font(.headline)
+                .foregroundStyle(.textPrimary)
+            Text("To translate by voice, turn on Microphone and Speech Recognition for Translate Offline in Settings. You can still type or use the camera.")
+                .font(.subheadline)
+                .foregroundStyle(.textMuted)
+            Button {
+                if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
+            } label: {
+                Text("Open Settings")
+                    .font(.headline)
+                    .padding(.horizontal, 4)
+            }
+            .buttonStyle(.glassProminent)
+            .tint(.inverse)
+            .foregroundStyle(.onInverse)
+            .padding(.top, 4)
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.surface, in: .rect(cornerRadius: 22))
     }
 
     /// Large while writing; a step smaller once the translation takes over.
@@ -215,11 +344,23 @@ struct TranslateScreen: View {
             } else if let result = model.outcome?.result {
                 translation(result)
             } else {
-                Text(model.translatesAsYouType ? "The translation appears as you type." : "Tap Done to translate.")
+                Text(placeholder)
                     .font(.title3)
                     .foregroundStyle(.textFaint)
             }
+
+            if voice.isListening {
+                Text("Slide your finger away to cancel.")
+                    .font(.subheadline)
+                    .foregroundStyle(.textMuted)
+                    .padding(.top, 12)
+            }
         }
+    }
+
+    private var placeholder: LocalizedStringKey {
+        if voice.isListening { return "The translation appears as you speak." }
+        return model.translatesAsYouType ? "The translation appears as you type." : "Tap Done to translate."
     }
 
     private var targetLabel: Text {
@@ -245,7 +386,7 @@ struct TranslateScreen: View {
                     .foregroundStyle(.textMuted)
             }
 
-            if !isEditing, !isStale {
+            if !isEditing, !isStale, !voice.isListening {
                 ActionBar(model: model) {
                     isShowingToSomeone = true
                 } toggleSaved: {
@@ -324,6 +465,99 @@ struct TranslateScreen: View {
             text: "Copied \(model.name(for: model.targetLanguage)) text",
             systemImage: "checkmark"
         )
+    }
+
+    // MARK: - Voice
+
+    private var micMode: HoldToTalkButton.Mode {
+        if voice.isListening { return .listening(level: voice.levels.last ?? 0) }
+        if voice.permission == .denied { return .off }
+        if !isVoiceAvailable { return .unavailable }
+        return recent.isEmpty && !hasInput ? .readyWithHint : .ready
+    }
+
+    /// Starts listening the moment the button goes down. The first press asks
+    /// for the microphone and speech recognition instead.
+    private func pressMic() {
+        guard !voice.isListening else { return }
+        switch voice.permission {
+        case .denied:
+            voiceNotice = .micOff
+            return
+        case .notAsked:
+            Task {
+                await voice.requestPermission()
+                if voice.permission == .denied { voiceNotice = .micOff }
+            }
+            return
+        case .granted:
+            break
+        }
+        guard let source = model.sourceLanguage, isVoiceAvailable else {
+            explainMic()
+            return
+        }
+
+        isEditing = false
+        model.speaker.stop()
+        model.clearInput()
+        voiceNotice = nil
+        pressedAt = .now
+        do {
+            try voice.start(in: source) { text in
+                model.inputText = text
+            } onAutoStop: {
+                releaseMic()
+            }
+            isSpoken = true
+            listenCount += 1
+        } catch {
+            Log.translation.error("Couldn’t start listening: \(String(describing: error), privacy: .public)")
+            toast = ToastMessage(text: "Couldn’t start listening. Try again.")
+        }
+    }
+
+    /// Letting go translates what was said, and reads it aloud if Settings
+    /// says so. A quick tap explains that the button needs holding.
+    private func releaseMic() {
+        guard voice.isListening else { return }
+        if let pressedAt, Date.now.timeIntervalSince(pressedAt) < 0.3 {
+            cancelMic()
+            toast = ToastMessage(text: "Hold to talk", systemImage: "microphone.fill")
+            return
+        }
+        Task {
+            let text = await voice.finish()
+            guard !text.isEmpty else {
+                model.clearInput()
+                isSpoken = false
+                voiceNotice = .noSpeech
+                return
+            }
+            model.inputText = text
+            model.settle()
+            if model.needsPro {
+                pro.present()
+            } else if speaksAfterVoice {
+                model.speakWhenTranslated()
+            }
+        }
+    }
+
+    /// Sliding away: nothing is translated or kept.
+    private func cancelMic() {
+        voice.cancel()
+        model.clearInput()
+        isSpoken = false
+    }
+
+    private func explainMic() {
+        if voice.permission == .denied {
+            voiceNotice = .micOff
+        } else if !isVoiceAvailable {
+            let name = model.sourceLanguage.map(model.name(for:)) ?? ""
+            toast = ToastMessage(text: "Voice isn’t available offline for \(name) yet. You can still type.")
+        }
     }
 
     private func comingSoon(_ text: LocalizedStringResource) {
