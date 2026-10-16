@@ -1,12 +1,22 @@
-Translate Offline is a fast, privacy-focused translation app that works without an internet connection. 
+Translate Offline translates text right on your Mac, with no internet connection needed. Your words never leave your computer.
 
-• Offline translation — use it anywhere, even with no Wi-Fi
-• Private by design — your text stays on your device
-• Quick input — type or paste and get instant results
-• Simple workflow — swap languages, copy results, and keep going. 
+Type or paste, and the translation appears as you type. It's made for the moments you can't count on Wi-Fi: hotel rooms, flights, trains, and travel abroad.
 
-Supported languages include: English, Japanese, Spanish, French, German, Chinese, Korean, and more.
+• Works offline: translation runs on your Mac, even with Wi-Fi off
+• Private by design: nothing you type is uploaded anywhere
+• Translates as you type, or press Command-Return
+• Pronunciation for languages like Japanese and Chinese, plus read-aloud
+• Recent and Saved: find past translations fast and keep the phrases you reuse
+• Best quality: on Macs with Apple Intelligence, get more natural translations, still offline
+• Made for Mac: menu bar commands, keyboard shortcuts, and light and dark mode
 
-Great for travel, studying, and everyday writing. 
+Languages include English, Arabic, Chinese, Dutch, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Thai, Turkish, Ukrainian, Vietnamese, and more. Download the ones you need once, from System Settings or right in the app.
 
-If you have feedback or feature requests, contact support using the link below. 
+Translate Offline is free with 5 translations a day. Translate Offline Pro removes the daily limit, keeps up to 500 translations in Recent instead of 10, and saves unlimited phrases instead of 10. Choose a yearly subscription or a one-time Lifetime purchase.
+
+The yearly subscription renews automatically unless it's cancelled at least 24 hours before the end of the current period. Manage or cancel it in your App Store account settings.
+
+Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacy Policy: https://mekarya.studio/privacy/translate-offline
+
+Questions or ideas? Contact support using the link below.

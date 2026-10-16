@@ -2,7 +2,7 @@
   "baseTerritory": "USA",
   "manualPrices": [
     {
-      "customerPrice": "4.99",
+      "customerPrice": "0",
       "territory": "USA"
     }
   ]

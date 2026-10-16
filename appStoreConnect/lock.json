@@ -1,32 +1,33 @@
 {
   "appId": "6757454429",
   "derived": {
-    "appStoreVersionScreenshotSets": {
-      "MAC_OS:1.1:en-US:APP_DESKTOP": {
-        "screenshots": [
-          {
-            "fileName": "Screen 1.jpg",
-            "fileSize": 638534,
-            "id": "c7f10d6d-25ab-4415-b617-f4559b84d9fe",
-            "renditionChecksum": "1cd218e8dd4a7fd3ce313136eca29427",
-            "sourceFileChecksum": "dcd48da70a7eaf0494b8b88c58446be3"
-          },
-          {
-            "fileName": "Screen 2.jpg",
-            "fileSize": 744438,
-            "id": "3cdeff9c-8bc9-425e-b608-c524a98974eb",
-            "renditionChecksum": "b1065ed3f64f3e8f89f827e94a101e48",
-            "sourceFileChecksum": "31f968c5e51b13ee2e210794d1f1c79a"
-          },
-          {
-            "fileName": "Screen 3.jpg",
-            "fileSize": 726731,
-            "id": "07b463ec-0254-47e8-81d5-0da7bff464b9",
-            "renditionChecksum": "3b4bfd4c3e328d0188393b74339831d2",
-            "sourceFileChecksum": "d0b4a4adb6d08900cb975db8cb86d36b"
-          }
-        ],
-        "setID": "22af85eb-de97-4b97-9033-29dcef88127e"
+    "appAssetLibraryAssets": {
+      "02000019-2c69-825d-803d-8704bff74981": {
+        "sourceFileChecksum": "929193cc64cf0d6f739a9e13e1d9993c"
+      },
+      "3cc00019-2c69-825d-8031-bf9d80236ddb": {
+        "sourceFileChecksum": "576c19dd3f63c87ae2604c5ecb368735"
+      },
+      "5f800019-2c69-825d-802c-671d895d7329": {
+        "renditionChecksum": "1cd218e8dd4a7fd3ce313136eca29427",
+        "sourceFileChecksum": "dcd48da70a7eaf0494b8b88c58446be3"
+      },
+      "af000019-2c69-825d-802c-27c24d2dd217": {
+        "sourceFileChecksum": "d9bfdb2d60e72eebac0a86aaae144bdc"
+      },
+      "ba800019-2c69-825d-800e-f4ff05e2d0e3": {
+        "sourceFileChecksum": "b8bf48e7ce0acb91ab790a7051979ff0"
+      },
+      "cec00019-2c69-825d-800a-c447ed07edc8": {
+        "sourceFileChecksum": "1a32d588770b1782ceca6389e57b6608"
+      },
+      "d8800019-2c69-825d-8018-1b6c99c20fe8": {
+        "renditionChecksum": "3b4bfd4c3e328d0188393b74339831d2",
+        "sourceFileChecksum": "d0b4a4adb6d08900cb975db8cb86d36b"
+      },
+      "f4000019-2c69-825d-801e-e3d2b4ce0e17": {
+        "renditionChecksum": "b1065ed3f64f3e8f89f827e94a101e48",
+        "sourceFileChecksum": "31f968c5e51b13ee2e210794d1f1c79a"
       }
     },
     "inAppPurchasePricing": {
@@ -731,708 +732,726 @@
         ]
       }
     },
+    "inAppPurchaseReviewScreenshots": {
+      "iosipratama.TranslatorMac.pro": {
+        "fileName": "SOURCE",
+        "fileSize": 262644,
+        "id": "be452b31-6f73-4425-ad4d-7b27ff8d5ea1",
+        "renditionChecksum": "64c2296ceaf1a3226e29893a79b38572",
+        "sourceFileChecksum": "f3a45dfa73c6d1fa23b75bdad75edfed"
+      }
+    },
     "pricing": {
       "automaticPrices": [
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "AFG"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "AGO"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "AIA"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "ALB"
         },
         {
-          "customerPrice": "19.99",
+          "customerPrice": "0",
           "territory": "ARE"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "ARG"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "ARM"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "ATG"
         },
         {
-          "customerPrice": "7.99",
+          "customerPrice": "0",
           "territory": "AUS"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "AUT"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "AZE"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "BEL"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "BEN"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "BFA"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "BGR"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "BHR"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "BHS"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "BIH"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "BLR"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "BLZ"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "BMU"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "BOL"
         },
         {
-          "customerPrice": "29.9",
+          "customerPrice": "0",
           "territory": "BRA"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "BRB"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "BRN"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "BTN"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "BWA"
         },
         {
-          "customerPrice": "6.99",
+          "customerPrice": "0",
           "territory": "CAN"
         },
         {
-          "customerPrice": "4",
+          "customerPrice": "0",
           "territory": "CHE"
         },
         {
-          "customerPrice": "5990",
+          "customerPrice": "0",
           "territory": "CHL"
         },
         {
-          "customerPrice": "38",
+          "customerPrice": "0",
           "territory": "CHN"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "CIV"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "CMR"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "COD"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "COG"
         },
         {
-          "customerPrice": "24900",
+          "customerPrice": "0",
           "territory": "COL"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "CPV"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "CRI"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "CYM"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "CYP"
         },
         {
-          "customerPrice": "129",
+          "customerPrice": "0",
           "territory": "CZE"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "DEU"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "DMA"
         },
         {
-          "customerPrice": "39",
+          "customerPrice": "0",
           "territory": "DNK"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "DOM"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "DZA"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "ECU"
         },
         {
-          "customerPrice": "249.99",
+          "customerPrice": "0",
           "territory": "EGY"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "ESP"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "EST"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "FIN"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "FJI"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "FRA"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "FSM"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "GAB"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "GBR"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "GEO"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "GHA"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "GMB"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "GNB"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "GRC"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "GRD"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "GTM"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "GUY"
         },
         {
-          "customerPrice": "38",
+          "customerPrice": "0",
           "territory": "HKG"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "HND"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "HRV"
         },
         {
-          "customerPrice": "1990",
+          "customerPrice": "0",
           "territory": "HUN"
         },
         {
-          "customerPrice": "99000",
+          "customerPrice": "0",
           "territory": "IDN"
         },
         {
-          "customerPrice": "499",
+          "customerPrice": "0",
           "territory": "IND"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "IRL"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "IRQ"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "ISL"
         },
         {
-          "customerPrice": "14.9",
+          "customerPrice": "0",
           "territory": "ISR"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "ITA"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "JAM"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "JOR"
         },
         {
-          "customerPrice": "800",
+          "customerPrice": "0",
           "territory": "JPN"
         },
         {
-          "customerPrice": "2990",
+          "customerPrice": "0",
           "territory": "KAZ"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "KEN"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "KGZ"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "KHM"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "KNA"
         },
         {
-          "customerPrice": "7700",
+          "customerPrice": "0",
           "territory": "KOR"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "KWT"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "LAO"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "LBN"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "LBR"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "LBY"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "LCA"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "LKA"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "LTU"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "LUX"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "LVA"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "MAC"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "MAR"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "MDA"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "MDG"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "MDV"
         },
         {
-          "customerPrice": "99",
+          "customerPrice": "0",
           "territory": "MEX"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "MKD"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "MLI"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "MLT"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "MMR"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "MNE"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "MNG"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "MOZ"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "MRT"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "MSR"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "MUS"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "MWI"
         },
         {
-          "customerPrice": "22.9",
+          "customerPrice": "0",
           "territory": "MYS"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "NAM"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "NER"
         },
         {
-          "customerPrice": "7900",
+          "customerPrice": "0",
           "territory": "NGA"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "NIC"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "NLD"
         },
         {
-          "customerPrice": "59",
+          "customerPrice": "0",
           "territory": "NOR"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "NPL"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "NRU"
         },
         {
-          "customerPrice": "9.99",
+          "customerPrice": "0",
           "territory": "NZL"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "OMN"
         },
         {
-          "customerPrice": "1300",
+          "customerPrice": "0",
           "territory": "PAK"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "PAN"
         },
         {
-          "customerPrice": "22.9",
+          "customerPrice": "0",
           "territory": "PER"
         },
         {
-          "customerPrice": "299",
+          "customerPrice": "0",
           "territory": "PHL"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "PLW"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "PNG"
         },
         {
-          "customerPrice": "24.99",
+          "customerPrice": "0",
           "territory": "POL"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "PRT"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "PRY"
         },
         {
-          "customerPrice": "19.99",
+          "customerPrice": "0",
           "territory": "QAT"
         },
         {
-          "customerPrice": "29.99",
+          "customerPrice": "0",
           "territory": "ROU"
         },
         {
-          "customerPrice": "449",
+          "customerPrice": "0",
           "territory": "RUS"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "RWA"
         },
         {
-          "customerPrice": "19.99",
+          "customerPrice": "0",
           "territory": "SAU"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "SEN"
         },
         {
-          "customerPrice": "6.98",
+          "customerPrice": "0",
           "territory": "SGP"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "SLB"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "SLE"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "SLV"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "SRB"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "STP"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "SUR"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "SVK"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "SVN"
         },
         {
-          "customerPrice": "69",
+          "customerPrice": "0",
           "territory": "SWE"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "SWZ"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "SYC"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "TCA"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "TCD"
         },
         {
-          "customerPrice": "199",
+          "customerPrice": "0",
           "territory": "THA"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "TJK"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "TKM"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "TON"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "TTO"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "TUN"
         },
         {
-          "customerPrice": "249.99",
+          "customerPrice": "0",
           "territory": "TUR"
         },
         {
-          "customerPrice": "150",
+          "customerPrice": "0",
           "territory": "TWN"
         },
         {
-          "customerPrice": "14900",
+          "customerPrice": "0",
           "territory": "TZA"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "UGA"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "UKR"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "URY"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "UZB"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "VCT"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "VEN"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "VGB"
         },
         {
-          "customerPrice": "149000",
+          "customerPrice": "0",
           "territory": "VNM"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "VUT"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "XKS"
         },
         {
-          "customerPrice": "4.99",
+          "customerPrice": "0",
           "territory": "YEM"
         },
         {
-          "customerPrice": "99.99",
+          "customerPrice": "0",
           "territory": "ZAF"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "ZMB"
         },
         {
-          "customerPrice": "5.99",
+          "customerPrice": "0",
           "territory": "ZWE"
         }
       ]
+    },
+    "subscriptionReviewScreenshots": {
+      "iosipratama.TranslatorMac.pro.yearly": {
+        "fileName": "SOURCE",
+        "fileSize": 262644,
+        "id": "16212ebd-b4c3-4389-971f-627b7f1226f8",
+        "renditionChecksum": "a8cecc8d7a4580fa789e5991fce8fb2f",
+        "sourceFileChecksum": "f3a45dfa73c6d1fa23b75bdad75edfed"
+      }
     }
   },
-  "formatVersion": 1,
+  "formatVersion": 2,
   "gitignore": "created",
   "resources": {
     "ageRatingDeclaration": {
@@ -1492,61 +1511,71 @@
       "id": "c1651992-10c4-4072-a64f-fb1ced0e650e",
       "type": "appInfoLocalizations"
     },
-    "appStoreReviewDetail:MAC_OS:1.1": {
+    "appStoreReviewDetail:MAC_OS:1.2": {
       "fields": {
         "contactEmail": "pratamaiosi@gmail.com",
         "contactFirstName": "Iosi Pratama",
         "contactLastName": "Putra",
         "contactPhone": "+6285121965123",
         "demoAccountRequired": false,
-        "notes": "No sign-in is required. The app works fully offline.\nIf review needs guidance: open the app, select source/target languages, enter text, and tap Translate.\n"
+        "notes": "No sign-in is required, and the app works fully offline.\n\nTo try it: type or paste text in the left pane. It translates as you type (or press Command-Return). Pick languages from the two menus in the toolbar. Languages not yet downloaded show a download prompt from macOS.\n\nThe free version includes 5 translations a day. Pro (Yearly subscription or Lifetime purchase) removes the limit; open it from Translate Offline › Unlock Pro… or the card at the bottom of the sidebar.\n\nSettings › General › Quality offers \"Best quality\", which uses the Apple Intelligence translation models on Macs where Apple Intelligence is turned on. It also runs on-device and offline."
       },
-      "id": "1ad90b04-3bb9-49c6-bfd7-d04a8cb905f5",
+      "id": "1a2c8420-0b16-425c-9671-6f38b47e1215",
       "type": "appStoreReviewDetails"
     },
-    "appStoreVersion:MAC_OS:1.1": {
+    "appStoreVersion:MAC_OS:1.2": {
       "fields": {
         "copyright": "© 2026 Iosi Pratama Putra",
         "releaseType": "AFTER_APPROVAL",
-        "versionString": "1.1"
+        "versionString": "1.2"
       },
-      "id": "c64ebaf3-3589-4609-b90f-cf0c86113cfb",
+      "id": "95aa8a19-368b-4c60-aafa-00728844f171",
       "type": "appStoreVersions"
     },
-    "appStoreVersionLocalization:MAC_OS:1.1:en-US": {
+    "appStoreVersionLocalization:MAC_OS:1.2:en-US": {
       "fields": {
-        "description": "Translate Offline is a fast, privacy-focused translation app that works without an internet connection. \n\n• Offline translation — use it anywhere, even with no Wi-Fi\n• Private by design — your text stays on your device\n• Quick input — type or paste and get instant results\n• Simple workflow — swap languages, copy results, and keep going. \n\nSupported languages include: English, Japanese, Spanish, French, German, Chinese, Korean, and more.\n\nGreat for travel, studying, and everyday writing. \n\nIf you have feedback or feature requests, contact support using the link below. ",
-        "keywords": "offline translator,translation,translate,languages,language,dictionary,phrasebook,offline,privacy",
+        "description": "Translate Offline translates text right on your Mac, with no internet connection needed. Your words never leave your computer.\n\nType or paste, and the translation appears as you type. It's made for the moments you can't count on Wi-Fi: hotel rooms, flights, trains, and travel abroad.\n\n• Works offline: translation runs on your Mac, even with Wi-Fi off\n• Private by design: nothing you type is uploaded anywhere\n• Translates as you type, or press Command-Return\n• Pronunciation for languages like Japanese and Chinese, plus read-aloud\n• Recent and Saved: find past translations fast and keep the phrases you reuse\n• Best quality: on Macs with Apple Intelligence, get more natural translations, still offline\n• Made for Mac: menu bar commands, keyboard shortcuts, and light and dark mode\n\nLanguages include English, Arabic, Chinese, Dutch, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Thai, Turkish, Ukrainian, Vietnamese, and more. Download the ones you need once, from System Settings or right in the app.\n\nTranslate Offline is free with 5 translations a day. Translate Offline Pro removes the daily limit, keeps up to 500 translations in Recent instead of 10, and saves unlimited phrases instead of 10. Choose a yearly subscription or a one-time Lifetime purchase.\n\nThe yearly subscription renews automatically unless it's cancelled at least 24 hours before the end of the current period. Manage or cancel it in your App Store account settings.\n\nTerms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/\nPrivacy Policy: https://mekarya.studio/privacy/translate-offline\n\nQuestions or ideas? Contact support using the link below.",
+        "keywords": "japanese,spanish,french,german,korean,chinese,italian,dictionary,phrasebook,travel,interpreter",
         "marketingUrl": "https://mekarya.studio/apps/translate-offline",
-        "promotionalText": "New in this update: Japanese translation support.",
+        "promotionalText": "New: translation as you type, Recent and Saved, pronunciation, and Best quality with Apple Intelligence. Still works completely offline.",
         "supportUrl": "https://mekarya.studio/support/translate-offline",
-        "whatsNew": "Simpler language names\n\nLanguages now read as \"Danish\" and \"Spanish\" instead of \"Danish (Latin, Denmark)\", with Chinese (Simplified) and Chinese (Traditional) clearly separated. The list also keeps itself up to date as macOS adds new languages.\n\nAlso in this update\n\n• Copy a translation with a single click, from the main window or from History\n• Your language choices are remembered between launches\n• History shows the language pair and when each translation happened\n• Download a missing language directly from the app\n• Clearer messages when a language pair isn't supported or isn't downloaded yet\n• The panels no longer resize when a translation arrives\n• Press Command-Y to open History\n• Improved VoiceOver support throughout"
+        "whatsNew": "A redesigned Translate Offline\n\n• Translates as you type, in a new window with a sidebar\n• Recent and Saved: find past translations and keep the phrases you reuse\n• Pronunciation for languages like Japanese and Chinese, plus read-aloud\n• Best quality: on Macs with Apple Intelligence, more natural translations, still fully offline\n• Settings › Languages shows exactly which languages are on your Mac, with one-click downloads\n• New Settings for appearance, translation quality, speaking speed, and history\n• Full menu bar commands and keyboard shortcuts\n\nTranslate Offline is now free with 5 translations a day, and Pro removes the limit. Bought the app before this update? Thank you: Pro is already yours."
       },
-      "id": "8275951c-7f34-45ca-903c-981927fa21c9",
+      "id": "b5474c64-f9ae-4242-802a-3ab3cdfeb215",
       "type": "appStoreVersionLocalizations"
     },
-    "appStoreVersionScreenshotSet:MAC_OS:1.1:en-US:APP_DESKTOP": {
+    "appStoreVersionPlacementGroup:MAC_OS:1.2:en-US:APP_SCREENSHOT:MAC_PROFILE": {
       "fields": {
-        "screenshots": [
+        "appScreenshot": [
           {
-            "file": "Screen 1.jpg",
-            "fileSize": 638534,
-            "sourceFileChecksum": "dcd48da70a7eaf0494b8b88c58446be3"
+            "checksum": "b8bf48e7ce0acb91ab790a7051979ff0",
+            "fileName": "screen-1.png",
+            "fileSize": 658152
           },
           {
-            "file": "Screen 2.jpg",
-            "fileSize": 744438,
-            "sourceFileChecksum": "31f968c5e51b13ee2e210794d1f1c79a"
+            "checksum": "1a32d588770b1782ceca6389e57b6608",
+            "fileName": "screen-2.png",
+            "fileSize": 629364
           },
           {
-            "file": "Screen 3.jpg",
-            "fileSize": 726731,
-            "sourceFileChecksum": "d0b4a4adb6d08900cb975db8cb86d36b"
+            "checksum": "d9bfdb2d60e72eebac0a86aaae144bdc",
+            "fileName": "screen-3.png",
+            "fileSize": 643471
+          },
+          {
+            "checksum": "929193cc64cf0d6f739a9e13e1d9993c",
+            "fileName": "screen-4.png",
+            "fileSize": 613298
+          },
+          {
+            "checksum": "576c19dd3f63c87ae2604c5ecb368735",
+            "fileName": "screen-5.png",
+            "fileSize": 820253
           }
         ]
       },
-      "id": "22af85eb-de97-4b97-9033-29dcef88127e",
-      "type": "appScreenshotSets"
+      "id": "b5474c64-f9ae-4242-802a-3ab3cdfeb215",
+      "type": "appAssetLibraryPlacements"
     },
     "availability": {
       "fields": {
@@ -2611,10 +2640,194 @@
         "familySharable": false,
         "inAppPurchaseType": "NON_CONSUMABLE",
         "name": "Pro Lifetime",
-        "reviewNote": "Translate Offline is free with 10 translations a day. Pro removes the daily limit. The purchase sheet opens from the “Unlock Pro” card at the bottom of the sidebar, from the “Unlock Pro” button shown in the result pane once the daily limit is reached, or from the app menu: Translate Offline › Upgrade to Pro…. Lifetime is the one-time option on that sheet."
+        "reviewNote": "Translate Offline is free with 5 translations a day. Pro removes the daily limit. The purchase sheet opens from the “Unlock Pro” card at the bottom of the sidebar, from the “Unlock Pro…” button shown in the result pane once the daily limit is reached, from Settings › Pro, or from the app menu: Translate Offline › Unlock Pro…. Lifetime is the one-time option on that sheet."
       },
       "id": "6821364848",
       "type": "inAppPurchases"
+    },
+    "inAppPurchaseAvailability:iosipratama.TranslatorMac.pro": {
+      "fields": {
+        "availableInNewTerritories": true,
+        "availableTerritories": [
+          "AFG",
+          "AGO",
+          "AIA",
+          "ALB",
+          "ARE",
+          "ARG",
+          "ARM",
+          "ATG",
+          "AUS",
+          "AUT",
+          "AZE",
+          "BEL",
+          "BEN",
+          "BFA",
+          "BGR",
+          "BHR",
+          "BHS",
+          "BIH",
+          "BLR",
+          "BLZ",
+          "BMU",
+          "BOL",
+          "BRA",
+          "BRB",
+          "BRN",
+          "BTN",
+          "BWA",
+          "CAN",
+          "CHE",
+          "CHL",
+          "CHN",
+          "CIV",
+          "CMR",
+          "COD",
+          "COG",
+          "COL",
+          "CPV",
+          "CRI",
+          "CYM",
+          "CYP",
+          "CZE",
+          "DEU",
+          "DMA",
+          "DNK",
+          "DOM",
+          "DZA",
+          "ECU",
+          "EGY",
+          "ESP",
+          "EST",
+          "FIN",
+          "FJI",
+          "FRA",
+          "FSM",
+          "GAB",
+          "GBR",
+          "GEO",
+          "GHA",
+          "GMB",
+          "GNB",
+          "GRC",
+          "GRD",
+          "GTM",
+          "GUY",
+          "HKG",
+          "HND",
+          "HRV",
+          "HUN",
+          "IDN",
+          "IND",
+          "IRL",
+          "IRQ",
+          "ISL",
+          "ISR",
+          "ITA",
+          "JAM",
+          "JOR",
+          "JPN",
+          "KAZ",
+          "KEN",
+          "KGZ",
+          "KHM",
+          "KNA",
+          "KOR",
+          "KWT",
+          "LAO",
+          "LBN",
+          "LBR",
+          "LBY",
+          "LCA",
+          "LKA",
+          "LTU",
+          "LUX",
+          "LVA",
+          "MAC",
+          "MAR",
+          "MDA",
+          "MDG",
+          "MDV",
+          "MEX",
+          "MKD",
+          "MLI",
+          "MLT",
+          "MMR",
+          "MNE",
+          "MNG",
+          "MOZ",
+          "MRT",
+          "MSR",
+          "MUS",
+          "MWI",
+          "MYS",
+          "NAM",
+          "NER",
+          "NGA",
+          "NIC",
+          "NLD",
+          "NOR",
+          "NPL",
+          "NRU",
+          "NZL",
+          "OMN",
+          "PAK",
+          "PAN",
+          "PER",
+          "PHL",
+          "PLW",
+          "PNG",
+          "POL",
+          "PRT",
+          "PRY",
+          "QAT",
+          "ROU",
+          "RUS",
+          "RWA",
+          "SAU",
+          "SEN",
+          "SGP",
+          "SLB",
+          "SLE",
+          "SLV",
+          "SRB",
+          "STP",
+          "SUR",
+          "SVK",
+          "SVN",
+          "SWE",
+          "SWZ",
+          "SYC",
+          "TCA",
+          "TCD",
+          "THA",
+          "TJK",
+          "TKM",
+          "TON",
+          "TTO",
+          "TUN",
+          "TUR",
+          "TWN",
+          "TZA",
+          "UGA",
+          "UKR",
+          "URY",
+          "USA",
+          "UZB",
+          "VCT",
+          "VEN",
+          "VGB",
+          "VNM",
+          "VUT",
+          "XKS",
+          "YEM",
+          "ZAF",
+          "ZMB",
+          "ZWE"
+        ]
+      },
+      "id": "6821364848",
+      "type": "inAppPurchaseAvailabilities"
     },
     "inAppPurchaseLocalization:iosipratama.TranslatorMac.pro:en-US": {
       "fields": {
@@ -2637,12 +2850,22 @@
       "id": "6821364848",
       "type": "inAppPurchasePriceSchedules"
     },
+    "inAppPurchaseReviewScreenshot:iosipratama.TranslatorMac.pro": {
+      "fields": {
+        "screenshot": {
+          "fileSize": 262644,
+          "sourceFileChecksum": "f3a45dfa73c6d1fa23b75bdad75edfed"
+        }
+      },
+      "id": "be452b31-6f73-4425-ad4d-7b27ff8d5ea1",
+      "type": "inAppPurchaseAppStoreReviewScreenshots"
+    },
     "pricing": {
       "fields": {
         "baseTerritory": "USA",
         "manualPrices": [
           {
-            "customerPrice": "4.99",
+            "customerPrice": "0",
             "territory": "USA"
           }
         ]
@@ -2655,7 +2878,7 @@
         "familySharable": false,
         "groupLevel": 1,
         "name": "Pro Yearly",
-        "reviewNote": "Translate Offline is free with 10 translations a day. Pro removes the daily limit. The purchase sheet opens from the “Unlock Pro” card at the bottom of the sidebar, from the “Unlock Pro” button shown in the result pane once the daily limit is reached, or from the app menu: Translate Offline › Upgrade to Pro…. Yearly is the subscription option on that sheet.",
+        "reviewNote": "Translate Offline is free with 5 translations a day. Pro removes the daily limit. The purchase sheet opens from the “Unlock Pro” card at the bottom of the sidebar, from the “Unlock Pro…” button shown in the result pane once the daily limit is reached, from Settings › Pro, or from the app menu: Translate Offline › Unlock Pro…. Yearly is the subscription option on that sheet.",
         "subscriptionPeriod": "ONE_YEAR"
       },
       "id": "6821364859",
@@ -2888,6 +3111,16 @@
       },
       "id": "6821364859",
       "type": "subscriptionPrices"
+    },
+    "subscriptionReviewScreenshot:iosipratama.TranslatorMac.pro.yearly": {
+      "fields": {
+        "screenshot": {
+          "fileSize": 262644,
+          "sourceFileChecksum": "f3a45dfa73c6d1fa23b75bdad75edfed"
+        }
+      },
+      "id": "16212ebd-b4c3-4389-971f-627b7f1226f8",
+      "type": "subscriptionAppStoreReviewScreenshots"
     }
   }
 }
