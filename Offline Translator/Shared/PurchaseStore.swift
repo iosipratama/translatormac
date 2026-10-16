@@ -65,7 +65,41 @@ final class PurchaseStore {
 
     var ownsPro: Bool { activePlan != nil }
 
-    var hasPro: Bool { ownsPro || isEarlySupporter || ScreenshotMode.isEnabled }
+    var hasPro: Bool {
+        #if DEBUG
+        switch debugPlan {
+        case .forcePro: return true
+        case .forceFree: return false
+        case .automatic: break
+        }
+        #endif
+        return ownsPro || isEarlySupporter || ScreenshotMode.isEnabled
+    }
+
+    #if DEBUG
+    /// Debug builds only: pretend to be on Pro or on the free plan,
+    /// whatever StoreKit says. Release builds don't have this at all.
+    enum DebugPlan: String, CaseIterable, Identifiable {
+        case automatic
+        case forcePro
+        case forceFree
+
+        var id: Self { self }
+
+        var title: String {
+            switch self {
+            case .automatic: "From App Store"
+            case .forcePro: "Force Pro"
+            case .forceFree: "Force Free"
+            }
+        }
+    }
+
+    var debugPlan: DebugPlan = UserDefaults.standard.string(forKey: "debugPlan")
+        .flatMap(DebugPlan.init(rawValue:)) ?? .automatic {
+        didSet { UserDefaults.standard.set(debugPlan.rawValue, forKey: "debugPlan") }
+    }
+    #endif
 
     private(set) var isPurchasing = false
 

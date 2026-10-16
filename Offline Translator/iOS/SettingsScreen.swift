@@ -96,6 +96,17 @@ struct SettingsScreen: View {
                 Text(historyNote)
             }
 
+            #if DEBUG
+            Section {
+                NavigationLink(value: AppRoute.debug) {
+                    Label("Debug", systemImage: "ladybug")
+                        .foregroundStyle(.textPrimary)
+                }
+            } footer: {
+                Text("Only in debug builds.")
+            }
+            #endif
+
             Section {
                 Button {
                     restore()
