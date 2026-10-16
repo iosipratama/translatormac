@@ -8,6 +8,22 @@ One multiplatform target (`TranslatorMac`, bundle ID `iosipratama.TranslatorMac`
 - `Offline Translator/Mac/`: the Mac app's windows, menus and screens; not compiled for iOS
 - `Offline Translator/iOS/`: the iPhone app's screens; not compiled for macOS
 
+### iPhone design tokens
+Colors live in `Assets.xcassets/Palette` with light and dark values; use the generated symbols (`.canvas`, `.textMuted`, …). Some design-spec names would clash with SwiftUI's own (`secondary`, `background`), so they're renamed:
+
+| Spec | Asset / symbol |
+|---|---|
+| `bg` | `Canvas` / `.canvas` |
+| `surface`, `raised` | `Surface`, `Raised` |
+| `line`, `line2` | `Line`, `LineStrong` |
+| `text`, `secondary`, `muted`, `faint` | `TextPrimary`, `TextSecondary`, `TextMuted`, `TextFaint` |
+| `accent` | `AccentColor` (shared with the Mac) |
+| `ink` | `OnAccent` (shared with the Mac) |
+| `accentText` | `AccentForeground` (shared with the Mac); the app's text tint |
+| `accentTint`, `accentTint2` | `AccentTint`, `AccentTintSubtle` |
+| `inv`, `onInv` | `Inverse`, `OnInverse` |
+| `danger` | `Danger` |
+
 ### Features
 - Offline translation, powered by Apple's on-device models
 - Translates as you type; ⌘↩ translates right away
