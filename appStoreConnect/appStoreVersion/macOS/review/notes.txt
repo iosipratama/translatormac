@@ -2,6 +2,6 @@ No sign-in is required, and the app works fully offline.
 
 To try it: type or paste text in the left pane. It translates as you type (or press Command-Return). Pick languages from the two menus in the toolbar. Languages not yet downloaded show a download prompt from macOS.
 
-The free version includes 20 translations a day. Pro (Yearly subscription or Lifetime purchase) removes the limit; open it from Translate Offline › Unlock Pro… or the card at the bottom of the sidebar.
+The free version includes 5 translations a day. Pro (Yearly subscription or Lifetime purchase) removes the limit; open it from Translate Offline › Unlock Pro… or the card at the bottom of the sidebar.
 
 Settings › General › Quality offers "Best quality", which uses the Apple Intelligence translation models on Macs where Apple Intelligence is turned on. It also runs on-device and offline.

@@ -9,9 +9,9 @@ import Foundation
 /// free tier comes from here, so the paywall, Settings and the store agree.
 enum PlanLimits {
     /// Free translations per calendar day.
-    static let freeTranslationsPerDay = 20
+    static let freeTranslationsPerDay = 5
     /// Recent entries kept without Pro.
-    static let freeHistory = 20
+    static let freeHistory = 10
     /// Starred entries allowed without Pro.
     static let freeSaved = 10
     /// Recent entries kept with Pro.

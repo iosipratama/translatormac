@@ -12,7 +12,7 @@ Type or paste, and the translation appears as you type. It's made for the moment
 
 Languages include English, Arabic, Chinese, Dutch, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Thai, Turkish, Ukrainian, Vietnamese, and more. Download the ones you need once, from System Settings or right in the app.
 
-Translate Offline is free with 20 translations a day. Translate Offline Pro removes the daily limit, keeps up to 500 translations in Recent, and saves unlimited phrases. Choose a yearly subscription or a one-time Lifetime purchase.
+Translate Offline is free with 5 translations a day. Translate Offline Pro removes the daily limit, keeps up to 500 translations in Recent instead of 10, and saves unlimited phrases instead of 10. Choose a yearly subscription or a one-time Lifetime purchase.
 
 The yearly subscription renews automatically unless it's cancelled at least 24 hours before the end of the current period. Manage or cancel it in your App Store account settings.
 
