@@ -21,6 +21,7 @@ struct RootView: View {
     @State private var inventory = LanguageInventory()
     @AppStorage(SettingsKey.translationQuality) private var quality: TranslationQuality = .fast
     @AppStorage(SettingsKey.appearance) private var theme: AppTheme = .automatic
+    @AppStorage(OnboardingModel.didFinishKey) private var didFinishOnboarding = false
 
     /// The model outlives the pushed screens so going to Library and back
     /// keeps the text and result. `State` only reads this value the first time.
@@ -69,9 +70,25 @@ struct RootView: View {
             // Buying Pro while blocked should pick up where typing left off.
             if canTranslate { model.requestTranslation() }
         }
+        .fullScreenCover(isPresented: Binding { !didFinishOnboarding } set: { _ in }) {
+            OnboardingFlow { source, target in
+                adoptStartingPair(source: source, target: target)
+                didFinishOnboarding = true
+            }
+        }
         .sheet(isPresented: Bindable(pro).isPresented) {
             ProPlaceholderSheet()
         }
         .preferredColorScheme(theme.colorScheme)
+    }
+
+    /// Opens Translate on the device's language and the first language
+    /// onboarding downloaded.
+    private func adoptStartingPair(source: Locale.Language?, target: Locale.Language?) {
+        guard let target else { return }
+        if let source, source != target {
+            model.sourceLanguage = source
+        }
+        model.targetLanguage = target
     }
 }
