@@ -31,8 +31,12 @@ struct RootView: View {
             TranslateScreen(model: model) { path.append($0) }
                 .navigationDestination(for: AppRoute.self) { route in
                     switch route {
-                    case .library:
-                        placeholder("Library", systemImage: "bookmark")
+                    case .library(let tab):
+                        LibraryScreen(model: model, initialTab: tab) {
+                            path.removeAll()
+                        } showSettings: {
+                            path.append(.settings)
+                        }
                     case .settings:
                         placeholder("Settings", systemImage: "slider.horizontal.3")
                     }

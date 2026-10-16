@@ -46,7 +46,7 @@ struct TranslateScreen: View {
                     resultSection
                 } else if !isEditing, !recent.isEmpty {
                     RecentPreview(entries: recent) {
-                        open(.library)
+                        open(.library(.recent))
                     } select: { entry in
                         model.load(entry)
                     }
@@ -128,7 +128,7 @@ struct TranslateScreen: View {
             }
         } else {
             ToolbarItemGroup(placement: .topBarTrailing) {
-                NavigationLink(value: AppRoute.library) {
+                NavigationLink(value: AppRoute.library(nil)) {
                     Label("Library", systemImage: "bookmark")
                 }
                 .tint(.textPrimary)
@@ -313,7 +313,7 @@ struct TranslateScreen: View {
         toast = ToastMessage(
             text: "Saved to Library",
             systemImage: "star.fill",
-            action: .init(title: "View") { open(.library) }
+            action: .init(title: "View") { open(.library(.saved)) }
         )
     }
 

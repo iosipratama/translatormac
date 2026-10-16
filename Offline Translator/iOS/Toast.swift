@@ -12,6 +12,8 @@ struct ToastMessage: Identifiable, Equatable {
     var text: LocalizedStringResource
     var systemImage: String?
     var action: Action?
+    /// Longer for messages with Undo, so there's time to reach it.
+    var duration: Duration = .seconds(2.5)
 
     struct Action {
         var title: LocalizedStringResource
@@ -38,8 +40,6 @@ private struct ToastPresenter: ViewModifier {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private static let visibleDuration: Duration = .seconds(2.5)
-
     func body(content: Content) -> some View {
         content
             .overlay(alignment: .bottom) {
@@ -51,7 +51,7 @@ private struct ToastPresenter: ViewModifier {
                     .padding(.bottom, bottomPadding)
                     .transition(reduceMotion ? .opacity : .move(edge: .bottom).combined(with: .opacity))
                     .task(id: message.id) {
-                        try? await Task.sleep(for: Self.visibleDuration)
+                        try? await Task.sleep(for: message.duration)
                         guard !Task.isCancelled else { return }
                         self.message = nil
                     }
