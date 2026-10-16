@@ -125,6 +125,11 @@ struct PlanSection: View {
 
     /// "Yearly · renews October 11, 2027", "Lifetime · purchased …".
     private var planLine: String {
+        #if DEBUG
+        if purchases.debugPlan == .forcePro, purchases.activePlan == nil {
+            return "Forced on in Settings › Debug"
+        }
+        #endif
         switch purchases.activePlan {
         case let plan? where plan.isSubscription:
             let title = String(localized: plan.title)

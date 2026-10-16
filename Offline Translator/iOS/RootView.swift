@@ -45,6 +45,16 @@ struct RootView: View {
                         SettingsScreen(model: model, inventory: inventory)
                     case .languages:
                         LanguagesScreen(model: model, inventory: inventory)
+                    #if DEBUG
+                    case .debug:
+                        DebugScreen {
+                            // Back to Translate, then the flow covers it as
+                            // on a first launch.
+                            path.removeAll()
+                            model.clearInput()
+                            didFinishOnboarding = false
+                        }
+                    #endif
                     }
                 }
         }

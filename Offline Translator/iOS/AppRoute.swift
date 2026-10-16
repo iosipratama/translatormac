@@ -12,4 +12,7 @@ enum AppRoute: Hashable {
     case library(LibraryTab?)
     case settings
     case languages
+    #if DEBUG
+    case debug
+    #endif
 }
