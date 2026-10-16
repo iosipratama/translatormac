@@ -114,7 +114,7 @@ final class LanguageInventory {
     /// "日本語", "Español"; empty for English, whose own name is the one shown.
     /// The script is only mentioned where the catalog mentions it, so English
     /// doesn't become "English (Latin)".
-    private static func nativeName(for entry: TranslationLanguage) -> String {
+    static func nativeName(for entry: TranslationLanguage) -> String {
         let language = entry.language
         let own = Locale(identifier: LanguageCatalog.identifier(for: language))
         guard let code = language.languageCode?.identifier else { return "" }

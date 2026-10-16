@@ -193,6 +193,40 @@ final class TranslationModel {
         storeLanguages()
     }
 
+    /// Picks a pair when none was chosen yet, as on a first iPhone launch:
+    /// from the device's language to the first other language whose pair is
+    /// already downloaded, so the first translation works offline. The Mac
+    /// keeps Detect Language instead, so only the iPhone calls this.
+    func chooseStartingPair() async {
+        guard sourceLanguage == nil, !supportedLanguages.isEmpty else { return }
+        let english = supportedLanguages.first { $0.language.languageCode?.identifier == "en" }?.language
+        guard let source = resolve(Locale.current.language) ?? english ?? supportedLanguages.first?.language else { return }
+
+        var target: Locale.Language?
+        if targetLanguage != source, UserDefaults.standard.string(forKey: DefaultsKey.target) != nil {
+            // A target chosen earlier stays.
+            target = targetLanguage
+        } else {
+            for entry in supportedLanguages where entry.language != source {
+                if await LanguageCatalog.status(from: source, to: entry.language) == .installed {
+                    target = entry.language
+                    break
+                }
+            }
+        }
+        // Nothing downloaded yet: a widely used language, to be downloaded
+        // on first use.
+        let spanish = supportedLanguages.first { $0.language.languageCode?.identifier == "es" }?.language
+        target = target ?? (source == english ? spanish : english)
+        guard sourceLanguage == nil, let target, target != source else { return }
+
+        isAdjustingLanguages = true
+        sourceLanguage = source
+        targetLanguage = target
+        isAdjustingLanguages = false
+        storeLanguages()
+    }
+
     /// Settings › General › Quality changed. The other models support a
     /// different set of languages and report different ones as installed, so
     /// start again from the catalog and translate what's on screen again.
@@ -408,6 +442,17 @@ final class TranslationModel {
         inputText = ""
     }
 
+    /// The person is done typing (Done on the iPhone keyboard): translate now
+    /// if live translation is off, and count the translation as made.
+    func settle() {
+        guard !trimmedInput.isEmpty else { return }
+        recordTask?.cancel()
+        if currentResult == nil, !isTranslating || !translatesAsYouType {
+            requestTranslation()
+        }
+        recordToRecent()
+    }
+
     /// Shows the system download prompt for the current pair, then
     /// translates what's on screen once it's there.
     func downloadCurrentPair() {
@@ -571,13 +616,30 @@ final class TranslationModel {
         currentResult != nil && speaker.canSpeak(targetLanguage)
     }
 
+    /// Reading at half the speed set in Settings, for the phrase being read.
+    /// Each new reading starts at normal speed again.
+    private(set) var speaksSlowly = false
+
     func toggleSpeech() {
         if speaker.isSpeaking {
             speaker.stop()
         } else if let result = currentResult {
+            speaksSlowly = false
             speaker.speak(result.text, in: targetLanguage)
             recordToRecent()
         }
+    }
+
+    /// Switches between normal and slow, restarting the reading at the new speed.
+    func toggleSpeechSpeed() {
+        speaksSlowly.toggle()
+        guard speaker.isSpeaking, let result = currentResult else { return }
+        speaker.speak(result.text, in: targetLanguage, rateMultiplier: speaksSlowly ? 0.5 : 1)
+    }
+
+    /// The translation was shown full-screen to someone: it counts as made.
+    func noteShownToSomeone() {
+        recordToRecent()
     }
 
     var isCurrentSaved: Bool {
