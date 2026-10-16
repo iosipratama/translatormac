@@ -97,6 +97,14 @@ struct HistoryStore {
         undoManager.setActionName(isSaved ? String(localized: "Save Translation") : String(localized: "Remove from Saved"))
     }
 
+    /// Puts back a star that was just removed, with its original date, so
+    /// the entry returns to the same place in Saved.
+    func restoreSaved(_ entry: TranslationHistory, savedAt: Date?) {
+        entry.isSaved = true
+        entry.savedAt = savedAt
+        save()
+    }
+
     func delete(_ entries: [TranslationHistory]) {
         for entry in entries {
             context.delete(entry)

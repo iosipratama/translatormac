@@ -729,6 +729,21 @@ final class TranslationModel {
         sessionCounted = true
     }
 
+    /// History entries are about to be deleted. If the one on screen is
+    /// among them, let go of it so the screen never holds a deleted record;
+    /// the text stays and is recorded afresh if the person carries on.
+    func historyWillDelete(_ entries: [TranslationHistory]) {
+        guard let record = currentRecord, entries.contains(where: { $0 === record }) else { return }
+        currentRecord = nil
+    }
+
+    /// Recent is about to be cleared; saved entries survive it.
+    func historyWillClear() {
+        if currentRecord?.isSaved == false {
+            currentRecord = nil
+        }
+    }
+
     private var history: HistoryStore {
         HistoryStore(context: modelContext, recentLimit: purchases.historyLimit)
     }
