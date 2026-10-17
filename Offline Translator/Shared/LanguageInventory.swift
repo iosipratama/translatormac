@@ -47,6 +47,12 @@ final class LanguageInventory {
     private var queue: [Locale.Language] = []
     private(set) var downloading: Locale.Language?
 
+    /// Languages whose download the person accepted in iOS's sheet but that
+    /// aren't finished yet. iOS reports the sheet as done as soon as the
+    /// download starts, so these are checked until iOS says they're here.
+    private(set) var inBackground: Set<Locale.Language> = []
+    private var watchTask: Task<Void, Never>?
+
     private var catalog: [TranslationLanguage] = []
 
     // MARK: - Status
@@ -79,6 +85,10 @@ final class LanguageInventory {
             built[index].isInstalled = true
         }
         entries = built
+        // Downloads that finished while nobody was checking.
+        inBackground = inBackground.filter { language in
+            entries.first { $0.language == language }?.isInstalled != true
+        }
     }
 
     /// Starts over from the catalog, for when the models in use change.
@@ -139,8 +149,14 @@ final class LanguageInventory {
         advanceQueue()
     }
 
+    /// Waiting for its prompt, showing it, or downloading after it.
     func isDownloading(_ language: Locale.Language) -> Bool {
-        downloading == language || queue.contains(language)
+        downloading == language || queue.contains(language) || inBackground.contains(language)
+    }
+
+    /// Showing iOS's prompt, or downloading after it; not just waiting.
+    func isActivelyDownloading(_ language: Locale.Language) -> Bool {
+        downloading == language || inBackground.contains(language)
     }
 
     var isDownloadingAnything: Bool {
@@ -162,22 +178,65 @@ final class LanguageInventory {
     }
 
     /// Called by a view's translationTask for each configuration. Returns
-    /// whether the language is installed afterwards.
+    /// whether the download went ahead: it may still be running, so a
+    /// language only counts as installed once iOS confirms it.
+    ///
+    /// A pair that's already downloaded skips iOS's sheet entirely.
     @discardableResult
     func prepare(using session: TranslationSession) async -> Bool {
         guard let language = downloading else { return false }
-        var succeeded = false
-        do {
-            try await session.prepareTranslation()
-            succeeded = true
-        } catch {
-            // Declined or failed; the row stays downloadable.
+        var accepted = false
+        if await isInstalled(language) {
+            accepted = true
+        } else {
+            do {
+                try await session.prepareTranslation()
+                accepted = true
+            } catch {
+                // Declined or failed; the row stays downloadable.
+            }
         }
-        if let index = entries.firstIndex(where: { $0.language == language }) {
-            entries[index].isInstalled = succeeded || entries[index].isInstalled
+        if accepted {
+            if await isInstalled(language) {
+                markInstalled(language)
+            } else {
+                inBackground.insert(language)
+                watchBackgroundDownloads()
+            }
         }
         downloading = nil
         advanceQueue()
-        return succeeded
+        return accepted
+    }
+
+    /// Whether iOS has the language's pair with its partner on this iPhone.
+    func isInstalled(_ language: Locale.Language) async -> Bool {
+        await LanguageCatalog.status(from: partner(for: language), to: language) == .installed
+    }
+
+    /// Checks the downloads still running, as when the app comes back.
+    func refreshBackgroundDownloads() async {
+        for language in inBackground where await isInstalled(language) {
+            markInstalled(language)
+        }
+    }
+
+    private func markInstalled(_ language: Locale.Language) {
+        inBackground.remove(language)
+        if let index = entries.firstIndex(where: { $0.language == language }) {
+            entries[index].isInstalled = true
+        }
+    }
+
+    /// Checks every few seconds until the accepted downloads are all here.
+    private func watchBackgroundDownloads() {
+        guard watchTask == nil else { return }
+        watchTask = Task { [weak self] in
+            while let self, !self.inBackground.isEmpty, !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(2))
+                await self.refreshBackgroundDownloads()
+            }
+            self?.watchTask = nil
+        }
     }
 }

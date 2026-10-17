@@ -55,7 +55,8 @@ struct AllSetStep: View {
 
     private var phase: Phase {
         if model.requested.isEmpty { return .nothingChosen }
-        if model.isDownloading { return .downloading }
+        // Still prompting, or accepted and downloading in the background.
+        if model.isDownloading || !model.isFinished { return .downloading }
         return model.hasFailedDownloads ? .partlyDone : .done
     }
 

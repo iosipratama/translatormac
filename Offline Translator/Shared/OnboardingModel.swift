@@ -67,12 +67,16 @@ final class OnboardingModel {
         selection.count
     }
 
-    /// The languages asked for, in order, and how each went.
+    /// The languages asked for, in order.
     private(set) var requested: [Locale.Language] = []
-    private(set) var results: [Locale.Language: DownloadResult] = [:]
+    /// Languages whose download was declined or failed. Readiness comes from
+    /// the inventory, which only says installed once iOS confirms it.
+    private var failures: Set<Locale.Language> = []
 
-    /// The first language that downloaded, for the main window's default pair.
-    private(set) var firstDownloaded: Locale.Language?
+    /// The first requested language that's really here, for the opening pair.
+    var firstDownloaded: Locale.Language? {
+        requested.first { inventory.entry(for: $0)?.isInstalled == true }
+    }
 
     // MARK: - Steps
 
@@ -127,7 +131,7 @@ final class OnboardingModel {
     /// Starts the system download prompt for each selected language in turn.
     func startDownloads() {
         requested = choices.filter { selection.contains($0.id) }.map(\.language)
-        results = [:]
+        failures = []
         step = .allSet
         for language in requested {
             inventory.download(language)
@@ -135,17 +139,16 @@ final class OnboardingModel {
     }
 
     func retry(_ language: Locale.Language) {
-        results[language] = nil
+        failures.remove(language)
         inventory.download(language)
     }
 
     /// Called by the window's translationTask for each configuration.
     func prepare(using session: TranslationSession) async {
         guard let language = inventory.downloading else { return }
-        let succeeded = await inventory.prepare(using: session)
-        results[language] = succeeded ? .ready : .notDownloaded
-        if succeeded, firstDownloaded == nil {
-            firstDownloaded = language
+        let accepted = await inventory.prepare(using: session)
+        if !accepted {
+            failures.insert(language)
         }
     }
 
@@ -155,12 +158,19 @@ final class OnboardingModel {
 
     /// At least one requested language didn't download.
     var hasFailedDownloads: Bool {
-        results.values.contains(.notDownloaded)
+        !failures.isEmpty
     }
 
-    /// Languages still being prepared show no result yet.
+    /// Languages still being prepared or downloading show no result yet.
     func result(for language: Locale.Language) -> DownloadResult? {
-        results[language]
+        if failures.contains(language) { return .notDownloaded }
+        if inventory.entry(for: language)?.isInstalled == true { return .ready }
+        return nil
+    }
+
+    /// Every requested language has finished one way or the other.
+    var isFinished: Bool {
+        requested.allSatisfy { result(for: $0) != nil }
     }
 
     func name(for language: Locale.Language) -> String {
