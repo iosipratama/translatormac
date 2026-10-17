@@ -57,14 +57,8 @@ struct OnboardingLanguages: View {
 
                 if !downloadable.isEmpty {
                     Section {
-                        ForEach(visibleDownloadable) { choice in
+                        ForEach(downloadable) { choice in
                             downloadRow(choice)
-                        }
-                        if !onboarding.showsAllLanguages, downloadable.count > OnboardingModel.shortListCount {
-                            Button("Show All Languages") {
-                                withAnimation(.smooth) { onboarding.showsAllLanguages = true }
-                            }
-                            .foregroundStyle(.accentForeground)
                         }
                     } header: {
                         sectionHeader("Download to use")
@@ -117,10 +111,6 @@ struct OnboardingLanguages: View {
     /// The device's own languages come first, as the shared model orders them.
     private var downloadable: [OnboardingModel.Choice] {
         onboarding.choices.filter { !$0.isInstalled }
-    }
-
-    private var visibleDownloadable: [OnboardingModel.Choice] {
-        onboarding.showsAllLanguages ? downloadable : Array(downloadable.prefix(OnboardingModel.shortListCount))
     }
 
     private var buttonTitle: LocalizedStringKey {
