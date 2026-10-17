@@ -28,6 +28,10 @@ struct SettingsScreen: View {
     @State private var isConfirmingClear = false
     @State private var isRestoring = false
     @State private var sampleSpeaker = TranslationSpeaker()
+    /// Whether this iPhone can use Apple Intelligence for translation. The
+    /// quality choice only exists when it can.
+    @State private var isBestAvailable = TranslationQuality.isBestAvailable
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         Form {
@@ -40,17 +44,20 @@ struct SettingsScreen: View {
                     Toggle("Read results aloud after voice", isOn: $speaksAfterVoice)
                 }
                 .tint(.green)
-                Picker("Quality", selection: shownQuality) {
-                    ForEach(TranslationQuality.allCases) { quality in
-                        Text(quality.title).tag(quality)
+                if isBestAvailable {
+                    Picker("Quality", selection: $quality) {
+                        ForEach(TranslationQuality.allCases) { quality in
+                            Text(quality.title).tag(quality)
+                        }
                     }
+                    .pickerStyle(.menu)
                 }
-                .pickerStyle(.menu)
-                .disabled(!TranslationQuality.isBestAvailable)
             } header: {
                 Text("Translation")
             } footer: {
-                Text(qualityNote)
+                if isBestAvailable {
+                    Text(qualityNote)
+                }
             }
 
             Section("Voice") {
@@ -150,6 +157,13 @@ struct SettingsScreen: View {
         } message: {
             Text("This removes every translation in Recent. Saved translations are kept.")
         }
+        .onChange(of: scenePhase) { _, phase in
+            // Apple Intelligence may have been turned on or off meanwhile.
+            if phase == .active { isBestAvailable = TranslationQuality.isBestAvailable }
+        }
+        .onAppear {
+            isBestAvailable = TranslationQuality.isBestAvailable
+        }
         .onChange(of: quality) {
             Task { await inventory.reload() }
         }
@@ -160,18 +174,7 @@ struct SettingsScreen: View {
 
     // MARK: - Notes
 
-    /// Shows Fast while Best quality can't take effect, so the picker matches
-    /// what translation actually uses; the stored choice is kept for later.
-    private var shownQuality: Binding<TranslationQuality> {
-        Binding {
-            TranslationQuality.isBestAvailable ? quality : .fast
-        } set: { quality = $0 }
-    }
-
     private var qualityNote: String {
-        if let reason = TranslationQuality.bestUnavailableReason {
-            return String(localized: "Uses the languages downloaded to this iPhone. \(reason)")
-        }
         switch quality {
         case .fast:
             return String(localized: "Uses the languages downloaded to this iPhone. Quick enough to translate as you type.")
