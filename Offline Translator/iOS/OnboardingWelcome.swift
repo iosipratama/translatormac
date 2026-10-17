@@ -5,8 +5,8 @@
 
 import SwiftUI
 
-/// Step 1: what the app is, in three lines, anchored to the bottom of the
-/// screen above the button.
+/// Step 1: what the app is, in three lines. A centered header over a
+/// left-aligned list, anchored to the bottom of the screen above the button.
 struct OnboardingWelcome: View {
     var next: () -> Void
 
@@ -15,21 +15,25 @@ struct OnboardingWelcome: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
-                AppMark(size: 100)
-                    .scaleEffect(hasAppeared || reduceMotion ? 1 : 0.9)
-                    .opacity(hasAppeared ? 1 : 0)
+            VStack(alignment: .leading, spacing: 64) {
+                // Icon, title and subtitle, centered.
+                VStack(spacing: 32) {
+                    AppMark(size: 100)
+                        .scaleEffect(hasAppeared || reduceMotion ? 1 : 0.9)
+                        .opacity(hasAppeared ? 1 : 0)
 
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Welcome to Translate Offline")
-                        .font(.largeTitle.bold())
-                        .foregroundStyle(.textPrimary)
-                    Text("Private, offline translation for your iPhone")
-                        .font(.body.weight(.semibold))
-                        .foregroundStyle(.textMuted)
-                        .frame(maxWidth: 225, alignment: .leading)
+                    VStack(spacing: 12) {
+                        Text("Welcome to Translate Offline")
+                            .font(.largeTitle.bold())
+                            .foregroundStyle(.textPrimary)
+                        Text("Private, offline translation for your iPhone")
+                            .font(.body.weight(.semibold))
+                            .foregroundStyle(.textMuted)
+                            .frame(maxWidth: 225)
+                    }
+                    .multilineTextAlignment(.center)
                 }
-                .padding(.trailing, 20)
+                .frame(maxWidth: .infinity)
 
                 VStack(alignment: .leading, spacing: 28) {
                     feature(
