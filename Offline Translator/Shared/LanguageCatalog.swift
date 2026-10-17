@@ -113,14 +113,26 @@ enum LanguageCatalog {
         return languages.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
     }
 
-    /// Picks which regional variant stands in for the whole group: the person's
-    /// own region when the framework supports it, otherwise the region CLDR
-    /// considers standard for that language (en → US, pt → BR, zh-Hant → TW).
+    /// Picks which regional variant stands in for the whole group: the one in
+    /// the person's own language list (English (UK) for someone using it),
+    /// then their region, then the region CLDR considers standard for that
+    /// language (en → US, pt → BR, zh-Hant → TW).
+    ///
+    /// The variant matters: iOS downloads English (US) and English (UK)
+    /// separately, so pairing a language with the wrong one asks the person
+    /// to download an English they don't use.
     private nonisolated static func preferred(
         between current: Locale.Language,
         and candidate: Locale.Language,
         key: String
     ) -> Locale.Language {
+        for identifier in Locale.preferredLanguages {
+            let own = Locale.Language(identifier: identifier)
+            guard own.languageCode == candidate.languageCode, let region = own.region else { continue }
+            if candidate.region == region { return candidate }
+            if current.region == region { return current }
+        }
+
         if let homeRegion = Locale.current.region?.identifier {
             if candidate.region?.identifier == homeRegion { return candidate }
             if current.region?.identifier == homeRegion { return current }
