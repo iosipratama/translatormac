@@ -6,15 +6,44 @@
 import SwiftUI
 
 /// Step 1: what the app is, in three lines. A centered header over a
-/// left-aligned list, anchored to the bottom of the screen above the button.
+/// left-aligned list, centered in the space above the button.
 struct OnboardingWelcome: View {
     var next: () -> Void
 
     @State private var hasAppeared = false
+    @State private var continueCount = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        ScrollView {
+        GeometryReader { proxy in
+            ScrollView {
+                content
+                    // Centered in the space above the button; with large
+                    // text it grows past it and scrolls.
+                    .frame(minHeight: proxy.size.height)
+            }
+            .scrollBounceBehavior(.basedOnSize)
+        }
+        .safeAreaBar(edge: .bottom) {
+            // Measured from the bottom of the screen, not the home
+            // indicator, so it sits at the same place on every iPhone.
+            PrimaryCapsuleButton(title: "Continue", height: 60) {
+                continueCount += 1
+                next()
+            }
+            .padding(.horizontal, 32)
+            .padding(.bottom, 59)
+            .ignoresSafeArea(.container, edges: .bottom)
+        }
+        .background(.canvas)
+        .toolbar(.hidden, for: .navigationBar)
+        .sensoryFeedback(.impact(weight: .light), trigger: continueCount)
+        .onAppear {
+            withAnimation(reduceMotion ? .none : .smooth(duration: 0.6)) { hasAppeared = true }
+        }
+    }
+
+    private var content: some View {
             VStack(alignment: .leading, spacing: 64) {
                 // Icon, title and subtitle, centered.
                 VStack(spacing: 32) {
@@ -58,25 +87,7 @@ struct OnboardingWelcome: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 32)
-            .padding(.bottom, 64)
-        }
-        // Short content sits at the bottom, just above the button; on small
-        // screens or with large text it scrolls.
-        .defaultScrollAnchor(.bottom)
-        .scrollBounceBehavior(.basedOnSize)
-        .safeAreaBar(edge: .bottom) {
-            // Measured from the bottom of the screen, not the home
-            // indicator, so it sits at the same place on every iPhone.
-            PrimaryCapsuleButton(title: "Continue", height: 60, action: next)
-                .padding(.horizontal, 32)
-                .padding(.bottom, 59)
-                .ignoresSafeArea(.container, edges: .bottom)
-        }
-        .background(.canvas)
-        .toolbar(.hidden, for: .navigationBar)
-        .onAppear {
-            withAnimation(reduceMotion ? .none : .smooth(duration: 0.6)) { hasAppeared = true }
-        }
+            .padding(.vertical, 24)
     }
 
     /// One reason to use the app; the three arrive one after another.
@@ -88,7 +99,7 @@ struct OnboardingWelcome: View {
                 .frame(width: 24, height: 24)
                 .foregroundStyle(.accentForeground)
                 .frame(width: 44, height: 44)
-                .background(.surface, in: .circle)
+                .background(.accentTint, in: .circle)
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)

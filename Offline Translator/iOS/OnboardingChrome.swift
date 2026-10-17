@@ -17,7 +17,7 @@ struct AppMark: View {
             .resizable()
             .interpolation(.high)
             .frame(width: size, height: size)
-            .shadow(color: .black.opacity(0.18), radius: 16, y: 8)
+            .shadow(color: .black.opacity(0.08), radius: 10, y: 4)
             .accessibilityHidden(true)
     }
 }
