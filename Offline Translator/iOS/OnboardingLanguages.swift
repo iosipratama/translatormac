@@ -5,8 +5,9 @@
 
 import SwiftUI
 
-/// Step 2: which languages to download now. The iPhone's own languages that
-/// aren't here yet start ticked; ones already here can't be unticked.
+/// Step 2: which languages to add. Languages already on this iPhone are
+/// listed as ready; the rest can be ticked for download. Nothing is ticked at
+/// first, so moving on without downloading is just Continue.
 struct OnboardingLanguages: View {
     @Bindable var onboarding: OnboardingModel
     var network: NetworkMonitor
@@ -17,10 +18,10 @@ struct OnboardingLanguages: View {
         List {
             Section {
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("Which languages do you need?")
+                    Text("Add languages to translate")
                         .font(.largeTitle.bold())
                         .foregroundStyle(.textPrimary)
-                    Text("Each one downloads once and stays on this iPhone. You can add more later.")
+                    Text("Each language downloads once and works offline. You can add more later.")
                         .font(.body)
                         .foregroundStyle(.textMuted)
                 }
@@ -36,39 +37,62 @@ struct OnboardingLanguages: View {
                 }
             }
 
-            Section {
-                if onboarding.isLoadingChoices {
+            if onboarding.isLoadingChoices {
+                Section {
                     ProgressView()
                         .frame(maxWidth: .infinity)
-                } else {
-                    ForEach(onboarding.visibleChoices) { choice in
-                        row(choice)
-                    }
-                    if !onboarding.showsAllLanguages {
-                        Button("Show all languages") {
-                            withAnimation(.smooth) { onboarding.showsAllLanguages = true }
+                }
+                .listRowBackground(Color.surface)
+            } else {
+                if !available.isEmpty {
+                    Section {
+                        ForEach(available) { choice in
+                            availableRow(choice)
                         }
-                        .foregroundStyle(.accentForeground)
+                    } header: {
+                        sectionHeader("Available offline")
                     }
+                    .listRowBackground(Color.surface)
+                }
+
+                if !downloadable.isEmpty {
+                    Section {
+                        ForEach(visibleDownloadable) { choice in
+                            downloadRow(choice)
+                        }
+                        if !onboarding.showsAllLanguages, downloadable.count > OnboardingModel.shortListCount {
+                            Button("Show All Languages") {
+                                withAnimation(.smooth) { onboarding.showsAllLanguages = true }
+                            }
+                            .foregroundStyle(.accentForeground)
+                        }
+                    } header: {
+                        sectionHeader("Download to use")
+                    }
+                    .listRowBackground(Color.surface)
                 }
             }
-            .listRowBackground(Color.surface)
         }
         .scrollContentBackground(.hidden)
         .background(.canvas)
+        .scrollEdgeEffectStyle(.soft, for: .bottom)
         .animation(.smooth, value: network.isOnline)
         .safeAreaBar(edge: .bottom) {
-            VStack(spacing: 14) {
-                Text("^[\(onboarding.selectedCount) selected](inflect: true) · needs internet once")
-                    .font(.footnote)
-                    .foregroundStyle(.textMuted)
-                    .contentTransition(.numericText())
-                PrimaryCapsuleButton(title: downloadTitle, action: download)
-                    .disabled(onboarding.selectedCount == 0 || !network.isOnline)
+            // Same place as on the welcome screen: measured from the bottom
+            // of the screen, not the home indicator.
+            PrimaryCapsuleButton(title: buttonTitle, height: 60) {
+                if onboarding.selectedCount == 0 {
+                    continueWithout()
+                } else {
+                    download()
+                }
             }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 8)
+            .disabled(onboarding.selectedCount > 0 && !network.isOnline)
+            .contentTransition(.numericText())
             .animation(.snappy, value: onboarding.selectedCount)
+            .padding(.horizontal, 32)
+            .padding(.bottom, 59)
+            .ignoresSafeArea(.container, edges: .bottom)
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -76,50 +100,86 @@ struct OnboardingLanguages: View {
             }
         }
         .task {
+            let isFirstLoad = onboarding.isLoadingChoices
             await onboarding.loadChoices()
+            // The shared model ticks the device's languages; here the list
+            // starts empty and the person picks.
+            if isFirstLoad { onboarding.selection = [] }
         }
     }
 
-    private var downloadTitle: LocalizedStringKey {
-        onboarding.selectedCount == 1 ? "Download 1 Language" : "Download \(onboarding.selectedCount) Languages"
+    // MARK: - Lists
+
+    private var available: [OnboardingModel.Choice] {
+        onboarding.choices.filter(\.isInstalled)
     }
 
-    private func row(_ choice: OnboardingModel.Choice) -> some View {
-        let isChecked = choice.isInstalled || onboarding.selection.contains(choice.id)
+    /// The device's own languages come first, as the shared model orders them.
+    private var downloadable: [OnboardingModel.Choice] {
+        onboarding.choices.filter { !$0.isInstalled }
+    }
+
+    private var visibleDownloadable: [OnboardingModel.Choice] {
+        onboarding.showsAllLanguages ? downloadable : Array(downloadable.prefix(OnboardingModel.shortListCount))
+    }
+
+    private var buttonTitle: LocalizedStringKey {
+        let count = onboarding.selectedCount
+        return count == 0 ? "Continue" : "^[Download \(count) Language](inflect: true)"
+    }
+
+    /// Nothing to download: go straight on, where the next step shows the
+    /// languages already here as ready.
+    private func continueWithout() {
+        download()
+    }
+
+    // MARK: - Rows
+
+    private func sectionHeader(_ title: LocalizedStringKey) -> some View {
+        SectionLabel(title)
+            .accessibilityAddTraits(.isHeader)
+    }
+
+    private func availableRow(_ choice: OnboardingModel.Choice) -> some View {
+        HStack(spacing: 14) {
+            Image(systemName: "checkmark.circle")
+                .font(.title2)
+                .foregroundStyle(.textMuted)
+                .accessibilityHidden(true)
+            Text(choice.name)
+                .foregroundStyle(.textPrimary)
+            Spacer()
+            Text("Ready")
+                .font(.subheadline)
+                .foregroundStyle(.textMuted)
+        }
+        .accessibilityElement(children: .combine)
+    }
+
+    private func downloadRow(_ choice: OnboardingModel.Choice) -> some View {
+        let isChecked = onboarding.selection.contains(choice.id)
         return Button {
             withAnimation(.snappy) { onboarding.toggle(choice) }
         } label: {
             HStack(spacing: 14) {
                 Image(systemName: isChecked ? "checkmark.circle.fill" : "circle")
                     .font(.title2)
-                    .foregroundStyle(checkStyle(choice, isChecked: isChecked))
+                    .foregroundStyle(isChecked ? AnyShapeStyle(Color.accent) : AnyShapeStyle(.lineStrong))
                     .contentTransition(.symbolEffect(.replace))
                 Text(choice.name)
-                    .foregroundStyle(choice.isInstalled ? .textMuted : .textPrimary)
+                    .foregroundStyle(.textPrimary)
                 Spacer()
-                Group {
-                    if choice.isInstalled {
-                        Text("On this iPhone")
-                    } else {
-                        Text(choice.nativeName)
-                            .typesettingLanguage(choice.language)
-                    }
-                }
-                .font(.subheadline)
-                .foregroundStyle(.textMuted)
+                Text(choice.nativeName)
+                    .font(.subheadline)
+                    .foregroundStyle(.textMuted)
+                    .typesettingLanguage(choice.language)
             }
             .contentShape(.rect)
         }
         .buttonStyle(.plain)
-        .disabled(choice.isInstalled)
         .accessibilityAddTraits(isChecked ? .isSelected : [])
-        .accessibilityValue(choice.isInstalled ? Text("On this iPhone") : Text(""))
         .sensoryFeedback(.selection, trigger: isChecked)
-    }
-
-    private func checkStyle(_ choice: OnboardingModel.Choice, isChecked: Bool) -> AnyShapeStyle {
-        if choice.isInstalled { return AnyShapeStyle(.lineStrong) }
-        return isChecked ? AnyShapeStyle(Color.accent) : AnyShapeStyle(.lineStrong)
     }
 
     private var offlineCard: some View {
