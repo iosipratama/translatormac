@@ -29,7 +29,10 @@ struct SettingsScreen: View {
     @State private var isRestoring = false
     @State private var sampleSpeaker = TranslationSpeaker()
     /// Whether this iPhone can use Apple Intelligence for translation. The
-    /// quality choice only exists when it can.
+    /// quality choice only exists when it can. It's hidden, not explained,
+    /// when Apple Intelligence is turned off: that was the person's choice,
+    /// and Fast works fully offline. While its models are still downloading
+    /// it's hidden too, and appears on its own once they're ready.
     @State private var isBestAvailable = TranslationQuality.isBestAvailable
     @Environment(\.scenePhase) private var scenePhase
 
