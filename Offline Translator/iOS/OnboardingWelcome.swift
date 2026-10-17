@@ -34,19 +34,19 @@ struct OnboardingWelcome: View {
                 VStack(alignment: .leading, spacing: 26) {
                     feature(
                         "Use your camera",
-                        "Translate signs, menus, and photos.",
+                        "Point at a sign or menu and the translation appears right over the words.",
                         icon: .cameraFrame,
                         index: 0
                     )
                     feature(
                         "Talk and listen",
-                        "Speak, then hear it said aloud.",
+                        "Hold the button and speak to hear your words read aloud in the other language.",
                         icon: .waveformLines,
                         index: 1
                     )
                     feature(
                         "No internet needed",
-                        "Download once, use it anywhere.",
+                        "Download a language once and use it anywhere, even on a plane or with no signal.",
                         icon: .wifiOff,
                         index: 2
                     )
