@@ -101,7 +101,7 @@ struct OnboardingWelcome: View {
                 .frame(width: 44, height: 44)
                 .background(.raised, in: .circle)
                 .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.title3.weight(.semibold))
                     .foregroundStyle(.textPrimary)
