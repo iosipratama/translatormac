@@ -5,7 +5,8 @@
 
 import SwiftUI
 
-/// Step 1: what the app is, in three lines.
+/// Step 1: what the app is, in three lines, anchored to the bottom of the
+/// screen above the button.
 struct OnboardingWelcome: View {
     var next: () -> Void
 
@@ -14,55 +15,57 @@ struct OnboardingWelcome: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 0) {
-                AppMark()
-                    .scaleEffect(hasAppeared || reduceMotion ? 1 : 0.85)
+            VStack(alignment: .leading, spacing: 32) {
+                AppMark(size: 100)
+                    .scaleEffect(hasAppeared || reduceMotion ? 1 : 0.9)
                     .opacity(hasAppeared ? 1 : 0)
-                    .padding(.top, 48)
 
-                Text("Welcome to Translate Offline")
-                    .font(.largeTitle.bold())
-                    .foregroundStyle(.textPrimary)
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 28)
-                Text("Private, offline translation for your iPhone.")
-                    .font(.body)
-                    .foregroundStyle(.textMuted)
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 8)
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Welcome to Translate Offline")
+                        .font(.largeTitle.bold())
+                        .foregroundStyle(.textPrimary)
+                    Text("Private, offline translation for your iPhone")
+                        .font(.body.weight(.semibold))
+                        .foregroundStyle(.textMuted)
+                        .frame(maxWidth: 225, alignment: .leading)
+                }
+                .padding(.trailing, 20)
 
-                VStack(alignment: .leading, spacing: 26) {
+                VStack(alignment: .leading, spacing: 28) {
                     feature(
                         "Use your camera",
-                        "Point at a sign or menu and the translation appears right over the words.",
+                        "Translate signs, menus, and photos.",
                         icon: .cameraFrame,
                         index: 0
                     )
                     feature(
                         "Talk and listen",
-                        "Hold the button and speak to hear your words read aloud in the other language.",
+                        "Speak, then hear it said aloud.",
                         icon: .waveformLines,
                         index: 1
                     )
                     feature(
                         "No internet needed",
-                        "Download a language once and use it anywhere, even on a plane or with no signal.",
+                        "Download once, use it anywhere.",
                         icon: .wifiOff,
                         index: 2
                     )
                 }
-                .padding(.top, 44)
             }
-            .padding(.horizontal, 28)
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 32)
+            .padding(.bottom, 64)
         }
+        // Short content sits at the bottom, just above the button; on small
+        // screens or with large text it scrolls.
+        .defaultScrollAnchor(.bottom)
         .scrollBounceBehavior(.basedOnSize)
         .safeAreaBar(edge: .bottom) {
             // Measured from the bottom of the screen, not the home
             // indicator, so it sits at the same place on every iPhone.
-            PrimaryCapsuleButton(title: "Continue", action: next)
-                .padding(.horizontal, 28)
-                .padding(.bottom, 62)
+            PrimaryCapsuleButton(title: "Continue", height: 60, action: next)
+                .padding(.horizontal, 32)
+                .padding(.bottom, 59)
                 .ignoresSafeArea(.container, edges: .bottom)
         }
         .background(.canvas)
@@ -74,18 +77,18 @@ struct OnboardingWelcome: View {
 
     /// One reason to use the app; the three arrive one after another.
     private func feature(_ title: LocalizedStringKey, _ detail: LocalizedStringKey, icon: ImageResource, index: Int) -> some View {
-        HStack(alignment: .top, spacing: 16) {
+        HStack(alignment: .top, spacing: 17) {
             Image(icon)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 24, height: 24)
                 .foregroundStyle(.accentForeground)
-                .frame(width: 48, height: 48)
-                .background(.surface, in: .rect(cornerRadius: 14))
+                .frame(width: 44, height: 44)
+                .background(.surface, in: .circle)
                 .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .font(.headline)
+                    .font(.title3.weight(.semibold))
                     .foregroundStyle(.textPrimary)
                 Text(detail)
                     .font(.subheadline)
