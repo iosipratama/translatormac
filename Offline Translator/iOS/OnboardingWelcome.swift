@@ -33,21 +33,21 @@ struct OnboardingWelcome: View {
 
                 VStack(alignment: .leading, spacing: 26) {
                     feature(
-                        "Type, talk, or use the camera",
-                        "Translate a sentence, a conversation, or a menu in seconds.",
-                        systemImage: "character.bubble.fill",
+                        "Use your camera",
+                        "Translate signs, menus, and photos.",
+                        icon: .cameraFrame,
                         index: 0
                     )
                     feature(
-                        "Works without internet",
-                        "Download a language once, then use it anywhere: on a plane, abroad, offline.",
-                        systemImage: "airplane",
+                        "Talk and listen",
+                        "Speak, then hear it said aloud.",
+                        icon: .waveformLines,
                         index: 1
                     )
                     feature(
-                        "Private by design",
-                        "Everything runs on this iPhone. Nothing you type or say is sent anywhere.",
-                        systemImage: "lock.fill",
+                        "No internet needed",
+                        "Download once, use it anywhere.",
+                        icon: .wifiOff,
                         index: 2
                     )
                 }
@@ -66,7 +66,6 @@ struct OnboardingWelcome: View {
                 .ignoresSafeArea(.container, edges: .bottom)
         }
         .background(.canvas)
-
         .toolbar(.hidden, for: .navigationBar)
         .onAppear {
             withAnimation(reduceMotion ? .none : .smooth(duration: 0.6)) { hasAppeared = true }
@@ -74,10 +73,12 @@ struct OnboardingWelcome: View {
     }
 
     /// One reason to use the app; the three arrive one after another.
-    private func feature(_ title: LocalizedStringKey, _ detail: LocalizedStringKey, systemImage: String, index: Int) -> some View {
+    private func feature(_ title: LocalizedStringKey, _ detail: LocalizedStringKey, icon: ImageResource, index: Int) -> some View {
         HStack(alignment: .top, spacing: 16) {
-            Image(systemName: systemImage)
-                .font(.title3)
+            Image(icon)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 24, height: 24)
                 .foregroundStyle(.accentForeground)
                 .frame(width: 48, height: 48)
                 .background(.surface, in: .rect(cornerRadius: 14))
