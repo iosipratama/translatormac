@@ -177,6 +177,17 @@ final class OnboardingModel {
         inventory.entry(for: language)?.name ?? LanguageCatalog.fallbackName(for: language)
     }
 
+    /// The language each new one downloads with, since iOS only downloads
+    /// pairs: the device's own language, or English when it's the one chosen.
+    func partner(for language: Locale.Language) -> Locale.Language {
+        inventory.partner(for: language)
+    }
+
+    /// The device's own language, the usual other half of every pair.
+    var baseLanguageName: String? {
+        inventory.deviceLanguage.map(name(for:))
+    }
+
     // MARK: - Finishing
 
     /// Records completion and the pair the translate screen should open with.

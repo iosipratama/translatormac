@@ -30,7 +30,8 @@ struct OnboardingDownloads: View {
                             if index > 0 {
                                 Rectangle().fill(.line).frame(height: 1).padding(.leading, 16)
                             }
-                            LanguageStatusRow(name: onboarding.name(for: language), status: status(of: language))
+                            LanguageStatusRow(name: rowName(for: language), status: status(of: language))
+                                .accessibilityLabel(rowAccessibilityName(for: language))
                                 .padding(.horizontal, 16)
                                 .padding(.vertical, 8)
                         }
@@ -131,7 +132,7 @@ struct OnboardingDownloads: View {
     private var subtitle: LocalizedStringKey {
         switch phase {
         case .downloading:
-            "This can take a few minutes. If you start now, they keep downloading in the background."
+            "iOS asks you to confirm each pair. Languages you already have finish right away."
         case .done:
             rows.isEmpty
                 ? "You can download languages anytime in Settings › Languages."
@@ -143,9 +144,26 @@ struct OnboardingDownloads: View {
 
     // MARK: - Rows
 
-    /// Languages already here, then the ones asked for.
+    /// The pairs asked for. With nothing asked for, the languages already
+    /// here, so the screen still shows what works offline.
     private var rows: [Locale.Language] {
-        onboarding.choices.filter(\.isInstalled).map(\.language) + onboarding.requested
+        onboarding.requested.isEmpty
+            ? onboarding.choices.filter(\.isInstalled).map(\.language)
+            : onboarding.requested
+    }
+
+    /// "English ↔ Japanese": iOS downloads pairs and its sheet lists both
+    /// halves, so the row names both too.
+    private func rowName(for language: Locale.Language) -> String {
+        guard onboarding.requested.contains(language) else { return onboarding.name(for: language) }
+        let partner = onboarding.name(for: onboarding.partner(for: language))
+        return "\(partner) ↔ \(onboarding.name(for: language))"
+    }
+
+    private func rowAccessibilityName(for language: Locale.Language) -> Text {
+        guard onboarding.requested.contains(language) else { return Text(onboarding.name(for: language)) }
+        let partner = onboarding.name(for: onboarding.partner(for: language))
+        return Text("\(partner) and \(onboarding.name(for: language))")
     }
 
     private var readyCount: Int {

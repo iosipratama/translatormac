@@ -114,7 +114,7 @@ final class LanguageInventory {
 
     /// The other half of the pair to check or download with a language: the
     /// Mac's own language, or English when the language is the Mac's.
-    private func partner(for language: Locale.Language) -> Locale.Language {
+    func partner(for language: Locale.Language) -> Locale.Language {
         if let device = deviceLanguage, device != language { return device }
         return catalog.first { $0.language.languageCode?.identifier == "en" && $0.language != language }?.language
             ?? catalog.first { $0.language != language }?.language

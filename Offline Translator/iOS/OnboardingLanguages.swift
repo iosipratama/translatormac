@@ -21,7 +21,7 @@ struct OnboardingLanguages: View {
                     Text("Add languages to translate")
                         .font(.largeTitle.bold())
                         .foregroundStyle(.textPrimary)
-                    Text("Each language downloads once and works offline. You can add more later.")
+                    Text(subtitle)
                         .font(.body)
                         .foregroundStyle(.textMuted)
                 }
@@ -111,6 +111,15 @@ struct OnboardingLanguages: View {
     /// The device's own languages come first, as the shared model orders them.
     private var downloadable: [OnboardingModel.Choice] {
         onboarding.choices.filter { !$0.isInstalled }
+    }
+
+    /// Names the language each download pairs with, since iOS's own sheet
+    /// will list it too.
+    private var subtitle: LocalizedStringKey {
+        if let base = onboarding.baseLanguageName {
+            return "Each language downloads together with \(base) and works offline. You can add more later."
+        }
+        return "Each language downloads once and works offline. You can add more later."
     }
 
     private var buttonTitle: LocalizedStringKey {
