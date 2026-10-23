@@ -7,7 +7,8 @@ import AppKit
 import StoreKit
 import SwiftUI
 
-/// The Pro sheet: what Pro gives, the plans, and one button.
+/// The Pro sheet: what Pro gives, the plans, and one button. Opens from the
+/// daily limit, any "PRO" tag, the end of the free days, and the App menu.
 struct ProView: View {
     @Environment(PurchaseStore.self) private var purchases
     @Environment(ProPresentation.self) private var presentation
@@ -17,7 +18,7 @@ struct ProView: View {
     @State private var selectedPlan = PurchaseStore.offeredPlans.first ?? .lifetime
     @State private var isRestoring = false
 
-    private let width: CGFloat = 540
+    private let width: CGFloat = 480
 
     var body: some View {
         VStack(spacing: 0) {
@@ -83,38 +84,55 @@ struct ProView: View {
                 .accessibilityHidden(true)
                 .padding(.bottom, 8)
 
-            Text("Unlock Pro")
+            Text("Upgrade to Pro")
                 .font(.title.weight(.bold))
-            Text("Translate without limits.")
+            Text(subtitle)
                 .font(.body)
                 .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
         }
+    }
+
+    private var subtitle: LocalizedStringKey {
+        if case .freeAccess(let end) = purchases.access {
+            // The end is midnight, so name the last whole day instead.
+            return "Everything is unlocked through \(end.addingTimeInterval(-1), format: .dateTime.weekday(.wide)). Keep it all with Pro."
+        }
+        return "Translate without limits."
     }
 
     // MARK: - Benefits
 
+    /// Word for word the Pro list on the website, after "Everything in
+    /// Free". Best quality is only promised on a Mac that can run it.
     private var benefits: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            // Only what Pro adds, each against the free plan's limit. Every
-            // language is on the free plan too, so it isn't listed here.
-            benefit("Unlimited translations", detail: "Free plan: \(PlanLimits.freeTranslationsPerDay) a day")
-            benefit("Saved phrases", detail: "Pro only")
-            benefit("Future Pro features", detail: "Included as they ship")
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Everything in Free, plus:")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .padding(.bottom, 2)
+            benefit("Unlimited translations")
+            if TranslationQuality.isBestAvailable {
+                benefit("Best quality with Apple Intelligence")
+            }
+            benefit("Pronunciation and read-aloud")
+            benefit("Saved phrases")
         }
-        .frame(maxWidth: 400)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 24)
     }
 
-    private func benefit(_ title: LocalizedStringKey, detail: LocalizedStringKey) -> some View {
-        HStack(alignment: .firstTextBaseline, spacing: 12) {
+    private func benefit(_ title: LocalizedStringKey) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 10) {
             Image(systemName: "checkmark")
                 .font(.system(size: 12, weight: .bold))
                 .foregroundStyle(Color.accentForeground)
                 .frame(width: 14)
                 .accessibilityHidden(true)
 
-            Text("\(Text(title).fontWeight(.medium)) \(Text(verbatim: "—").foregroundStyle(.tertiary)) \(Text(detail).foregroundStyle(.secondary))")
-                .font(.body)
-                .lineLimit(1)
+            Text(title)
+                .font(.body.weight(.medium))
         }
         .accessibilityElement(children: .combine)
     }
@@ -122,7 +140,7 @@ struct ProView: View {
     // MARK: - Plans
 
     private var plans: some View {
-        HStack(spacing: 12) {
+        VStack(spacing: 10) {
             ForEach(PurchaseStore.offeredPlans) { plan in
                 PlanCard(
                     plan: plan,
@@ -153,8 +171,8 @@ struct ProView: View {
                 .disabled(purchases.isPurchasing || !AppStore.canMakePayments)
                 .keyboardShortcut(.defaultAction)
 
-                if AppStore.canMakePayments {
-                    Text(selectedPlan.terms)
+                if AppStore.canMakePayments, let product = purchases.product(for: selectedPlan) {
+                    Text(selectedPlan.terms(for: product))
                         .font(.caption)
                         .padding(.top, 2)
                         .foregroundStyle(.secondary)
@@ -254,7 +272,8 @@ struct ProView: View {
     }
 }
 
-/// One plan to pick: a radio with the price as the headline.
+/// One plan to pick: a row with a radio, the plan and its tagline, and the
+/// price on the right, from the App Store in the person's own currency.
 private struct PlanCard: View {
     var plan: ProPlan
     var product: Product?
@@ -265,40 +284,46 @@ private struct PlanCard: View {
 
     var body: some View {
         Button(action: action) {
-            VStack(alignment: .leading, spacing: 6) {
-                HStack(spacing: 8) {
-                    radio
-                    Text(plan.title)
-                        .font(.subheadline.weight(.semibold))
-                    Spacer(minLength: 4)
-                    if let badge = plan.badge {
-                        Text(badge)
-                            .font(.caption2.weight(.bold))
-                            .textCase(.uppercase)
-                            .foregroundStyle(Color.onAccent)
-                            .padding(.horizontal, 7)
-                            .padding(.vertical, 2)
-                            .background(Color.accent, in: .capsule)
+            HStack(spacing: 12) {
+                radio
+
+                VStack(alignment: .leading, spacing: 2) {
+                    HStack(spacing: 8) {
+                        Text(plan.title)
+                            .font(.headline)
+                        if let badge = plan.badge {
+                            Text(badge)
+                                .font(.caption2.weight(.bold))
+                                .textCase(.uppercase)
+                                .foregroundStyle(Color.onAccent)
+                                .padding(.horizontal, 7)
+                                .padding(.vertical, 2)
+                                .background(Color.accent, in: .capsule)
+                        }
                     }
+                    Text(plan.tagline)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
                 }
 
-                Group {
+                Spacer(minLength: 8)
+
+                VStack(alignment: .trailing, spacing: 2) {
                     if let product {
                         Text(plan.priceLine(for: product))
-                            .font(.system(size: 18, weight: .bold))
+                            .font(.system(size: 16, weight: .bold))
                         Text(plan.priceNote(for: product))
-                            .font(.subheadline)
+                            .font(.caption)
                             .foregroundStyle(.secondary)
                     } else {
-                        // Keeps the card's height while prices load.
+                        // Keeps the row's height while prices load.
                         Text(verbatim: "0.00 / year")
-                            .font(.system(size: 18, weight: .bold))
+                            .font(.system(size: 16, weight: .bold))
                         Text(verbatim: "About 0.00 a month")
-                            .font(.subheadline)
+                            .font(.caption)
                             .foregroundStyle(.secondary)
                     }
                 }
-                .padding(.leading, 24)
                 .redacted(reason: product == nil ? .placeholder : [])
             }
             .padding(14)

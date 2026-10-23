@@ -202,7 +202,7 @@ struct ProSettingsTab: View {
             } else {
                 restoreButton
                 Spacer()
-                Button("Unlock Pro…") {
+                Button("Upgrade to Pro…") {
                     MainWindowAccess.bringForward()
                     pro.present()
                 }

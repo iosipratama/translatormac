@@ -15,7 +15,7 @@ struct AppMenuCommands: Commands {
         CommandGroup(after: .appInfo) {
             // Pro owners find their plan in Settings › Pro instead.
             if !purchases.hasPro {
-                Button("Unlock Pro…") {
+                Button("Upgrade to Pro…") {
                     MainWindowAccess.bringForward()
                     pro.present()
                 }

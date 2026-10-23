@@ -52,7 +52,7 @@ private struct ProUnlockCard: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("No daily limit")
                         .font(.subheadline.weight(.semibold))
-                    Text("Unlock Pro")
+                    Text("Upgrade to Pro")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -66,7 +66,7 @@ private struct ProUnlockCard: View {
             .contentShape(.rect(cornerRadius: 10))
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Unlock Pro")
+        .accessibilityLabel("Upgrade to Pro")
         .accessibilityHint("No daily limit")
         .help("Show Pro plans")
     }

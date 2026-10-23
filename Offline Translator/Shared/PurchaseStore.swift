@@ -15,8 +15,8 @@ import os
 final class PurchaseStore {
 
     /// The plans the Pro sheet offers, in display order. The first is
-    /// selected by default.
-    static let offeredPlans: [ProPlan] = [.yearly, .lifetime]
+    /// selected by default: paying once comes first, subscribing second.
+    static let offeredPlans: [ProPlan] = [.lifetime, .yearly]
 
     /// Free translations per calendar day without Pro.
     static let dailyFreeLimit = PlanLimits.freeTranslationsPerDay
