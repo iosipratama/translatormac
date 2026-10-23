@@ -16,6 +16,10 @@ struct MainWindow: View {
 
     @State private var model: TranslationModel
     @State private var selection: SidebarItem = .translate
+    @State private var notice: FreeAccessNotice?
+    /// Set when the notice's "See Pro Plans" closes it, so the Pro sheet
+    /// opens once it's gone; only one sheet can show at a time.
+    @State private var showsPlansAfterNotice = false
     /// Read so a change in Settings refreshes the view, and with it
     /// `TranslationQuality.effective`.
     @AppStorage(SettingsKey.translationQuality) private var quality: TranslationQuality = .fast
@@ -74,6 +78,32 @@ struct MainWindow: View {
         .sheet(isPresented: Bindable(pro).isPresented) {
             ProView()
         }
+        .sheet(item: $notice) {
+            if showsPlansAfterNotice {
+                showsPlansAfterNotice = false
+                pro.present()
+            }
+        } content: { notice in
+            FreeAccessNoticeView(notice: notice) {
+                showsPlansAfterNotice = true
+                self.notice = nil
+            }
+        }
+        // At launch, on the last free day, and when the day changes while
+        // the app is open.
+        .onChange(of: purchases.dueFreeAccessNotice, initial: true) { _, due in
+            showNoticeIfDue(due)
+        }
+        .onChange(of: pro.isPresented) { _, isPresented in
+            if !isPresented { showNoticeIfDue(purchases.dueFreeAccessNotice) }
+        }
+    }
+
+    /// The notice waits while the Pro sheet is up, and shows only once.
+    private func showNoticeIfDue(_ due: FreeAccessNotice?) {
+        guard let due, notice == nil, !pro.isPresented else { return }
+        purchases.markFreeAccessNoticeShown()
+        notice = due
     }
 
     /// Shows the translate screen, with a history entry loaded when given one.

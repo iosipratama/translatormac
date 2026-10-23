@@ -105,25 +105,22 @@ struct ProView: View {
     // MARK: - Benefits
 
     /// Word for word the Pro list on the website, after "Everything in
-    /// Free". Best quality is only promised on a Mac that can run it.
+    /// Free".
     private var benefits: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Everything in Free, plus:")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .padding(.bottom, 2)
-            benefit("Unlimited translations")
-            if TranslationQuality.isBestAvailable {
-                benefit("Best quality with Apple Intelligence")
+            ForEach(PlanFeatures.pro, id: \.key) { feature in
+                benefit(feature)
             }
-            benefit("Pronunciation and read-aloud")
-            benefit("Saved phrases")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 24)
     }
 
-    private func benefit(_ title: LocalizedStringKey) -> some View {
+    private func benefit(_ title: LocalizedStringResource) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 10) {
             Image(systemName: "checkmark")
                 .font(.system(size: 12, weight: .bold))

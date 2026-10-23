@@ -28,6 +28,7 @@ final class PurchaseStore {
         static let isEarlySupporter = "isEarlySupporter"
         static let allowanceDay = "freeAllowanceDay"
         static let allowanceUsed = "freeAllowanceUsed"
+        static let freeAccessNoticeShown = "freeAccessNoticeShown"
     }
 
     /// Empty until the App Store answers, or when it can't be reached.
@@ -87,6 +88,20 @@ final class PurchaseStore {
         return PlanAccess.resolve(hasPro: hasPro, freeAccess: freeAccess, on: now)
     }
 
+    /// The free days' notice has been shown, ending or ended.
+    private var freeAccessNoticeShown = UserDefaults.standard.bool(forKey: DefaultsKey.freeAccessNoticeShown) {
+        didSet { UserDefaults.standard.set(freeAccessNoticeShown, forKey: DefaultsKey.freeAccessNoticeShown) }
+    }
+
+    /// The free days' notice, when it's time to show it.
+    var dueFreeAccessNotice: FreeAccessNotice? {
+        FreeAccessNotice.due(access: access, period: freeAccess, on: now, alreadyShown: freeAccessNoticeShown)
+    }
+
+    func markFreeAccessNoticeShown() {
+        freeAccessNoticeShown = true
+    }
+
     /// Bumped when the calendar day changes, so the free days and the daily
     /// count move on at midnight while the app is open.
     private var dayChanges = 0
@@ -138,6 +153,7 @@ final class PurchaseStore {
         FirstLaunchRecord.reset(to: start)
         freeAccess = FreeAccessPeriod(start: start)
         debugDayOffset = 0
+        freeAccessNoticeShown = false
     }
     #endif
 
