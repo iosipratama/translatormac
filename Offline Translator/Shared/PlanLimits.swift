@@ -7,14 +7,13 @@ import Foundation
 
 /// What each plan allows. Every number the app shows or enforces about the
 /// free tier comes from here, so the paywall, Settings and the store agree.
-/// Recent has no limit on any plan.
+/// Recent has no limit on any plan; Saved, Best quality, pronunciation and
+/// read-aloud are Pro features (see `PurchaseStore`).
 nonisolated enum PlanLimits {
     /// Calendar days of full access, Pro included, from the first launch.
     static let freeAccessDays = 3
     /// Free translations per calendar day, once the free days are over.
     static let freeTranslationsPerDay = 5
-    /// Starred entries allowed without Pro.
-    static let freeSaved = 10
 }
 
 /// Keys for the settings people can change, with their defaults registered

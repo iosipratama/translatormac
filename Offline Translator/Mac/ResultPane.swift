@@ -44,9 +44,9 @@ struct ResultPane: View {
             PaneMessage(
                 systemImage: "bolt.fill",
                 title: "You’ve used today’s free translations",
-                description: Text("Free translations reset at midnight. Pro removes the daily limit.")
+                description: Text("Your text is still here. Free translations reset at midnight, and Pro removes the daily limit.")
             ) {
-                Button("Unlock Pro…") {
+                Button("Upgrade to Pro…") {
                     pro.present()
                 }
                 .accentProminentButton()
@@ -97,11 +97,7 @@ struct ResultPane: View {
                     .textSelection(.enabled)
 
                 if showsPronunciation, let pronunciation = result.pronunciation {
-                    Text(pronunciation)
-                        .font(.callout)
-                        .foregroundStyle(.secondary)
-                        .textSelection(.enabled)
-                        .accessibilityLabel("Pronunciation: \(pronunciation)")
+                    PronunciationLine(pronunciation: pronunciation)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -127,23 +123,31 @@ struct ResultPane: View {
         .help("Copy the translation (⌘⇧C)")
         .animation(.smooth, value: model.justCopied)
 
-        Button(isSpeaking ? "Stop" : "Speak", systemImage: isSpeaking ? "stop.fill" : "speaker.wave.2") {
-            model.toggleSpeech()
-        }
-        .labelStyle(.iconOnly)
-        .disabled(!model.canSpeak && !isSpeaking)
-        .help(speakHelp)
-
-        Toggle(model.isCurrentSaved ? "Remove from Saved" : "Save", systemImage: model.isCurrentSaved ? "star.fill" : "star", isOn: Binding(
-            get: { model.isCurrentSaved },
-            set: { _ in
-                if !model.toggleSaved() { pro.present() }
+        if model.unlocksPro || isSpeaking {
+            Button(isSpeaking ? "Stop" : "Speak", systemImage: isSpeaking ? "stop.fill" : "speaker.wave.2") {
+                model.toggleSpeech()
             }
-        ))
-        .toggleStyle(.button)
-        .labelStyle(.iconOnly)
-        .disabled(!hasResult)
-        .help(model.isCurrentSaved ? "Remove from Saved (⌘D)" : "Save (⌘D)")
+            .labelStyle(.iconOnly)
+            .disabled(!model.canSpeak && !isSpeaking)
+            .help(speakHelp)
+        } else {
+            ProTag(feature: "Read aloud", systemImage: "speaker.wave.2")
+        }
+
+        if model.unlocksPro || model.isCurrentSaved {
+            // Removing a star always works, so a phrase saved during the free
+            // days can still be taken out of Saved.
+            Toggle(model.isCurrentSaved ? "Remove from Saved" : "Save", systemImage: model.isCurrentSaved ? "star.fill" : "star", isOn: Binding(
+                get: { model.isCurrentSaved },
+                set: { _ in model.toggleSaved() }
+            ))
+            .toggleStyle(.button)
+            .labelStyle(.iconOnly)
+            .disabled(!hasResult)
+            .help(model.isCurrentSaved ? "Remove from Saved (⌘D)" : "Save (⌘D)")
+        } else {
+            ProTag(feature: "Saved phrases", systemImage: "star")
+        }
     }
 
     private var speakHelp: LocalizedStringKey {

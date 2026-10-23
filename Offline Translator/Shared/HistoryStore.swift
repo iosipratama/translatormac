@@ -26,12 +26,6 @@ struct HistoryStore {
         return (try? context.fetchCount(descriptor)) ?? 0
     }
 
-    /// Whether another entry can be starred under a plan's limit.
-    func canSave(limit: Int?) -> Bool {
-        guard let limit else { return true }
-        return savedCount() < limit
-    }
-
     /// Adds a translation to Recent. If the same text in the same pair is
     /// already there, that entry is refreshed and moved to the top instead,
     /// keeping its saved state.

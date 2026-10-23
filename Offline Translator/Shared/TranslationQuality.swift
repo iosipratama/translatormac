@@ -37,9 +37,20 @@ enum TranslationQuality: String, CaseIterable, Identifiable {
     }
 
     /// What translation actually uses: Best quality only counts where Apple
-    /// Intelligence can provide it.
+    /// Intelligence can provide it, and with Pro or during the free days.
+    /// A choice made during the free days is kept for when Pro is bought.
     static var effective: TranslationQuality {
-        chosen == .best && isBestAvailable ? .best : .fast
+        chosen == .best && isBestAvailable && isUnlocked ? .best : .fast
+    }
+
+    /// The app's purchases, registered at launch, so translation can check
+    /// whether Best quality is unlocked wherever it starts. Reading it in a
+    /// view also updates that view when access changes.
+    static weak var purchases: PurchaseStore?
+
+    /// Best quality is a Pro feature.
+    static var isUnlocked: Bool {
+        purchases?.access.unlocksPro ?? false
     }
 
     /// Best quality needs the Translation framework's strategies (macOS 26.4)
@@ -48,46 +59,6 @@ enum TranslationQuality: String, CaseIterable, Identifiable {
         if simulatesNoAppleIntelligence { return false }
         guard #available(macOS 26.4, iOS 26.4, *) else { return false }
         return SystemLanguageModel.default.isAvailable
-    }
-
-    /// Why Best quality can't be chosen, or `nil` when it can.
-    static var bestUnavailableReason: String? {
-        if simulatesNoAppleIntelligence {
-            return String(localized: "Best quality isn’t available on this device right now.")
-        }
-        #if os(macOS)
-        guard #available(macOS 26.4, *) else {
-            return String(localized: "Best quality needs macOS 26.4 or later.")
-        }
-        switch SystemLanguageModel.default.availability {
-        case .available:
-            return nil
-        case .unavailable(.deviceNotEligible):
-            return String(localized: "Best quality needs a Mac that supports Apple Intelligence.")
-        case .unavailable(.appleIntelligenceNotEnabled):
-            return String(localized: "Best quality needs Apple Intelligence, which you can turn on in System Settings.")
-        case .unavailable(.modelNotReady):
-            return String(localized: "Best quality will be available once Apple Intelligence finishes setting up.")
-        case .unavailable:
-            return String(localized: "Best quality isn’t available on this Mac right now.")
-        }
-        #else
-        guard #available(iOS 26.4, *) else {
-            return String(localized: "Best quality needs iOS 26.4 or later.")
-        }
-        switch SystemLanguageModel.default.availability {
-        case .available:
-            return nil
-        case .unavailable(.deviceNotEligible):
-            return String(localized: "Best quality needs an iPhone that supports Apple Intelligence.")
-        case .unavailable(.appleIntelligenceNotEnabled):
-            return String(localized: "Best quality needs Apple Intelligence, which you can turn on in Settings.")
-        case .unavailable(.modelNotReady):
-            return String(localized: "Best quality will be available once Apple Intelligence finishes setting up.")
-        case .unavailable:
-            return String(localized: "Best quality isn’t available on this iPhone right now.")
-        }
-        #endif
     }
 
     /// Debug builds only: behave as on a device without Apple Intelligence.

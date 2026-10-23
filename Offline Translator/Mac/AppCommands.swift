@@ -82,7 +82,8 @@ struct TranslationCommands: Commands {
                 model?.settle()
             }
             .keyboardShortcut(.return, modifiers: .command)
-            .disabled(model?.canTranslateNow != true)
+            // Stays available past the daily limit, where it offers Pro.
+            .disabled(model?.trimmedInput.isEmpty != false)
 
             Button("Swap Languages") {
                 model?.swapLanguages()
@@ -96,7 +97,8 @@ struct TranslationCommands: Commands {
                 model?.toggleSpeech()
             }
             .keyboardShortcut("s", modifiers: [.command, .option])
-            .disabled(model?.canSpeak != true && model?.speaker.isSpeaking != true)
+            // Without Pro it offers Pro, so it only needs a translation.
+            .disabled(model.map { $0.unlocksPro ? !$0.canSpeak && !$0.speaker.isSpeaking : $0.currentResult == nil } ?? true)
 
             Button(model?.isCurrentSaved == true ? "Remove from Saved" : "Save Translation") {
                 model?.toggleSaved()

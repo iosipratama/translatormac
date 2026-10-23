@@ -162,6 +162,16 @@ final class TranslationModel {
 
     private(set) var justCopied = false
 
+    // MARK: Pro
+
+    /// Bumped when the person reaches for something Pro unlocks, or for a new
+    /// translation past the daily limit; the window opens the Pro sheet.
+    private(set) var upgradePrompts = 0
+
+    /// The limit's prompt has been shown for this text, so pausing again
+    /// doesn't bring the sheet back while the person keeps editing.
+    private var promptedForLimit = false
+
     // MARK: - Setup
 
     init(modelContext: ModelContext, purchases: PurchaseStore) {
@@ -423,6 +433,7 @@ final class TranslationModel {
         if TextSession.isNewText(from: oldValue, to: inputText) {
             // Started from empty, or the old text was replaced in one go.
             sessionCounted = false
+            promptedForLimit = false
             currentRecord = nil
         }
 
@@ -443,8 +454,12 @@ final class TranslationModel {
 
         recordTask = Task { [weak self] in
             try? await Task.sleep(for: Timing.pauseBeforeRecording)
-            guard !Task.isCancelled else { return }
-            self?.recordToRecent()
+            guard !Task.isCancelled, let self else { return }
+            if self.needsPro {
+                self.promptForLimit()
+            } else {
+                self.recordToRecent()
+            }
         }
     }
 
@@ -458,6 +473,13 @@ final class TranslationModel {
     func settle() {
         guard !trimmedInput.isEmpty else { return }
         recordTask?.cancel()
+        if needsPro {
+            // Asked for explicitly, so the sheet opens even if a pause
+            // already showed it for this text.
+            promptedForLimit = false
+            promptForLimit()
+            return
+        }
         if currentResult == nil, !isTranslating || !translatesAsYouType {
             requestTranslation()
         }
@@ -490,6 +512,7 @@ final class TranslationModel {
         configuration = nil
         currentRecord = nil
         sessionCounted = false
+        promptedForLimit = false
         wantsRecord = false
         wantsSpeech = false
         speaker.stop()
@@ -506,6 +529,25 @@ final class TranslationModel {
 
     var canTranslateNow: Bool {
         !trimmedInput.isEmpty && !needsPro
+    }
+
+    /// Pro features and unlimited translations are available right now.
+    var unlocksPro: Bool {
+        purchases.access.unlocksPro
+    }
+
+    /// Opens the Pro sheet, for a locked feature.
+    func requestUpgrade() {
+        upgradePrompts += 1
+    }
+
+    /// Opens the Pro sheet once per text that the daily limit blocks. Only
+    /// when the person pauses or presses ⌘⏎, never mid-typing, and the
+    /// text stays as it is.
+    private func promptForLimit() {
+        guard !promptedForLimit else { return }
+        promptedForLimit = true
+        requestUpgrade()
     }
 
     /// Translates the current text right away; typing normally gets here after
@@ -633,9 +675,12 @@ final class TranslationModel {
     /// Each new reading starts at normal speed again.
     private(set) var speaksSlowly = false
 
+    /// Read-aloud is a Pro feature; without it, this offers Pro instead.
     func toggleSpeech() {
         if speaker.isSpeaking {
             speaker.stop()
+        } else if !purchases.canUsePronunciation {
+            requestUpgrade()
         } else if let result = currentResult {
             speaksSlowly = false
             speaker.speak(result.text, in: targetLanguage)
@@ -656,6 +701,8 @@ final class TranslationModel {
     /// Reads the translation aloud as soon as it's ready, as after speaking
     /// on iPhone.
     func speakWhenTranslated() {
+        // Without Pro, stay quiet rather than offering Pro unasked.
+        guard purchases.canUsePronunciation else { return }
         if currentResult != nil {
             if !speaker.isSpeaking { toggleSpeech() }
         } else {
@@ -672,15 +719,18 @@ final class TranslationModel {
         currentRecord?.isSaved ?? false
     }
 
-    /// Returns `false` when the free plan's saved limit is reached and the
-    /// star stays empty; the caller offers Pro.
+    /// Returns `false` when saving needs Pro: the star stays empty and the
+    /// Pro sheet opens. Removing a star always works.
     @discardableResult
     func toggleSaved() -> Bool {
         if let record = currentRecord, record.isSaved {
             history.setSaved(record, false)
             return true
         }
-        guard history.canSave(limit: purchases.savedLimit) else { return false }
+        guard purchases.canSaveNew else {
+            requestUpgrade()
+            return false
+        }
         recordToRecent(force: true)
         guard let record = currentRecord else { return true }
         history.setSaved(record, true)

@@ -20,6 +20,8 @@ struct RootView: View {
     /// Which languages are downloaded, for Settings and its Languages page.
     @State private var inventory = LanguageInventory()
     @State private var toast: ToastMessage?
+    /// Read so a change in Settings refreshes the view, and with it
+    /// `TranslationQuality.effective`.
     @AppStorage(SettingsKey.translationQuality) private var quality: TranslationQuality = .fast
     @AppStorage(SettingsKey.appearance) private var theme: AppTheme = .automatic
     @AppStorage(OnboardingModel.didFinishKey) private var didFinishOnboarding = false
@@ -74,8 +76,12 @@ struct RootView: View {
         .task(id: model.availabilityKey) {
             await model.refreshAvailability()
         }
-        .onChange(of: quality) {
+        .onChange(of: TranslationQuality.effective) {
+            // Changes with the setting, and when Pro or the free days end.
             Task { await model.translationQualityDidChange() }
+        }
+        .onChange(of: model.upgradePrompts) {
+            pro.present()
         }
         .onChange(of: purchases.canTranslate) { _, canTranslate in
             // Buying Pro while blocked should pick up where typing left off.

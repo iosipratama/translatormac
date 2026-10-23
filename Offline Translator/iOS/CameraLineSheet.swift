@@ -108,7 +108,7 @@ struct CameraLineSheet: View {
             store.setSaved(entry, false)
             return
         }
-        guard store.canSave(limit: purchases.savedLimit) else {
+        guard purchases.canSaveNew else {
             dismiss()
             needsPro()
             return

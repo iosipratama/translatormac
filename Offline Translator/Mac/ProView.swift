@@ -98,7 +98,7 @@ struct ProView: View {
             // Only what Pro adds, each against the free plan's limit. Every
             // language is on the free plan too, so it isn't listed here.
             benefit("Unlimited translations", detail: "Free plan: \(PlanLimits.freeTranslationsPerDay) a day")
-            benefit("Unlimited saved translations", detail: "Free plan: \(PlanLimits.freeSaved)")
+            benefit("Saved phrases", detail: "Pro only")
             benefit("Future Pro features", detail: "Included as they ship")
         }
         .frame(maxWidth: 400)

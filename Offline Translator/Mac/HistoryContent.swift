@@ -215,7 +215,7 @@ struct HistoryContent: View {
             moveSelectionPast(entries)
         }
         for entry in entries where entry.isSaved != isSaved {
-            if isSaved, !store.canSave(limit: purchases.savedLimit) {
+            if isSaved, !purchases.canSaveNew {
                 pro.present()
                 return
             }
@@ -244,9 +244,6 @@ struct HistoryContent: View {
         HStack {
             if !searchText.isEmpty {
                 Text("^[\(items.count) result](inflect: true)")
-            } else if scope == .saved, let limit = purchases.savedLimit {
-                // The free plan's limit, shown before it's reached.
-                Text("\(items.count) of \(limit) saved · never deleted automatically")
             } else if scope == .saved {
                 Text("\(items.count) saved · never deleted automatically")
             } else {

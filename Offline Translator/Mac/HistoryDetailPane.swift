@@ -17,6 +17,8 @@ struct HistoryDetailPane: View {
     var onSetSaved: (Bool) -> Void
     var onDelete: () -> Void
 
+    @Environment(PurchaseStore.self) private var purchases
+
     @State private var justCopied = false
     @State private var copiedTask: Task<Void, Never>?
     @AppStorage(SettingsKey.showPronunciation) private var showsPronunciation = true
@@ -74,11 +76,7 @@ struct HistoryDetailPane: View {
                         .textSelection(.enabled)
 
                     if let pronunciation {
-                        Text(pronunciation)
-                            .font(.callout)
-                            .foregroundStyle(.secondary)
-                            .textSelection(.enabled)
-                            .accessibilityLabel("Pronunciation: \(pronunciation)")
+                        PronunciationLine(pronunciation: pronunciation)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -106,24 +104,32 @@ struct HistoryDetailPane: View {
                 .help("Copy the translation (⌘⇧C)")
                 .animation(.smooth, value: justCopied)
 
-            Button(
-                speaker.isSpeaking ? "Stop" : "Speak",
-                systemImage: speaker.isSpeaking ? "stop.fill" : "speaker.wave.2",
-                action: toggleSpeech
-            )
-            .labelStyle(.iconOnly)
-            .disabled(!speaker.isSpeaking && !speaker.canSpeak(targetLanguage))
-            .help(speaker.isSpeaking ? "Stop speaking" : "Speak the translation")
+            if purchases.canUsePronunciation || speaker.isSpeaking {
+                Button(
+                    speaker.isSpeaking ? "Stop" : "Speak",
+                    systemImage: speaker.isSpeaking ? "stop.fill" : "speaker.wave.2",
+                    action: toggleSpeech
+                )
+                .labelStyle(.iconOnly)
+                .disabled(!speaker.isSpeaking && !speaker.canSpeak(targetLanguage))
+                .help(speaker.isSpeaking ? "Stop speaking" : "Speak the translation")
+            } else {
+                ProTag(feature: "Read aloud", systemImage: "speaker.wave.2")
+            }
 
             switch scope {
             case .recent:
-                Toggle(entry.isSaved ? "Remove from Saved" : "Save", systemImage: entry.isSaved ? "star.fill" : "star", isOn: Binding(
-                    get: { entry.isSaved },
-                    set: { onSetSaved($0) }
-                ))
-                .toggleStyle(.button)
-                .labelStyle(.iconOnly)
-                .help(entry.isSaved ? "Remove from Saved" : "Save")
+                if purchases.canSaveNew || entry.isSaved {
+                    Toggle(entry.isSaved ? "Remove from Saved" : "Save", systemImage: entry.isSaved ? "star.fill" : "star", isOn: Binding(
+                        get: { entry.isSaved },
+                        set: { onSetSaved($0) }
+                    ))
+                    .toggleStyle(.button)
+                    .labelStyle(.iconOnly)
+                    .help(entry.isSaved ? "Remove from Saved" : "Save")
+                } else {
+                    ProTag(feature: "Saved phrases", systemImage: "star")
+                }
 
                 Button("Delete", systemImage: "trash", role: .destructive, action: onDelete)
                     .labelStyle(.iconOnly)

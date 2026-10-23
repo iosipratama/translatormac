@@ -161,9 +161,6 @@ struct LibraryScreen: View {
         }
         switch tab {
         case .saved:
-            if let limit = purchases.savedLimit {
-                return Text("\(rows.count) of \(limit) saved · never deleted automatically")
-            }
             return Text("\(rows.count) saved · never deleted automatically")
         case .recent:
             return Text("^[\(rows.count) translation](inflect: true) · kept on this iPhone only")
@@ -249,7 +246,7 @@ struct LibraryScreen: View {
 
     private func setSaved(_ entry: TranslationHistory, _ isSaved: Bool) {
         if isSaved {
-            guard store.canSave(limit: purchases.savedLimit) else {
+            guard purchases.canSaveNew else {
                 pro.present()
                 return
             }

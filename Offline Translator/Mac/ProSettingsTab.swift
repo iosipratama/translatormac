@@ -4,7 +4,6 @@
 //
 
 import AppKit
-import SwiftData
 import SwiftUI
 
 /// Settings › Pro: the plan this Mac is on, and what it allows.
@@ -13,10 +12,6 @@ struct ProSettingsTab: View {
     @Environment(ProPresentation.self) private var pro
 
     @State private var isRestoring = false
-
-    /// Only for the saved meter on the free plan.
-    @Query(filter: #Predicate<TranslationHistory> { $0.isSaved })
-    private var saved: [TranslationHistory]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -27,7 +22,7 @@ struct ProSettingsTab: View {
                     .padding(.top, 20)
                 subscriptionButtons
                     .padding(.top, 14)
-            } else {
+            } else if purchases.access == .free {
                 usageCard
                     .padding(.top, 20)
             }
@@ -74,12 +69,22 @@ struct ProSettingsTab: View {
                             .background(Color.accent, in: .capsule)
                     }
                 }
-                Text(purchases.hasPro
-                     ? "Thanks for supporting the app."
-                     : "Pro removes the limits below.")
+                Text(subtitle)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
+        }
+    }
+
+    private var subtitle: LocalizedStringKey {
+        switch purchases.access {
+        case .pro:
+            "Thanks for supporting the app."
+        case .freeAccess(let end):
+            // The end is midnight, so name the last whole day instead.
+            "Everything is unlocked through \(end.addingTimeInterval(-1), format: .dateTime.weekday(.wide).month().day()). Then the free plan gives you \(PlanLimits.freeTranslationsPerDay) translations a day."
+        case .free:
+            "Pro removes the daily limit and unlocks every feature."
         }
     }
 
@@ -88,7 +93,6 @@ struct ProSettingsTab: View {
     private var usageCard: some View {
         VStack(alignment: .leading, spacing: 12) {
             meter("Translations today", value: purchases.translationsUsedToday, max: PlanLimits.freeTranslationsPerDay)
-            meter("Saved translations", value: saved.count, max: PlanLimits.freeSaved)
             Text("Free translations reset at midnight.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -131,7 +135,7 @@ struct ProSettingsTab: View {
                 )
             }
             Divider()
-            planRow("Includes", value: String(localized: "Unlimited translations, history and Saved"))
+            planRow("Includes", value: String(localized: "Every feature, without limits"))
         }
         .background(.background, in: .rect(cornerRadius: 8))
         .overlay {

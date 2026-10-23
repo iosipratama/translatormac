@@ -47,18 +47,28 @@ struct GeneralSettingsTab: View {
                 }
             }
 
-            LabeledContent("Quality:") {
-                VStack(alignment: .leading, spacing: 6) {
-                    Picker("Translation quality", selection: shownQuality) {
-                        ForEach(TranslationQuality.allCases) { quality in
-                            Text(quality.title).tag(quality)
+            // Only on a Mac with Apple Intelligence; elsewhere there's
+            // nothing to choose, so the row isn't shown at all.
+            if TranslationQuality.isBestAvailable {
+                LabeledContent("Quality:") {
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack(spacing: 8) {
+                            Picker("Translation quality", selection: shownQuality) {
+                                ForEach(TranslationQuality.allCases) { quality in
+                                    Text(quality.title).tag(quality)
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                            .labelsHidden()
+                            .fixedSize()
+                            .disabled(!TranslationQuality.isUnlocked)
+
+                            if !TranslationQuality.isUnlocked {
+                                ProTag(feature: "Best quality")
+                            }
                         }
+                        note(qualityNote)
                     }
-                    .pickerStyle(.segmented)
-                    .labelsHidden()
-                    .fixedSize()
-                    .disabled(!TranslationQuality.isBestAvailable)
-                    note(qualityNote)
                 }
             }
 
@@ -106,13 +116,13 @@ struct GeneralSettingsTab: View {
     /// what translation actually uses; the stored choice is kept for later.
     private var shownQuality: Binding<TranslationQuality> {
         Binding {
-            TranslationQuality.isBestAvailable ? quality : .fast
+            TranslationQuality.effective == .best ? quality : .fast
         } set: { quality = $0 }
     }
 
     private var qualityNote: LocalizedStringKey {
-        if let reason = TranslationQuality.bestUnavailableReason {
-            return "Uses the languages downloaded to this Mac. \(reason)"
+        guard TranslationQuality.isUnlocked else {
+            return "Best quality uses Apple Intelligence for more natural translations, still offline. Included with Pro."
         }
         switch quality {
         case .fast:

@@ -162,9 +162,15 @@ final class PurchaseStore {
         allowance.used(on: now)
     }
 
-    /// How many entries can be starred; `nil` means no limit.
-    var savedLimit: Int? {
-        access.unlocksPro ? nil : PlanLimits.freeSaved
+    /// Starring new phrases is a Pro feature. Phrases saved earlier, as
+    /// during the free days, stay readable and can still be removed.
+    var canSaveNew: Bool {
+        access.unlocksPro
+    }
+
+    /// Pronunciation and read-aloud are Pro features.
+    var canUsePronunciation: Bool {
+        access.unlocksPro
     }
 
     var canTranslate: Bool {
@@ -188,6 +194,7 @@ final class PurchaseStore {
             used: defaults.integer(forKey: DefaultsKey.allowanceUsed)
         )
         freeAccess = FreeAccessPeriod(start: FirstLaunchRecord.date(recordingIfNeeded: .now))
+        TranslationQuality.purchases = self
 
         Task { [weak self] in
             for await _ in NotificationCenter.default.notifications(named: .NSCalendarDayChanged) {

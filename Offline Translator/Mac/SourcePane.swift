@@ -74,15 +74,12 @@ struct SourcePane: View {
             .accessibilityLabel("Text to translate")
     }
 
+    /// Only on the free plan; Pro and the free days have no limit to show.
     private var freeTierStatus: some View {
-        Group {
-            if purchases.canTranslate {
-                Text("^[\(purchases.remainingFreeTranslations) free translation](inflect: true) left today")
-            } else {
-                Text("No free translations left today")
-            }
-        }
-        .foregroundStyle(.tertiary)
-        .lineLimit(1)
+        Text("\(purchases.remainingFreeTranslations) of \(PlanLimits.freeTranslationsPerDay) left today")
+            .foregroundStyle(.tertiary)
+            .lineLimit(1)
+            .contentTransition(.numericText())
+            .accessibilityLabel("\(purchases.remainingFreeTranslations) of \(PlanLimits.freeTranslationsPerDay) free translations left today")
     }
 }

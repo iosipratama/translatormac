@@ -23,7 +23,6 @@ struct AppleIntelligenceTests {
         defaults.set(TranslationQuality.best.rawValue, forKey: SettingsKey.translationQuality)
 
         #expect(!TranslationQuality.isBestAvailable)
-        #expect(TranslationQuality.bestUnavailableReason != nil)
         #expect(TranslationQuality.effective == .fast)
     }
 }

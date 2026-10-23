@@ -16,6 +16,8 @@ struct MainWindow: View {
 
     @State private var model: TranslationModel
     @State private var selection: SidebarItem = .translate
+    /// Read so a change in Settings refreshes the view, and with it
+    /// `TranslationQuality.effective`.
     @AppStorage(SettingsKey.translationQuality) private var quality: TranslationQuality = .fast
 
     /// The model outlives the translate screen so switching to Recent and back
@@ -56,8 +58,12 @@ struct MainWindow: View {
         .task(id: model.availabilityKey) {
             await model.refreshAvailability()
         }
-        .onChange(of: quality) {
+        .onChange(of: TranslationQuality.effective) {
+            // Changes with the setting, and when Pro or the free days end.
             Task { await model.translationQualityDidChange() }
+        }
+        .onChange(of: model.upgradePrompts) {
+            pro.present()
         }
         .onChange(of: purchases.canTranslate) { _, canTranslate in
             // Buying Pro while blocked should pick up where typing left off.

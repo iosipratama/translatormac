@@ -13,9 +13,6 @@ struct PlanSection: View {
     @Environment(PurchaseStore.self) private var purchases
     @Environment(ProPresentation.self) private var pro
 
-    @Query(filter: #Predicate<TranslationHistory> { $0.isSaved })
-    private var saved: [TranslationHistory]
-
     @State private var isManagingSubscription = false
 
     var body: some View {
@@ -52,7 +49,6 @@ struct PlanSection: View {
 
             Section {
                 LabeledContent("Translations today", value: "\(purchases.translationsUsedToday) of \(PlanLimits.freeTranslationsPerDay)")
-                LabeledContent("Saved", value: "\(saved.count) of \(PlanLimits.freeSaved)")
             } footer: {
                 Text("Free plan · the daily count resets at midnight.")
             }
