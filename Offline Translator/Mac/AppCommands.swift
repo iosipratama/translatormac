@@ -79,7 +79,7 @@ struct TranslationCommands: Commands {
 
         CommandMenu("Translation") {
             Button("Translate Now") {
-                model?.requestTranslation()
+                model?.settle()
             }
             .keyboardShortcut(.return, modifiers: .command)
             .disabled(model?.canTranslateNow != true)

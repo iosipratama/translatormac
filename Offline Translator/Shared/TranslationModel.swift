@@ -14,7 +14,15 @@ import os
 ///
 /// Translation is live: the screen translates shortly after typing pauses,
 /// keeps the previous result visible while the next one is in flight, and
-/// records a translation to Recent once the person has settled on it.
+/// once the person has settled on a translation, counts it toward the free
+/// plan's daily limit and records it to Recent.
+///
+/// A translation is finished, and counts, the first time any of these
+/// happens to a result: ⌘⏎ (Done on iPhone), Copy, Speak, Save, showing it
+/// to someone, or typing pausing for 2 seconds. Each text counts once,
+/// however much it's edited; a new text starts when the old one is cleared
+/// or replaced in one go (see `TextSession`). Changing or swapping languages
+/// and opening an entry from Recent don't count again.
 @Observable
 final class TranslationModel {
 
@@ -147,9 +155,9 @@ final class TranslationModel {
     /// A pause ended before the translation arrived; record it when it does.
     private var wantsRecord = false
 
-    /// Whether the free tier has been charged for this editing session. Live
-    /// translation re-translates on every pause, so charging per request would
-    /// burn the allowance while typing one sentence.
+    /// Whether this text has been counted toward the free plan's daily
+    /// limit. Live translation re-translates on every pause, so counting per
+    /// request would burn the allowance while typing one sentence.
     private var sessionCounted = false
 
     private(set) var justCopied = false
@@ -296,10 +304,12 @@ final class TranslationModel {
         isAdjustingLanguages = false
 
         // The reverse translation is a new entry in Recent, not an edit of the
-        // one it came from.
+        // one it came from, but not a new text to count.
         currentRecord = nil
         if let translation {
+            let counted = sessionCounted
             inputText = translation
+            sessionCounted = counted
         }
         languagesDidChange()
     }
@@ -410,8 +420,8 @@ final class TranslationModel {
             return
         }
 
-        if oldValue.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            // Text went from empty to something: a new editing session.
+        if TextSession.isNewText(from: oldValue, to: inputText) {
+            // Started from empty, or the old text was replaced in one go.
             sessionCounted = false
             currentRecord = nil
         }
@@ -442,8 +452,9 @@ final class TranslationModel {
         inputText = ""
     }
 
-    /// The person is done typing (Done on the iPhone keyboard): translate now
-    /// if live translation is off, and count the translation as made.
+    /// The person is done typing (⌘⏎ on the Mac, Done on the iPhone
+    /// keyboard): translate now if needed, and count the translation as
+    /// finished.
     func settle() {
         guard !trimmedInput.isEmpty else { return }
         recordTask?.cancel()
@@ -486,8 +497,9 @@ final class TranslationModel {
 
     // MARK: - Translating
 
-    /// Whether the free tier allows this session to translate. A session that
-    /// has already been charged keeps working even after the allowance runs out.
+    /// Whether the free plan's limit blocks this text. A text that has
+    /// already been counted keeps working after the allowance runs out, so
+    /// nobody is cut off while editing it.
     var needsPro: Bool {
         !trimmedInput.isEmpty && !sessionCounted && !purchases.canTranslate
     }
@@ -566,10 +578,6 @@ final class TranslationModel {
             )
             finishTranslating()
 
-            if !sessionCounted {
-                sessionCounted = true
-                purchases.recordTranslation()
-            }
             if wantsRecord {
                 recordToRecent()
             }
@@ -681,7 +689,8 @@ final class TranslationModel {
 
     // MARK: - Recent
 
-    /// Writes the translation on screen to Recent, updating this session's
+    /// The translation on screen is finished: counts it toward the daily
+    /// limit the first time, and writes it to Recent, updating this session's
     /// record if there is one. Waits for the translation if it hasn't arrived.
     /// With history off nothing is written unless forced, which saving does:
     /// a starred entry has to exist somewhere.
@@ -691,6 +700,10 @@ final class TranslationModel {
             return
         }
         wantsRecord = false
+        if !sessionCounted {
+            sessionCounted = true
+            purchases.recordTranslation()
+        }
         guard keepsHistory || force else { return }
 
         // Record identifiers, not localized display names, so history stays
@@ -716,7 +729,7 @@ final class TranslationModel {
 
     /// Puts a history entry on the translate screen: its languages, text and
     /// translation, with the entry itself as the session's record so the star
-    /// reflects it. The free tier was already charged when it was made.
+    /// reflects it. It was already counted when it was made.
     func load(_ record: TranslationHistory) {
         speaker.stop()
 
