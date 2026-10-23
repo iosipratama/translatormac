@@ -41,7 +41,7 @@ struct SourcePane: View {
 
                 Spacer()
 
-                if !purchases.hasPro {
+                if !purchases.access.unlocksPro {
                     freeTierStatus
                 }
             }

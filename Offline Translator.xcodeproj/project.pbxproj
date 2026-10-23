@@ -6,7 +6,18 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		4E5A00012F00000000000007 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4E387F762EF58777003702F0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4E387F7D2EF58777003702F0;
+			remoteInfo = TranslatorMac;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		4E5A00012F00000000000001 /* TranslatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TranslatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E387F7E2EF58778003702F0 /* Translate Offline.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Translate Offline.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EEC71BD2EF90A970044AE89 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -17,10 +28,22 @@
 			path = "Offline Translator";
 			sourceTree = "<group>";
 		};
+		4E5A00012F00000000000002 /* Tests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Tests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		4E387F7B2EF58777003702F0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4E5A00012F00000000000003 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -35,6 +58,7 @@
 			children = (
 				4EEC71BD2EF90A970044AE89 /* README.md */,
 				4E387F802EF58778003702F0 /* Offline Translator */,
+				4E5A00012F00000000000002 /* Tests */,
 				4E387F7F2EF58778003702F0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +67,7 @@
 			isa = PBXGroup;
 			children = (
 				4E387F7E2EF58778003702F0 /* Translate Offline.app */,
+				4E5A00012F00000000000001 /* TranslatorTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -72,6 +97,29 @@
 			productReference = 4E387F7E2EF58778003702F0 /* Translate Offline.app */;
 			productType = "com.apple.product-type.application";
 		};
+		4E5A00012F00000000000006 /* TranslatorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4E5A00012F00000000000009 /* Build configuration list for PBXNativeTarget "TranslatorTests" */;
+			buildPhases = (
+				4E5A00012F00000000000004 /* Sources */,
+				4E5A00012F00000000000003 /* Frameworks */,
+				4E5A00012F00000000000005 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4E5A00012F00000000000008 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				4E5A00012F00000000000002 /* Tests */,
+			);
+			name = TranslatorTests;
+			packageProductDependencies = (
+			);
+			productName = TranslatorTests;
+			productReference = 4E5A00012F00000000000001 /* TranslatorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -84,6 +132,10 @@
 				TargetAttributes = {
 					4E387F7D2EF58777003702F0 = {
 						CreatedOnToolsVersion = 26.2;
+					};
+					4E5A00012F00000000000006 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 4E387F7D2EF58777003702F0;
 					};
 				};
 			};
@@ -102,12 +154,20 @@
 			projectRoot = "";
 			targets = (
 				4E387F7D2EF58777003702F0 /* TranslatorMac */,
+				4E5A00012F00000000000006 /* TranslatorTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		4E387F7C2EF58777003702F0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4E5A00012F00000000000005 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -124,7 +184,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4E5A00012F00000000000004 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4E5A00012F00000000000008 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4E387F7D2EF58777003702F0 /* TranslatorMac */;
+			targetProxy = 4E5A00012F00000000000007 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		4E387F872EF58779003702F0 /* Debug */ = {
@@ -377,6 +452,52 @@
 			};
 			name = Release;
 		};
+		4E5A00012F0000000000000A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 8;
+				DEVELOPMENT_TEAM = 37QG5KMDZA;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = iosipratama.TranslatorMac.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Translate Offline.app/Contents/MacOS/Translate Offline";
+			};
+			name = Debug;
+		};
+		4E5A00012F0000000000000B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 8;
+				DEVELOPMENT_TEAM = 37QG5KMDZA;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = iosipratama.TranslatorMac.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Translate Offline.app/Contents/MacOS/Translate Offline";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -394,6 +515,15 @@
 			buildConfigurations = (
 				4E387F8A2EF58779003702F0 /* Debug */,
 				4E387F8B2EF58779003702F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4E5A00012F00000000000009 /* Build configuration list for PBXNativeTarget "TranslatorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4E5A00012F0000000000000A /* Debug */,
+				4E5A00012F0000000000000B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

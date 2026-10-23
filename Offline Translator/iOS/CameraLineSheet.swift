@@ -103,7 +103,7 @@ struct CameraLineSheet: View {
 
     /// Saving keeps just this line, as its own entry in Library.
     private func toggleSaved() {
-        let store = HistoryStore(context: modelContext, recentLimit: purchases.historyLimit)
+        let store = HistoryStore(context: modelContext)
         if let entry = savedEntry, entry.isSaved {
             store.setSaved(entry, false)
             return

@@ -763,7 +763,7 @@ final class TranslationModel {
     }
 
     private var history: HistoryStore {
-        HistoryStore(context: modelContext, recentLimit: purchases.historyLimit)
+        HistoryStore(context: modelContext)
     }
 
     // MARK: - Persistence

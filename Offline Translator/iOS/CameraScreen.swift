@@ -436,7 +436,7 @@ struct CameraScreen: View {
     private func record(_ lines: [CameraLine]) {
         purchases.recordTranslation()
         guard keepsHistory else { return }
-        HistoryStore(context: modelContext, recentLimit: purchases.historyLimit).record(
+        HistoryStore(context: modelContext).record(
             sourceText: lines.map(\.text).joined(separator: "\n"),
             translatedText: lines.map { $0.translation ?? $0.text }.joined(separator: "\n"),
             sourceLanguage: LanguageCatalog.identifier(for: source),

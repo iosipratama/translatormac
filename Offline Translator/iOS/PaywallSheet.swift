@@ -43,7 +43,6 @@ struct PaywallSheet: View {
                         benefit("Unlimited translations, every day")
                         benefit("Unlimited voice and camera")
                         benefit("Save as many phrases as you want")
-                        benefit("Your newest \(PlanLimits.proHistory) translations on this iPhone")
                     }
                     .padding(.top, 24)
                 }

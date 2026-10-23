@@ -41,6 +41,11 @@ struct ProSettingsTab: View {
 
             footer
                 .padding(.top, 28)
+
+            #if DEBUG
+            ProDebugControls()
+                .padding(.top, 28)
+            #endif
         }
         .padding(EdgeInsets(top: 24, leading: 32, bottom: 24, trailing: 32))
         .animation(.smooth, value: purchases.hasPro)
@@ -84,7 +89,7 @@ struct ProSettingsTab: View {
         VStack(alignment: .leading, spacing: 12) {
             meter("Translations today", value: purchases.translationsUsedToday, max: PlanLimits.freeTranslationsPerDay)
             meter("Saved translations", value: saved.count, max: PlanLimits.freeSaved)
-            Text("Recent keeps your last \(PlanLimits.freeHistory) translations. Free translations reset at midnight.")
+            Text("Free translations reset at midnight.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }

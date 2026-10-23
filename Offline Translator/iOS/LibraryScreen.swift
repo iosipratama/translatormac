@@ -147,19 +147,12 @@ struct LibraryScreen: View {
 
     @ViewBuilder
     private var footer: some View {
-        Group {
-            if hiddenRecentCount > 0, query.isEmpty {
-                Button("See your full history with Pro") { pro.present() }
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.accentForeground)
-            }
-            footerText
-                .font(.footnote)
-                .foregroundStyle(.textMuted)
-        }
-        .frame(maxWidth: .infinity)
-        .listRowBackground(Color.clear)
-        .listRowSeparator(.hidden)
+        footerText
+            .font(.footnote)
+            .foregroundStyle(.textMuted)
+            .frame(maxWidth: .infinity)
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
     }
 
     private var footerText: Text {
@@ -227,11 +220,11 @@ struct LibraryScreen: View {
     // MARK: - Lists
 
     private var store: HistoryStore {
-        HistoryStore(context: modelContext, recentLimit: purchases.historyLimit)
+        HistoryStore(context: modelContext)
     }
 
     private var rows: [TranslationHistory] {
-        let base = tab == .saved ? saved : visibleRecent
+        let base = tab == .saved ? saved : everything
         let query = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !query.isEmpty else { return base }
         return base.filter {
@@ -245,24 +238,6 @@ struct LibraryScreen: View {
         everything
             .filter(\.isSaved)
             .sorted { $0.savedDate > $1.savedDate }
-    }
-
-    /// Everything, newest first, with unsaved entries past the plan's limit
-    /// held back. Those only exist after Pro ends, until the next
-    /// translation trims them.
-    private var visibleRecent: [TranslationHistory] {
-        guard !purchases.hasPro else { return everything }
-        var unsavedShown = 0
-        return everything.filter { entry in
-            guard !entry.isSaved else { return true }
-            unsavedShown += 1
-            return unsavedShown <= purchases.historyLimit
-        }
-    }
-
-    private var hiddenRecentCount: Int {
-        guard tab == .recent else { return 0 }
-        return everything.count - visibleRecent.count
     }
 
     // MARK: - Actions

@@ -31,7 +31,8 @@ Colors live in `Assets.xcassets/Palette` with light and dark values; use the gen
 - Pronunciation for languages written in other scripts, and read-aloud with the system voice
 - Recent and Saved translations in the sidebar
 - macOS native UI (SwiftUI): sidebar, toolbar language menus, full menu-bar commands
-- Free with 5 translations a day; Pro (yearly or lifetime) removes the limit
+- Everything unlocked for the first 3 days after the first launch; then free with 5 translations a day, and Pro (yearly or lifetime) removes the limit
+- Recent keeps every translation on every plan, until it's cleared
                         
 ### Requirements
 - macOS 26+
@@ -47,4 +48,8 @@ Colors live in `Assets.xcassets/Palette` with light and dark values; use the gen
   - Yearly: `iosipratama.TranslatorMac.pro.yearly` (auto-renewable subscription)
   - Weekly is defined but not offered: `iosipratama.TranslatorMac.pro.weekly`
 - Any active plan unlocks Pro; anyone whose original download is older than 1.2, the first free version, gets Pro automatically
+- `PurchaseStore.access` (`PlanAccess`) is what every gate asks: Pro, the free days, or the free plan
+  - The free days (`FreeAccessPeriod`, `PlanLimits.freeAccessDays`) start at the first launch, recorded in this device's Keychain (`FirstLaunchRecord`) so a reinstall doesn't restart them; nothing leaves the device
+  - Debug builds have controls at the bottom of Settings › Pro: force a plan, move the date forward, restart the free days, and simulate a Mac without Apple Intelligence
+- Tests: `bitrig test -scheme TranslatorMac` runs the `TranslatorTests` target (`Tests/`)
 - `Translate Offline.storekit` lets local runs buy either plan without App Store Connect; its prices are placeholders

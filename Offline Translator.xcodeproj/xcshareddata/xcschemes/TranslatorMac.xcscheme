@@ -29,6 +29,21 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       shouldAutocreateTestPlan = "YES">
+      <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4E5A00012F00000000000006"
+               BuildableName = "TranslatorTests.xctest"
+               BlueprintName = "TranslatorTests"
+               ReferencedContainer = "container:Offline Translator.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+      </Testables>
+      <StoreKitConfigurationFileReference
+         identifier = "../../Translate Offline.storekit">
+      </StoreKitConfigurationFileReference>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"

@@ -8,20 +8,11 @@ import SwiftData
 import os
 
 /// The rules for what Recent keeps: one entry per text and language pair,
-/// the newest 500 unsaved entries, and saved entries for as long as they're
-/// starred. Views query the store directly; this is only for writing.
+/// on every plan and without a limit, until the person deletes or clears
+/// it. Views query the store directly; this is only for writing.
 struct HistoryStore {
 
     var context: ModelContext
-
-    /// Unsaved entries beyond this many are dropped, oldest first. Depends on
-    /// the plan, so callers that record pass it in.
-    var recentLimit: Int = PlanLimits.proHistory
-
-    init(context: ModelContext, recentLimit: Int = PlanLimits.proHistory) {
-        self.context = context
-        self.recentLimit = recentLimit
-    }
 
     /// How many entries are starred.
     func savedCount() -> Int {
@@ -39,12 +30,6 @@ struct HistoryStore {
     func canSave(limit: Int?) -> Bool {
         guard let limit else { return true }
         return savedCount() < limit
-    }
-
-    /// Enforces the limit, for when the plan changes or the limit shrinks.
-    func pruneRecent() {
-        prune()
-        save()
     }
 
     /// Adds a translation to Recent. If the same text in the same pair is
@@ -71,14 +56,12 @@ struct HistoryStore {
             targetLanguage: targetLanguage
         )
         context.insert(entry)
-        prune()
         save()
         return entry
     }
 
     /// Stars or unstars an entry, undoably when an undo manager is given.
-    /// Unsaving doesn't delete: the entry stays in Recent, and the usual
-    /// pruning retires it once it falls past the newest 500.
+    /// Unsaving doesn't delete: the entry stays in Recent.
     func setSaved(_ entry: TranslationHistory, _ isSaved: Bool, undoManager: UndoManager? = nil) {
         let previousDate = entry.savedAt
         entry.isSaved = isSaved
@@ -143,21 +126,5 @@ struct HistoryStore {
         )
         descriptor.fetchLimit = 1
         return try? context.fetch(descriptor).first
-    }
-
-    /// Drops the oldest unsaved entries past the limit. Saved entries never
-    /// count toward it.
-    private func prune() {
-        // Fetched in full and trimmed here rather than through fetchOffset,
-        // which SwiftData has been seen to ignore — and ignoring it would
-        // delete everything.
-        let descriptor = FetchDescriptor<TranslationHistory>(
-            predicate: #Predicate { !$0.isSaved },
-            sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
-        )
-        guard let unsaved = try? context.fetch(descriptor), unsaved.count > recentLimit else { return }
-        for entry in unsaved.dropFirst(recentLimit) {
-            context.delete(entry)
-        }
     }
 }

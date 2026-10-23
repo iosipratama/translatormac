@@ -189,9 +189,7 @@ struct SettingsScreen: View {
     private var historyNote: LocalizedStringKey {
         // With history off, describing what's kept would be untrue.
         guard keepsHistory else { return "New translations aren’t added to Recent. Saved items still work." }
-        return purchases.hasPro
-            ? "Keeps your newest \(PlanLimits.proHistory) translations on this iPhone. Saved items are never removed."
-            : "Keeps your last \(PlanLimits.freeHistory) translations on this iPhone. Saved items are never removed."
+        return "Keeps your translations on this iPhone until you clear them. Saved items are never removed."
     }
 
     private static var version: String {

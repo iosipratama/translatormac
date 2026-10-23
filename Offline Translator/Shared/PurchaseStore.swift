@@ -9,7 +9,8 @@ import SwiftUI
 import os
 
 /// Everything about Translate Offline Pro: the plans, whether this person has
-/// one, and the free tier's daily allowance.
+/// one, the free days after the first launch, and the free plan's daily
+/// allowance.
 @Observable
 final class PurchaseStore {
 
@@ -19,11 +20,6 @@ final class PurchaseStore {
 
     /// Free translations per calendar day without Pro.
     static let dailyFreeLimit = PlanLimits.freeTranslationsPerDay
-
-    /// The first version given away for free. Versions before it were paid, so
-    /// anyone whose original download predates it already bought the app and
-    /// gets Pro without buying it again.
-    private static let firstFreeVersion = "1.2"
 
     private enum DefaultsKey {
         static let activePlan = "activeProPlan"
@@ -65,6 +61,9 @@ final class PurchaseStore {
 
     var ownsPro: Bool { activePlan != nil }
 
+    /// Has Pro for good: bought a plan, or bought the app when it was paid.
+    /// The free days don't count; to decide whether something is unlocked,
+    /// ask `access` instead.
     var hasPro: Bool {
         #if DEBUG
         switch debugPlan {
@@ -74,6 +73,33 @@ final class PurchaseStore {
         }
         #endif
         return ownsPro || isEarlySupporter || ScreenshotMode.isEnabled
+    }
+
+    /// The days of full access after the first launch on this device.
+    private(set) var freeAccess: FreeAccessPeriod
+
+    /// What this person can use right now: Pro, the free days, or the free
+    /// plan.
+    var access: PlanAccess {
+        #if DEBUG
+        if debugPlan == .forceFree { return .free }
+        #endif
+        return PlanAccess.resolve(hasPro: hasPro, freeAccess: freeAccess, on: now)
+    }
+
+    /// Bumped when the calendar day changes, so the free days and the daily
+    /// count move on at midnight while the app is open.
+    private var dayChanges = 0
+
+    /// The current time, for every rule that depends on the date. Debug
+    /// builds can move it forward to try later days.
+    var now: Date {
+        _ = dayChanges
+        #if DEBUG
+        return Calendar.current.date(byAdding: .day, value: debugDayOffset, to: .now) ?? .now
+        #else
+        return .now
+        #endif
     }
 
     #if DEBUG
@@ -90,7 +116,7 @@ final class PurchaseStore {
             switch self {
             case .automatic: "From App Store"
             case .forcePro: "Force Pro"
-            case .forceFree: "Force Free"
+            case .forceFree: "Force Free (no free days)"
             }
         }
     }
@@ -98,6 +124,20 @@ final class PurchaseStore {
     var debugPlan: DebugPlan = UserDefaults.standard.string(forKey: "debugPlan")
         .flatMap(DebugPlan.init(rawValue:)) ?? .automatic {
         didSet { UserDefaults.standard.set(debugPlan.rawValue, forKey: "debugPlan") }
+    }
+
+    /// Debug builds only: pretend it's this many days later than it is.
+    var debugDayOffset: Int = UserDefaults.standard.integer(forKey: "debugDayOffset") {
+        didSet { UserDefaults.standard.set(debugDayOffset, forKey: "debugDayOffset") }
+    }
+
+    /// Debug builds only: start the free days again from today, as on a
+    /// first launch.
+    func restartFreeAccess() {
+        let start = Date.now
+        FirstLaunchRecord.reset(to: start)
+        freeAccess = FreeAccessPeriod(start: start)
+        debugDayOffset = 0
     }
     #endif
 
@@ -115,25 +155,20 @@ final class PurchaseStore {
     }
 
     var remainingFreeTranslations: Int {
-        allowance.remaining(limit: Self.dailyFreeLimit, on: .now)
+        allowance.remaining(limit: Self.dailyFreeLimit, on: now)
     }
 
     var translationsUsedToday: Int {
-        allowance.used(on: .now)
-    }
-
-    /// How many Recent entries to keep for this person.
-    var historyLimit: Int {
-        hasPro ? PlanLimits.proHistory : PlanLimits.freeHistory
+        allowance.used(on: now)
     }
 
     /// How many entries can be starred; `nil` means no limit.
     var savedLimit: Int? {
-        hasPro ? nil : PlanLimits.freeSaved
+        access.unlocksPro ? nil : PlanLimits.freeSaved
     }
 
     var canTranslate: Bool {
-        hasPro || remainingFreeTranslations > 0
+        access.unlocksPro || remainingFreeTranslations > 0
     }
 
     init() {
@@ -152,6 +187,13 @@ final class PurchaseStore {
             day: defaults.object(forKey: DefaultsKey.allowanceDay) as? Date ?? .now,
             used: defaults.integer(forKey: DefaultsKey.allowanceUsed)
         )
+        freeAccess = FreeAccessPeriod(start: FirstLaunchRecord.date(recordingIfNeeded: .now))
+
+        Task { [weak self] in
+            for await _ in NotificationCenter.default.notifications(named: .NSCalendarDayChanged) {
+                self?.dayChanges += 1
+            }
+        }
 
         // Purchases can also arrive from outside the app — Ask to Buy approvals,
         // refunds, renewals, or a purchase made on another Mac.
@@ -169,10 +211,11 @@ final class PurchaseStore {
 
     // MARK: - Free tier
 
-    /// Call after each successful translation.
+    /// Call once for each finished translation. Nothing is counted while
+    /// everything is unlocked.
     func recordTranslation() {
-        guard !hasPro else { return }
-        allowance.record(on: .now)
+        guard !access.unlocksPro else { return }
+        allowance.record(on: now)
     }
 
     // MARK: - Store
@@ -310,16 +353,10 @@ final class PurchaseStore {
                 Log.purchases.error("App transaction failed verification")
                 return
             }
-            // Sandbox and Xcode always report an original version of "1.0",
-            // which would make every tester an early supporter and hide the
-            // free tier entirely.
-            guard app.environment == .production else {
-                isEarlySupporter = false
-                return
-            }
-            // On macOS this is the CFBundleShortVersionString first downloaded.
-            isEarlySupporter = app.originalAppVersion
-                .compare(Self.firstFreeVersion, options: .numeric) == .orderedAscending
+            isEarlySupporter = PlanAccess.isEarlySupporter(
+                originalAppVersion: app.originalAppVersion,
+                environment: app.environment
+            )
         } catch {
             // Keep the cached answer; this can fail offline.
             Log.purchases.error("Failed to read app transaction: \(error.localizedDescription, privacy: .public)")
