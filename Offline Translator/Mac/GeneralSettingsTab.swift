@@ -135,7 +135,7 @@ struct GeneralSettingsTab: View {
     private var historyNote: LocalizedStringKey {
         // With history off, describing what's kept would be untrue.
         guard keepsHistory else { return "New translations aren’t added to Recent." }
-        return "Keeps your translations on this Mac until you clear them. Saved translations are never removed."
+        return "Keeps your translations on this Mac until you clear them. Saved translations are never deleted automatically."
     }
 
     private func note(_ text: LocalizedStringKey) -> some View {

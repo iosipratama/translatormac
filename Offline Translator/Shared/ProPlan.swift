@@ -56,7 +56,7 @@ enum ProPlan: String, CaseIterable, Identifiable, Sendable {
     var tagline: LocalizedStringResource {
         switch self {
         case .weekly: "Or subscribe weekly"
-        case .yearly: "Or subscribe yearly"
+        case .yearly: "Renews every year"
         case .lifetime: "Pay once"
         }
     }
@@ -92,8 +92,9 @@ enum ProPlan: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
-    /// The line under the price that puts it in perspective.
-    func priceNote(for product: Product) -> String {
+    /// The line under the price that puts it in perspective; `nil` when
+    /// the price says it all.
+    func priceNote(for product: Product) -> String? {
         switch self {
         case .weekly:
             return String(localized: "Billed every week")
@@ -101,7 +102,7 @@ enum ProPlan: String, CaseIterable, Identifiable, Sendable {
             let monthly = (product.price / 12).formatted(product.priceFormatStyle)
             return String(localized: "About \(monthly) a month")
         case .lifetime:
-            return String(localized: "No subscription")
+            return nil
         }
     }
 }

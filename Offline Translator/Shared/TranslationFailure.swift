@@ -33,19 +33,19 @@ nonisolated struct TranslationFailure: Equatable {
 
         case TranslationError.unsupportedLanguagePairing:
             return TranslationFailure(
-                message: String(localized: "Translation between \(sourceName) and \(targetName) isn’t available."),
+                message: String(localized: "Translation between \(sourceName) and \(targetName) isn’t available. Choose another language."),
                 offersDownload: false
             )
 
         case TranslationError.unsupportedSourceLanguage:
             return TranslationFailure(
-                message: String(localized: "Translating from \(sourceName) isn’t available."),
+                message: String(localized: "Translating from \(sourceName) isn’t available. Choose another language."),
                 offersDownload: false
             )
 
         case TranslationError.unsupportedTargetLanguage:
             return TranslationFailure(
-                message: String(localized: "Translating into \(targetName) isn’t available."),
+                message: String(localized: "Translating into \(targetName) isn’t available. Choose another language."),
                 offersDownload: false
             )
 
@@ -65,7 +65,7 @@ nonisolated struct TranslationFailure: Equatable {
             // The framework's own description can be technical; the person
             // gets a plain next step instead, and the log keeps the detail.
             return TranslationFailure(
-                message: String(localized: "Couldn’t translate this. Try again, or try a shorter piece of text."),
+                message: String(localized: "Try again, or try shorter text."),
                 offersDownload: false
             )
         }

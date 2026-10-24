@@ -37,7 +37,7 @@ struct ProTag: View {
             .contentShape(.rect)
         }
         .accessibilityLabel(Text("\(Text(feature)), included with Pro"))
-        .accessibilityHint("Opens Translate Offline Pro")
+        .accessibilityHint("Shows Pro plans")
         .help(Text("\(Text(feature)) is included with Pro"))
     }
 }

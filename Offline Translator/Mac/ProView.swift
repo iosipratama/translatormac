@@ -205,7 +205,7 @@ struct ProView: View {
 
             Group {
                 if purchases.hasRedundantSubscription {
-                    Text("Your yearly plan is still active. Cancel it under Manage Subscription, since Apple doesn’t cancel it automatically.")
+                    Text("Your yearly plan is still active. To avoid another charge, cancel it in Manage Subscription.")
                 } else if purchases.isEarlySupporter && !purchases.ownsPro {
                     Text("Thanks for buying Translate Offline early. Pro comes with your original purchase.")
                 } else if let expiration = purchases.subscriptionExpiration {
@@ -309,9 +309,11 @@ private struct PlanCard: View {
                     if let product {
                         Text(plan.priceLine(for: product))
                             .font(.system(size: 16, weight: .bold))
-                        Text(plan.priceNote(for: product))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                        if let note = plan.priceNote(for: product) {
+                            Text(note)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
                     } else {
                         // Keeps the row's height while prices load.
                         Text(verbatim: "0.00 / year")

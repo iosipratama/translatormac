@@ -13,9 +13,9 @@ enum PlanFeatures {
         [
             "\(PlanLimits.freeTranslationsPerDay) translations a day",
             "Translate as you type",
-            "All 19 languages offline",
+            "All 19 languages, offline",
             "Recent translations",
-            "Private (nothing uploaded)",
+            "Private, nothing uploaded",
         ]
     }
 

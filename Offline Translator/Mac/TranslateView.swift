@@ -36,7 +36,7 @@ struct TranslateView: View {
                 }
                 .disabled(!model.canSwapLanguages)
                 .help(model.canSwapLanguages
-                      ? "Swap languages (⌘⇧S)"
+                      ? "Swap languages (⇧⌘S)"
                       : "Choose a language to translate from first")
 
                 LanguageMenu(

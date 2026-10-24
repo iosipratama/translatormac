@@ -49,7 +49,7 @@ struct LanguageMenu: View {
                     }
                 }
                 if !downloadable.isEmpty {
-                    Section("Download to Use") {
+                    Section("Not Downloaded") {
                         picker(for: downloadable, systemImage: "arrow.down.circle")
                     }
                 }

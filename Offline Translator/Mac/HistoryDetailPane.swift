@@ -101,7 +101,7 @@ struct HistoryDetailPane: View {
             Button(justCopied ? "Copied" : "Copy", systemImage: justCopied ? "checkmark" : "document.on.document", action: copy)
                 .labelStyle(.titleOnly)
                 .accentProminentButton()
-                .help("Copy the translation (⌘⇧C)")
+                .help("Copy the translation (⇧⌘C)")
                 .animation(.smooth, value: justCopied)
 
             if purchases.canUsePronunciation || speaker.isSpeaking {
@@ -142,7 +142,7 @@ struct HistoryDetailPane: View {
                 Button("Remove from Saved") {
                     onSetSaved(false)
                 }
-                .help("Moves it back to Recent")
+                .help("Move it back to Recent")
             }
         }
         .padding(.horizontal, PaneMetrics.inset)

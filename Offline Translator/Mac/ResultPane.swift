@@ -43,7 +43,7 @@ struct ResultPane: View {
         if model.needsPro {
             PaneMessage(
                 systemImage: "bolt.fill",
-                title: "You’ve used today’s free translations",
+                title: "You’ve used today’s \(PlanLimits.freeTranslationsPerDay) free translations",
                 description: Text("Your text is still here. Free translations reset at midnight, and Pro removes the daily limit.")
             ) {
                 Button("Upgrade to Pro…") {
@@ -120,7 +120,7 @@ struct ResultPane: View {
         .labelStyle(.titleOnly)
         .accentProminentButton()
         .disabled(!hasResult)
-        .help("Copy the translation (⌘⇧C)")
+        .help("Copy the translation (⇧⌘C)")
         .animation(.smooth, value: model.justCopied)
 
         if model.unlocksPro || isSpeaking {

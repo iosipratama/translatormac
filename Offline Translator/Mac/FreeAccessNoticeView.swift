@@ -33,7 +33,7 @@ struct FreeAccessNoticeView: View {
                 .padding(.top, 6)
 
             HStack(alignment: .top, spacing: 16) {
-                column("Free keeps", features: PlanFeatures.free, systemImage: "checkmark", style: AnyShapeStyle(.secondary))
+                column("Still free", features: PlanFeatures.free, systemImage: "checkmark", style: AnyShapeStyle(.secondary))
                 column("Pro adds", features: PlanFeatures.pro, systemImage: "plus", style: AnyShapeStyle(Color.accentForeground))
             }
             .padding(.top, 24)
@@ -68,7 +68,7 @@ struct FreeAccessNoticeView: View {
     private var message: LocalizedStringKey {
         switch notice {
         case .ending:
-            "Thanks for trying everything in Translate Offline. From tomorrow, you’re on the free plan, unless you upgrade."
+            "Thanks for trying everything in Translate Offline. Starting tomorrow, you’ll be on the free plan."
         case .ended:
             "Thanks for trying everything in Translate Offline. You’re now on the free plan, and Pro is there whenever you want more."
         }

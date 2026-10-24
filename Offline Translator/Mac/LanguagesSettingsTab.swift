@@ -39,7 +39,7 @@ struct LanguagesSettingsTab: View {
             }
 
             if TranslationQuality.effective == .best {
-                Text("Best quality is on, so Apple Intelligence translates every language without a download. Downloaded languages are used when quality is set to Fast.")
+                Text("Best quality is on, so no downloads are needed. Downloaded languages are used with Fast.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -99,7 +99,7 @@ struct LanguagesSettingsTab: View {
 
                 TableColumn("Status") { entry in
                     if entry.isInstalled {
-                        Label("Ready", systemImage: "checkmark")
+                        Label("Downloaded", systemImage: "checkmark")
                             .foregroundStyle(.green)
                     } else if inventory.isDownloading(entry.language) {
                         Text("Downloading…")

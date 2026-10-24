@@ -79,7 +79,7 @@ struct ProSettingsTab: View {
     private var subtitle: LocalizedStringKey {
         switch purchases.access {
         case .pro:
-            "Thanks for supporting the app."
+            "Thanks for supporting Translate Offline."
         case .freeAccess(let end):
             // The end is midnight, so name the last whole day instead.
             "Everything is unlocked through \(end.addingTimeInterval(-1), format: .dateTime.weekday(.wide).month().day()). Then the free plan gives you \(PlanLimits.freeTranslationsPerDay) translations a day."
@@ -92,7 +92,7 @@ struct ProSettingsTab: View {
 
     private var usageCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            meter("Translations today", value: purchases.translationsUsedToday, max: PlanLimits.freeTranslationsPerDay)
+            meter("Translations left today", value: purchases.remainingFreeTranslations, max: PlanLimits.freeTranslationsPerDay)
             Text("Free translations reset at midnight.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -180,7 +180,7 @@ struct ProSettingsTab: View {
                     }
                 }
                 if purchases.hasRedundantSubscription {
-                    Text("Your yearly plan is still active. Cancel it under Manage Subscription, since Apple doesn’t cancel it automatically.")
+                    Text("Your yearly plan is still active. To avoid another charge, cancel it in Manage Subscription.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)

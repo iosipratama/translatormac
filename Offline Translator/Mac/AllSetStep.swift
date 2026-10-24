@@ -80,16 +80,16 @@ struct AllSetStep: View {
     private var title: LocalizedStringKey {
         switch phase {
         case .downloading: "Downloading languages…"
-        case .partlyDone: "Almost done"
+        case .partlyDone: "Some languages didn’t download"
         case .done, .nothingChosen: "You’re all set"
         }
     }
 
     private var subtitle: LocalizedStringKey {
         switch phase {
-        case .downloading: "Progress appears in a macOS window."
+        case .downloading: "macOS shows the download progress in a separate window."
         case .done: "These languages now work offline."
-        case .partlyDone: "Some languages didn’t download. Try again, or add them later in Settings."
+        case .partlyDone: "Try again, or add them later in Settings."
         case .nothingChosen: "You can download languages anytime in Settings."
         }
     }

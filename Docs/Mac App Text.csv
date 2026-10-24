@@ -10,12 +10,12 @@ ID,Area,Where,Element,Current text,New text,When it shows / notes,Source
 009,Main window · Translate,Toolbar,Tooltip,Language of your text,,,Mac/TranslateView.swift:26
 010,Main window · Translate,Toolbar,Menu item,Detect Language,,First item in Translate from,Mac/LanguageMenu.swift:30
 011,Main window · Translate,Toolbar,Button,Swap Languages,,Icon only; name used by VoiceOver,Mac/TranslateView.swift:34
-012,Main window · Translate,Toolbar,Tooltip,Swap languages (⌘⇧S),,,Mac/TranslateView.swift:39
+012,Main window · Translate,Toolbar,Tooltip,Swap languages (⇧⌘S),,,Mac/TranslateView.swift:39
 013,Main window · Translate,Toolbar,Tooltip,Choose a language to translate from first,,"When Detect Language is chosen, so swapping isn't possible",Mac/TranslateView.swift:40
 014,Main window · Translate,Toolbar,Menu label,Translate to,,,Mac/TranslateView.swift:43
 015,Main window · Translate,Toolbar,Tooltip,Language to translate into,,,Mac/TranslateView.swift:44
 016,Main window · Translate,Language menus,Section,On This Mac,,,Mac/LanguageMenu.swift:47
-017,Main window · Translate,Language menus,Section,Download to Use,,,Mac/LanguageMenu.swift:52
+017,Main window · Translate,Language menus,Section,Not Downloaded,,,Mac/LanguageMenu.swift:52
 018,Main window · Translate,Language menus,Section,Not Available for This Pair,,,Mac/LanguageMenu.swift:57
 019,Main window · Translate,Language menus,Menu item,Manage Languages…,,,Mac/LanguageMenu.swift:66
 020,Main window · Translate,Left pane header,Title,{language} (detected),,"With Detect Language, after a translation",Shared/TranslationModel.swift:284
@@ -32,7 +32,7 @@ ID,Area,Where,Element,Current text,New text,When it shows / notes,Source
 031,Main window · Translate,Right pane (empty),Message,Nothing you type leaves this Mac.,,,Mac/ResultPane.swift:76
 032,Main window · Translate,Right pane (waiting),Title,Press ⌘⏎ to translate,,"Text typed, Translate as you type off",Mac/ResultPane.swift:81
 033,Main window · Translate,Right pane (waiting),Message,“Translate as you type” is off in Settings.,,,Mac/ResultPane.swift:82
-034,Main window · Translate,Right pane (daily limit),Title,You’ve used today’s free translations,,"Free plan, 0 left, new text",Mac/ResultPane.swift:46
+034,Main window · Translate,Right pane (daily limit),Title,You’ve used today’s 5 free translations,,"Free plan, 0 left, new text",Mac/ResultPane.swift:46
 035,Main window · Translate,Right pane (daily limit),Message,"Your text is still here. Free translations reset at midnight, and Pro removes the daily limit.",,,Mac/ResultPane.swift:47
 036,Main window · Translate,Right pane (daily limit),Button,Upgrade to Pro…,,,Mac/ResultPane.swift:49
 037,Main window · Translate,Right pane (error),Title,Couldn’t translate,,Message below comes from the Errors section,Mac/ResultPane.swift:61
@@ -40,7 +40,7 @@ ID,Area,Where,Element,Current text,New text,When it shows / notes,Source
 039,Main window · Translate,Right pane,Pronunciation (locked),Pronunciation,,Free plan; followed by the PRO tag,Mac/PronunciationLine.swift:24
 040,Main window · Translate,Right pane,VoiceOver label,Pronunciation: {reading},,,Mac/PronunciationLine.swift:21
 041,Main window · Translate,Right pane footer,Button,Copy / Copied,,Copied shows for 1.5 seconds,Mac/ResultPane.swift:117
-042,Main window · Translate,Right pane footer,Tooltip,Copy the translation (⌘⇧C),,,Mac/ResultPane.swift:123
+042,Main window · Translate,Right pane footer,Tooltip,Copy the translation (⇧⌘C),,,Mac/ResultPane.swift:123
 043,Main window · Translate,Right pane footer,Button,Speak / Stop,,Icon only,Mac/ResultPane.swift:127
 044,Main window · Translate,Right pane footer,Tooltip,Speak the translation (⌥⌘S),,,Mac/ResultPane.swift:158
 045,Main window · Translate,Right pane footer,Tooltip,Stop speaking,,,Mac/ResultPane.swift:154
@@ -54,7 +54,7 @@ ID,Area,Where,Element,Current text,New text,When it shows / notes,Source
 053,PRO tags,Settings › General,Feature name,Best quality,,,Mac/GeneralSettingsTab.swift:67
 054,PRO tags,Any PRO tag,Tooltip,{feature} is included with Pro,,,Mac/ProTag.swift:41
 055,PRO tags,Any PRO tag,VoiceOver label,"{feature}, included with Pro",,,Mac/ProTag.swift:39
-056,PRO tags,Any PRO tag,VoiceOver hint,Opens Translate Offline Pro,,,Mac/ProTag.swift:40
+056,PRO tags,Any PRO tag,VoiceOver hint,Shows Pro plans,,,Mac/ProTag.swift:40
 057,Main window · Recent & Saved,Toolbar,Search placeholder,Search,,,Mac/HistoryListView.swift:49
 058,Main window · Recent & Saved,Toolbar (Recent),Button,Clear History…,,,Mac/HistoryListView.swift:53
 059,Main window · Recent & Saved,Toolbar (Recent),Tooltip,Remove every translation that isn’t saved,,,Mac/HistoryListView.swift:57
@@ -62,7 +62,7 @@ ID,Area,Where,Element,Current text,New text,When it shows / notes,Source
 061,Main window · Recent & Saved,Clear confirmation,Message,This removes every translation in Recent. Saved translations are kept.,,,Mac/HistoryListView.swift:67
 062,Main window · Recent & Saved,Clear confirmation,Buttons,Clear History / Cancel,,,Mac/HistoryListView.swift:62-65
 063,Main window · Recent & Saved,Table,Column headers,Original / Translation / Languages / When / Saved,,Saved column shows in Saved instead of When,Mac/HistoryContent.swift:123-139
-064,Main window · Recent & Saved,Table,Languages column,{EN} → {JA}; Auto,,Auto when the language was detected,Shared/LanguageCatalog.swift:220
+064,Main window · Recent & Saved,Table,Languages column,{EN} → {JA}; Detected,,Detected when the language was detected,Shared/LanguageCatalog.swift:220
 065,Main window · Recent & Saved,Right-click menu,Items,Open in Translate / Copy Translation / Copy Original / Save / Remove from Saved / Delete,,,Mac/HistoryContent.swift:167-191
 066,Main window · Recent & Saved,Status bar,Text,{count} result(s),,While searching,Mac/HistoryContent.swift:250
 067,Main window · Recent & Saved,Status bar (Saved),Text,{count} saved · never deleted automatically,,,Mac/HistoryContent.swift:252
@@ -80,13 +80,13 @@ ID,Area,Where,Element,Current text,New text,When it shows / notes,Source
 079,Main window · Recent & Saved,Detail pane footer,Tooltip,Show this translation in Translate,,,Mac/HistoryDetailPane.swift:94
 080,Main window · Recent & Saved,Detail pane footer,Hint,or double-click the row,,,Mac/HistoryDetailPane.swift:95
 081,Main window · Recent & Saved,Detail pane footer,Button,Copy / Copied,,,Mac/HistoryDetailPane.swift:101
-082,Main window · Recent & Saved,Detail pane footer,Tooltip,Copy the translation (⌘⇧C),,,Mac/HistoryDetailPane.swift:104
+082,Main window · Recent & Saved,Detail pane footer,Tooltip,Copy the translation (⇧⌘C),,,Mac/HistoryDetailPane.swift:104
 083,Main window · Recent & Saved,Detail pane footer,Button / tooltip,Speak / Stop · Speak the translation / Stop speaking,,,Mac/HistoryDetailPane.swift:109-115
 084,Main window · Recent & Saved,Detail pane footer (Recent),Button / tooltip,Save / Remove from Saved,,Icon only (star),Mac/HistoryDetailPane.swift:123-129
 085,Main window · Recent & Saved,Detail pane footer (Recent),Button,Delete,,Icon only,Mac/HistoryDetailPane.swift:134
 086,Main window · Recent & Saved,Detail pane footer (Recent),Tooltip,"Delete this translation / Delete this translation, including from Saved",,,Mac/HistoryDetailPane.swift:137
 087,Main window · Recent & Saved,Detail pane footer (Saved),Button,Remove from Saved,,,Mac/HistoryDetailPane.swift:142
-088,Main window · Recent & Saved,Detail pane footer (Saved),Tooltip,Moves it back to Recent,,,Mac/HistoryDetailPane.swift:145
+088,Main window · Recent & Saved,Detail pane footer (Saved),Tooltip,Move it back to Recent,,,Mac/HistoryDetailPane.swift:145
 089,Main window · Recent & Saved,Edit › Undo,Undo name,Save Translation / Remove from Saved,,Shows as “Undo Save Translation”,Shared/HistoryStore.swift:74
 090,Upgrade screen,Top left,Button (icon),Not Now / Done,,Done once Pro is active,Mac/ProView.swift:57
 091,Upgrade screen,Top left,Tooltip,Not now / Close,,,Mac/ProView.swift:66
@@ -101,9 +101,9 @@ ID,Area,Where,Element,Current text,New text,When it shows / notes,Source
 100,Upgrade screen,Plans,VoiceOver label,Choose a plan,,,Mac/ProView.swift:152
 101,Upgrade screen,Plan row 1,Name / badge,Lifetime · Best Value,,Badge shown in capitals,"Shared/ProPlan.swift:42,49"
 102,Upgrade screen,Plan row 1,Tagline,Pay once,,,Shared/ProPlan.swift:60
-103,Upgrade screen,Plan row 1,Price / note,{price} · No subscription,,Price comes from the App Store,"Shared/ProPlan.swift:89,104"
+103,Upgrade screen,Plan row 1,Price / note,{price},,Price comes from the App Store,"Shared/ProPlan.swift:89,104"
 104,Upgrade screen,Plan row 2,Name,Yearly,,,Shared/ProPlan.swift:41
-105,Upgrade screen,Plan row 2,Tagline,Or subscribe yearly,,,Shared/ProPlan.swift:59
+105,Upgrade screen,Plan row 2,Tagline,Renews every year,,,Shared/ProPlan.swift:59
 106,Upgrade screen,Plan row 2,Price / note,{price} / year · About {monthly} a month,,,"Shared/ProPlan.swift:90,102"
 107,Upgrade screen,Plan rows,VoiceOver hint,Selects this plan,,,Mac/ProView.swift:341
 108,Upgrade screen,Main button,Button,Buy Lifetime,,Lifetime selected,Shared/ProPlan.swift:68
@@ -119,18 +119,18 @@ ID,Area,Where,Element,Current text,New text,When it shows / notes,Source
 118,Upgrade screen,After buying,Message,Thanks for supporting Translate Offline. Renews on {date}.,,Yearly,Mac/ProView.swift:214
 119,Upgrade screen,After buying,Message,Thanks for supporting Translate Offline. Ends on {date}.,,"Yearly, cancelled",Mac/ProView.swift:216
 120,Upgrade screen,After buying,Message,Thanks for buying Translate Offline early. Pro comes with your original purchase.,,Earlier paid buyers,Mac/ProView.swift:210
-121,Upgrade screen,After buying,Message,"Your yearly plan is still active. Cancel it under Manage Subscription, since Apple doesn’t cancel it automatically.",,Bought Lifetime while Yearly still runs,Mac/ProView.swift:208
+121,Upgrade screen,After buying,Message,"Your yearly plan is still active. To avoid another charge, cancel it in Manage Subscription.",,Bought Lifetime while Yearly still runs,Mac/ProView.swift:208
 122,Upgrade screen,Footer,Links,Manage Subscription… · Restore Purchases / Restoring… · Terms of Use · Privacy Policy,,Manage Subscription only with Yearly; Restore only without Pro,Mac/ProView.swift:234-251
 123,Free days notice,Notice,Title,Your free days end today,,Last free day (day 3),Mac/FreeAccessNoticeView.swift:63
-124,Free days notice,Notice,Message,"Thanks for trying everything in Translate Offline. From tomorrow, you’re on the free plan, unless you upgrade.",,,Mac/FreeAccessNoticeView.swift:71
+124,Free days notice,Notice,Message,"Thanks for trying everything in Translate Offline. Starting tomorrow, you’ll be on the free plan.",,,Mac/FreeAccessNoticeView.swift:71
 125,Free days notice,Notice,Title,Your free days have ended,,"First open after the free days, if day 3 was missed",Mac/FreeAccessNoticeView.swift:64
 126,Free days notice,Notice,Message,"Thanks for trying everything in Translate Offline. You’re now on the free plan, and Pro is there whenever you want more.",,,Mac/FreeAccessNoticeView.swift:73
-127,Free days notice,Notice,Box heading,Free keeps,,,Mac/FreeAccessNoticeView.swift:36
+127,Free days notice,Notice,Box heading,Still free,,,Mac/FreeAccessNoticeView.swift:36
 128,Free days notice,Notice,Free item,5 translations a day,,Must match the website,Shared/PlanFeatures.swift:14
 129,Free days notice,Notice,Free item,Translate as you type,,,Shared/PlanFeatures.swift:15
-130,Free days notice,Notice,Free item,All 19 languages offline,,,Shared/PlanFeatures.swift:16
+130,Free days notice,Notice,Free item,"All 19 languages, offline",,,Shared/PlanFeatures.swift:16
 131,Free days notice,Notice,Free item,Recent translations,,,Shared/PlanFeatures.swift:17
-132,Free days notice,Notice,Free item,Private (nothing uploaded),,,Shared/PlanFeatures.swift:18
+132,Free days notice,Notice,Free item,"Private, nothing uploaded",,,Shared/PlanFeatures.swift:18
 133,Free days notice,Notice,Box heading,Pro adds,,Items are the upgrade screen's feature list,Mac/FreeAccessNoticeView.swift:37
 134,Free days notice,Notice,Buttons,Continue with Free / See Pro Plans,,,Mac/FreeAccessNoticeView.swift:42-48
 135,Purchase messages,"Upgrade screen, Settings › Pro",Message,Your purchase is waiting for approval. Pro unlocks as soon as it’s approved.,,Ask to Buy,Shared/PurchaseStore.swift:319
@@ -141,12 +141,12 @@ ID,Area,Where,Element,Current text,New text,When it shows / notes,Source
 140,Purchase messages,Restore,Message,No Pro purchase found for this Apple Account.,,,Shared/PurchaseStore.swift:348
 141,Translation errors,Right pane (error),Message,{source} → {target} isn’t downloaded yet.,,,Shared/TranslationFailure.swift:30
 142,Translation errors,Right pane (error),Message,{target} isn’t downloaded yet.,,,Shared/TranslationFailure.swift:31
-143,Translation errors,Right pane (error),Message,Translation between {source} and {target} isn’t available.,,,Shared/TranslationFailure.swift:36
-144,Translation errors,Right pane (error),Message,Translating from {source} isn’t available.,,,Shared/TranslationFailure.swift:42
-145,Translation errors,Right pane (error),Message,Translating into {target} isn’t available.,,,Shared/TranslationFailure.swift:48
+143,Translation errors,Right pane (error),Message,Translation between {source} and {target} isn’t available. Choose another language.,,,Shared/TranslationFailure.swift:36
+144,Translation errors,Right pane (error),Message,Translating from {source} isn’t available. Choose another language.,,,Shared/TranslationFailure.swift:42
+145,Translation errors,Right pane (error),Message,Translating into {target} isn’t available. Choose another language.,,,Shared/TranslationFailure.swift:48
 146,Translation errors,Right pane (error),Message,Couldn’t tell which language this is. Choose it from the menu on the left.,,,Shared/TranslationFailure.swift:54
 147,Translation errors,Right pane (error),Message,There’s nothing to translate.,,,Shared/TranslationFailure.swift:60
-148,Translation errors,Right pane (error),Message,"Couldn’t translate this. Try again, or try a shorter piece of text.",,,Shared/TranslationFailure.swift:68
+148,Translation errors,Right pane (error),Message,"Try again, or try shorter text.",,,Shared/TranslationFailure.swift:68
 149,Translation errors,Right pane (error),Stand-in name,the detected language,,Used as {source} with Detect Language,Shared/TranslationFailure.swift:22
 150,Settings › General,Window,Tab names,General / Languages / Pro,,,Mac/SettingsView.swift:22-28
 151,Settings › General,General,Label / options,Appearance: Automatic / Light / Dark,,,Mac/GeneralSettingsTab.swift:31; Shared/AppTheme.swift:21-23
@@ -164,28 +164,28 @@ ID,Area,Where,Element,Current text,New text,When it shows / notes,Source
 163,Settings › General,General,Label,History:,,,Mac/GeneralSettingsTab.swift:89
 164,Settings › General,General,Toggle,Keep a history of translations,,,Mac/GeneralSettingsTab.swift:91
 165,Settings › General,General,Button,Clear History…,,Opens the same confirmation as in Recent,Mac/GeneralSettingsTab.swift:92
-166,Settings › General,General,Note (on),Keeps your translations on this Mac until you clear them. Saved translations are never removed.,,,Mac/GeneralSettingsTab.swift:138
+166,Settings › General,General,Note (on),Keeps your translations on this Mac until you clear them. Saved translations are never deleted automatically.,,,Mac/GeneralSettingsTab.swift:138
 167,Settings › General,General,Note (off),New translations aren’t added to Recent.,,,Mac/GeneralSettingsTab.swift:137
 168,Settings › Languages,Languages,Header,All languages · {count} on this Mac,,,Mac/LanguagesSettingsTab.swift:31-35
-169,Settings › Languages,Languages,Note,"Best quality is on, so Apple Intelligence translates every language without a download. Downloaded languages are used when quality is set to Fast.",,Only with Best quality on,Mac/LanguagesSettingsTab.swift:42
+169,Settings › Languages,Languages,Note,"Best quality is on, so no downloads are needed. Downloaded languages are used with Fast.",,Only with Best quality on,Mac/LanguagesSettingsTab.swift:42
 170,Settings › Languages,Languages,Columns,Language / Status,,,Mac/LanguagesSettingsTab.swift:90-100
-171,Settings › Languages,Languages,Status,Ready / Downloading… / Not downloaded,,,Mac/LanguagesSettingsTab.swift:102-108
+171,Settings › Languages,Languages,Status,Downloaded / Downloading… / Not downloaded,,,Mac/LanguagesSettingsTab.swift:102-108
 172,Settings › Languages,Languages,Button,Download,,,Mac/LanguagesSettingsTab.swift:121
 173,Settings › Languages,Languages,Footer note,"Languages are shared with other apps on this Mac. To remove one, go to System Settings › General › Language & Region › Translation Languages.",,,Mac/LanguagesSettingsTab.swift:52
 174,Settings › Languages,Languages,Button,Open System Settings…,,,Mac/LanguagesSettingsTab.swift:57
 175,Settings › Pro,Header,Title,Free plan,,Free plan and during the free days,Mac/ProSettingsTab.swift:60
 176,Settings › Pro,Header,Title / badge,Translate Offline Pro · Active,,Pro,Mac/ProSettingsTab.swift:60-63
-177,Settings › Pro,Header,Subtitle,Thanks for supporting the app.,,Pro,Mac/ProSettingsTab.swift:82
+177,Settings › Pro,Header,Subtitle,Thanks for supporting Translate Offline.,,Pro,Mac/ProSettingsTab.swift:82
 178,Settings › Pro,Header,Subtitle,"Everything is unlocked through {Monday, October 26}. Then the free plan gives you 5 translations a day.",,During the free days,Mac/ProSettingsTab.swift:85
 179,Settings › Pro,Header,Subtitle,Pro removes the daily limit and unlocks every feature.,,Free plan,Mac/ProSettingsTab.swift:87
-180,Settings › Pro,Usage card,Meter,Translations today · {used} of 5,,Free plan,"Mac/ProSettingsTab.swift:95,114"
+180,Settings › Pro,Usage card,Meter,Translations left today · {left} of 5,,Free plan,"Mac/ProSettingsTab.swift:95,114"
 181,Settings › Pro,Usage card,Note,Free translations reset at midnight.,,,Mac/ProSettingsTab.swift:96
 182,Settings › Pro,Plan card,Rows,Plan / Renews / Ends / Includes,,Pro,Mac/ProSettingsTab.swift:129-138
 183,Settings › Pro,Plan card,Value,Lifetime / Yearly,,,Shared/ProPlan.swift:41-42
 184,Settings › Pro,Plan card,Value,Lifetime (original purchase),,Earlier paid buyers,Mac/ProSettingsTab.swift:153
 185,Settings › Pro,Plan card,Value,"Every feature, without limits",,Includes row,Mac/ProSettingsTab.swift:138
 186,Settings › Pro,Plan card,Buttons,Manage Subscription… / Switch to Lifetime…,,Yearly,Mac/ProSettingsTab.swift:172-176
-187,Settings › Pro,Plan card,Note,"Your yearly plan is still active. Cancel it under Manage Subscription, since Apple doesn’t cancel it automatically.",,Lifetime bought while Yearly still runs,Mac/ProSettingsTab.swift:183
+187,Settings › Pro,Plan card,Note,"Your yearly plan is still active. To avoid another charge, cancel it in Manage Subscription.",,Lifetime bought while Yearly still runs,Mac/ProSettingsTab.swift:183
 188,Settings › Pro,Footer,Text,Bought on another Mac?,,Pro,Mac/ProSettingsTab.swift:197
 189,Settings › Pro,Footer,Buttons,Restore Purchases / Restoring… · Upgrade to Pro…,,,Mac/ProSettingsTab.swift:205-216
 190,Onboarding (first launch),Window,Title,Welcome,,,Mac/TranslatorMacApp.swift:77
@@ -204,9 +204,9 @@ ID,Area,Where,Element,Current text,New text,When it shows / notes,Source
 203,Onboarding (first launch),Languages step,Footer,{count} selected · needs internet once,,,Mac/LanguagesStep.swift:115
 204,Onboarding (first launch),Languages step,Buttons,Skip for Now / Back / Download,,,Mac/LanguagesStep.swift:122-127
 205,Onboarding (first launch),All set step,Title,Downloading languages…,,,Mac/AllSetStep.swift:82
-206,Onboarding (first launch),All set step,Message,Progress appears in a macOS window.,,,Mac/AllSetStep.swift:90
-207,Onboarding (first launch),All set step,Title,Almost done,,,Mac/AllSetStep.swift:83
-208,Onboarding (first launch),All set step,Message,"Some languages didn’t download. Try again, or add them later in Settings.",,,Mac/AllSetStep.swift:92
+206,Onboarding (first launch),All set step,Message,macOS shows the download progress in a separate window.,,,Mac/AllSetStep.swift:90
+207,Onboarding (first launch),All set step,Title,Some languages didn’t download,,,Mac/AllSetStep.swift:83
+208,Onboarding (first launch),All set step,Message,"Try again, or add them later in Settings.",,,Mac/AllSetStep.swift:92
 209,Onboarding (first launch),All set step,Title,You’re all set,,,Mac/AllSetStep.swift:84
 210,Onboarding (first launch),All set step,Message,These languages now work offline.,,,Mac/AllSetStep.swift:91
 211,Onboarding (first launch),All set step,Message,You can download languages anytime in Settings.,,Nothing chosen,Mac/AllSetStep.swift:93

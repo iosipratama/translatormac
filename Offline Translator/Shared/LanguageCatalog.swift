@@ -217,7 +217,7 @@ enum LanguageCatalog {
         let id = normalizedIdentifier(id)
         guard id != automaticIdentifier,
               let code = language(forIdentifier: id).languageCode?.identifier else {
-            return String(localized: "Auto")
+            return String(localized: "Detected")
         }
         return code.uppercased()
     }
