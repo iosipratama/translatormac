@@ -1,11 +1,12 @@
 A redesigned Translate Offline
-
 • Translates as you type, in a new window with a sidebar
 • Recent and Saved: find past translations and keep the phrases you reuse
-• Pronunciation for languages like Japanese and Chinese, plus read-aloud
-• Best quality: on Macs with Apple Intelligence, more natural translations, still fully offline
-• Settings › Languages shows exactly which languages are on your Mac, with one-click downloads
-• New Settings for appearance, translation quality, speaking speed, and history
-• Full menu bar commands and keyboard shortcuts
+• Pronunciation for languages like Japanese and Chinese, plus read aloud
+• Best quality: more natural translations on Macs with Apple Intelligence, still offline
+• Settings › Languages shows which languages are on your Mac, with one-click downloads
+• New settings for appearance, translation quality, speaking speed, and history
+• Full menu commands and keyboard shortcuts
 
-Translate Offline is now free: everything is unlimited for your first 3 days, then Free gives you 5 translations a day, and Pro unlocks everything. Bought the app before this update? Thank you: Pro is already yours.
+Translate Offline is now free to download. Everything is unlocked for your first 3 days. After that, Free gives you 5 translations a day, and Pro removes the limit and unlocks Best quality, pronunciation and read aloud, and Saved phrases.
+
+Bought the app before this update? Thank you. Pro is already yours.
