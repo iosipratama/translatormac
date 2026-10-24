@@ -1506,7 +1506,7 @@
       "fields": {
         "name": "Translate Offline",
         "privacyPolicyUrl": "https://mekarya.studio/privacy/translate-offline",
-        "subtitle": "Translate without internet"
+        "subtitle": "No Wi-Fi Language Translation"
       },
       "id": "c1651992-10c4-4072-a64f-fb1ced0e650e",
       "type": "appInfoLocalizations"
