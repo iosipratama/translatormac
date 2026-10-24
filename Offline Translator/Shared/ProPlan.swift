@@ -51,12 +51,11 @@ enum ProPlan: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
-    /// The line under the plan's name, which reads down the list as a
-    /// choice: pay once, or subscribe.
+    /// The line under the plan's name.
     var tagline: LocalizedStringResource {
         switch self {
-        case .weekly: "Or subscribe weekly"
-        case .yearly: "Renews every year"
+        case .weekly: "Cancel anytime"
+        case .yearly: "Cancel anytime"
         case .lifetime: "Pay once"
         }
     }
@@ -64,23 +63,27 @@ enum ProPlan: String, CaseIterable, Identifiable, Sendable {
     var callToAction: LocalizedStringResource {
         switch self {
         case .weekly: "Start Weekly Plan"
-        case .yearly: "Start Yearly Plan"
+        case .yearly: "Continue"
         case .lifetime: "Buy Lifetime"
         }
     }
 
-    /// The terms under the button, in plain words. For a subscription
-    /// these are the auto-renewal terms App Review requires: the price, the
-    /// period, that it renews, and how to cancel.
-    func terms(for product: Product) -> String {
+    /// The terms under the button, in plain words. For a subscription,
+    /// together with the price and period on the plan's row, these are the
+    /// auto-renewal terms App Review asks for: what it costs, how often,
+    /// and that it renews until cancelled.
+    var terms: LocalizedStringResource {
         switch self {
-        case .weekly:
-            String(localized: "\(product.displayPrice) a week. Renews automatically until you cancel, and is charged to your Apple Account. Cancel anytime in App Store settings, at least 24 hours before it renews.")
-        case .yearly:
-            String(localized: "\(product.displayPrice) a year. Renews automatically until you cancel, and is charged to your Apple Account. Cancel anytime in App Store settings, at least 24 hours before it renews.")
-        case .lifetime:
-            String(localized: "One payment of \(product.displayPrice). No subscription, no renewals.")
+        case .weekly: "Renews every week. Cancel anytime."
+        case .yearly: "Renews every year. Cancel anytime."
+        case .lifetime: "One payment. No subscription."
         }
+    }
+
+    /// A yearly price spread over 12 months, rounded to the currency's
+    /// smallest unit, which is why the note says "About".
+    nonisolated static func monthlyPrice(ofYearly price: Decimal, format: Decimal.FormatStyle.Currency) -> String {
+        (price / 12).formatted(format)
     }
 
     /// "9.99 / year"; Lifetime's tagline already says it's paid once.
@@ -99,7 +102,7 @@ enum ProPlan: String, CaseIterable, Identifiable, Sendable {
         case .weekly:
             return String(localized: "Billed every week")
         case .yearly:
-            let monthly = (product.price / 12).formatted(product.priceFormatStyle)
+            let monthly = Self.monthlyPrice(ofYearly: product.price, format: product.priceFormatStyle)
             return String(localized: "About \(monthly) a month")
         case .lifetime:
             return nil

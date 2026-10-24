@@ -129,6 +129,8 @@ struct PurchaseTests {
             let yearly = try #require(store.product(for: .yearly))
             #expect(!lifetime.displayPrice.isEmpty)
             #expect(yearly.subscription?.subscriptionPeriod.unit == .year)
+            #expect(ProPlan.yearly.priceNote(for: yearly) != nil)
+            #expect(ProPlan.lifetime.priceNote(for: lifetime) == nil)
         }
     }
 }

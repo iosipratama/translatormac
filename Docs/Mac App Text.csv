@@ -103,14 +103,14 @@ ID,Area,Where,Element,Current text,New text,When it shows / notes,Source
 102,Upgrade screen,Plan row 1,Tagline,Pay once,,,Shared/ProPlan.swift:60
 103,Upgrade screen,Plan row 1,Price / note,{price},,Price comes from the App Store,"Shared/ProPlan.swift:89,104"
 104,Upgrade screen,Plan row 2,Name,Yearly,,,Shared/ProPlan.swift:41
-105,Upgrade screen,Plan row 2,Tagline,Renews every year,,,Shared/ProPlan.swift:59
+105,Upgrade screen,Plan row 2,Tagline,Cancel anytime,,,Shared/ProPlan.swift:59
 106,Upgrade screen,Plan row 2,Price / note,{price} / year · About {monthly} a month,,,"Shared/ProPlan.swift:90,102"
 107,Upgrade screen,Plan rows,VoiceOver hint,Selects this plan,,,Mac/ProView.swift:341
 108,Upgrade screen,Main button,Button,Buy Lifetime,,Lifetime selected,Shared/ProPlan.swift:68
-109,Upgrade screen,Main button,Button,Start Yearly Plan,,Yearly selected,Shared/ProPlan.swift:67
+109,Upgrade screen,Main button,Button,Continue,,Yearly selected,Shared/ProPlan.swift:67
 110,Upgrade screen,Main button,Button,Purchasing…,,While buying,Mac/ProView.swift:162
-111,Upgrade screen,Under button,Terms,"One payment of {price}. No subscription, no renewals.",,Lifetime selected,Shared/ProPlan.swift:82
-112,Upgrade screen,Under button,Terms,"{price} a year. Renews automatically until you cancel, and is charged to your Apple Account. Cancel anytime in App Store settings, at least 24 hours before it renews.",,"Yearly selected; App Review requires price, period, renewal and how to cancel",Shared/ProPlan.swift:80
+111,Upgrade screen,Under button,Terms,One payment. No subscription.,,Lifetime selected,Shared/ProPlan.swift:82
+112,Upgrade screen,Under button,Terms,Renews every year. Cancel anytime.,,"Yearly selected; with the price and period on the Yearly row, covers what App Review asks for",Shared/ProPlan.swift:80
 113,Upgrade screen,Under button,Message,Purchases are turned off in Screen Time on this Mac.,,,Mac/ProView.swift:179
 114,Upgrade screen,Under button,Error,Couldn’t reach the App Store. Check your connection and try again.,,Prices didn't load,Mac/ProView.swift:188
 115,Upgrade screen,Under button,Button,Try Again,,,Mac/ProView.swift:191

@@ -168,8 +168,8 @@ struct ProView: View {
                 .disabled(purchases.isPurchasing || !AppStore.canMakePayments)
                 .keyboardShortcut(.defaultAction)
 
-                if AppStore.canMakePayments, let product = purchases.product(for: selectedPlan) {
-                    Text(selectedPlan.terms(for: product))
+                if AppStore.canMakePayments {
+                    Text(selectedPlan.terms)
                         .font(.caption)
                         .padding(.top, 2)
                         .foregroundStyle(.secondary)
