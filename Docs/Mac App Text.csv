@@ -190,12 +190,11 @@ ID,Area,Where,Element,Current text,New text,When it shows / notes,Source
 189,Settings › Pro,Footer,Buttons,Restore Purchases / Restoring… · Upgrade to Pro…,,,Mac/ProSettingsTab.swift:205-216
 190,Onboarding (first launch),Window,Title,Welcome,,,Mac/TranslatorMacApp.swift:77
 191,Onboarding (first launch),Welcome,Title,Welcome to Translate Offline,,,Mac/WelcomeStep.swift:24
-192,Onboarding (first launch),Welcome,Subtitle,Offline translation on this Mac.,,,Mac/WelcomeStep.swift:27
+192,Onboarding (first launch),Welcome,Subtitle,Translate text between languages on this Mac.,,,Mac/WelcomeStep.swift:27
 193,Onboarding (first launch),Welcome,Feature,Translations appear as you type — Type or paste anything.,,,Mac/WelcomeStep.swift:35-36
-194,Onboarding (first launch),Welcome,Feature,"Works without internet — Download a language once, then use it anywhere.",,,Mac/WelcomeStep.swift:40-41
-195,Onboarding (first launch),Welcome,Feature,Stays on this Mac — Nothing you type is sent anywhere.,,,Mac/WelcomeStep.swift:45-46
+194,Onboarding (first launch),Welcome,Feature,"Works without internet — Download a language once, then use it anywhere.",,Icon: wifi.slash,Mac/WelcomeStep.swift:40-41
+195,Onboarding (first launch),Welcome,Feature,"Stays on this Mac — No account, and nothing is uploaded.",,,Mac/WelcomeStep.swift:45-46
 196,Onboarding (first launch),Welcome,Button,Continue,,,Mac/WelcomeStep.swift:54
-197,Onboarding (first launch),Welcome,Link,Already bought Pro? Restore Purchases / Restoring…,,,Mac/WelcomeStep.swift:95-97
 198,Onboarding (first launch),Languages step,Title,Which languages do you need?,,,Mac/LanguagesStep.swift:18
 199,Onboarding (first launch),Languages step,Subtitle,Each one downloads once and stays on this Mac. You can add more later in Settings.,,,Mac/LanguagesStep.swift:20
 200,Onboarding (first launch),Languages step,Warning,"You’re offline. Connect to download, or skip for now.",,No internet,Mac/LanguagesStep.swift:30
@@ -212,7 +211,6 @@ ID,Area,Where,Element,Current text,New text,When it shows / notes,Source
 211,Onboarding (first launch),All set step,Message,You can download languages anytime in Settings.,,Nothing chosen,Mac/AllSetStep.swift:93
 212,Onboarding (first launch),All set step,Status / button,Ready / Not downloaded / Try Again,,Per language,Mac/AllSetStep.swift:126-132
 213,Onboarding (first launch),All set step,Button,Start Translating,,,Mac/AllSetStep.swift:38
-214,Onboarding (first launch),All steps,VoiceOver label,Step {n} of 3,,Page dots,Mac/OnboardingWindow.swift:91
 215,Menu bar,App menu,Item,About Translate Offline,,,Mac/TranslatorMacApp.swift:54
 216,Menu bar,App menu,Item,Upgrade to Pro…,,Without Pro,Mac/AppCommands.swift:18
 217,Menu bar,App menu,Item,Rate Translate Offline,,,Mac/AppCommands.swift:24

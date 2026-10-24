@@ -35,9 +35,6 @@ struct OnboardingWindow: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .transition(.opacity.combined(with: .offset(x: 24)))
             .id(model.step)
-
-            PageDots(count: OnboardingModel.Step.allCases.count, current: model.step.rawValue)
-                .padding(.bottom, 18)
         }
         .frame(width: Self.size.width, height: Self.size.height)
         .animation(.smooth, value: model.step)
@@ -71,23 +68,5 @@ struct OnboardingWindow: View {
         if !MainWindowAccess.bringForward() {
             openWindow(id: "main")
         }
-    }
-}
-
-/// Three dots, the current one in the accent color.
-private struct PageDots: View {
-    var count: Int
-    var current: Int
-
-    var body: some View {
-        HStack(spacing: 6) {
-            ForEach(0..<count, id: \.self) { index in
-                Circle()
-                    .fill(index == current ? AnyShapeStyle(Color.accentForeground) : AnyShapeStyle(.quaternary))
-                    .frame(width: 6, height: 6)
-            }
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Step \(current + 1) of \(count)")
     }
 }

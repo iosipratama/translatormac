@@ -37,7 +37,7 @@ struct LanguagesStep: View {
 
             footer
         }
-        .padding(EdgeInsets(top: 44, leading: 40, bottom: 12, trailing: 40))
+        .padding(EdgeInsets(top: 44, leading: 40, bottom: 36, trailing: 40))
     }
 
     // MARK: - List

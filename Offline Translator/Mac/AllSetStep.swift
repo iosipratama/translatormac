@@ -41,7 +41,7 @@ struct AllSetStep: View {
                 .keyboardShortcut(.defaultAction)
                 .disabled(model.isDownloading)
         }
-        .padding(EdgeInsets(top: 44, leading: 60, bottom: 12, trailing: 60))
+        .padding(EdgeInsets(top: 44, leading: 60, bottom: 36, trailing: 60))
     }
 
     /// The heading follows what's actually happening, so it never says
