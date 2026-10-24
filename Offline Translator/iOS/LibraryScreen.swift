@@ -18,6 +18,7 @@ struct LibraryScreen: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(PurchaseStore.self) private var purchases
     @Environment(ProPresentation.self) private var pro
+    @Environment(ReviewPrompter.self) private var reviews
 
     @SceneStorage("libraryTab") private var tab: LibraryTab = .saved
     @AppStorage(SettingsKey.keepHistory) private var keepsHistory = true
@@ -252,6 +253,7 @@ struct LibraryScreen: View {
             }
             store.setSaved(entry, true)
             savedCount += 1
+            reviews.noteSaved(total: store.savedCount())
         } else {
             let savedAt = entry.savedAt
             store.setSaved(entry, false)

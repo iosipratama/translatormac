@@ -15,6 +15,7 @@ struct TranslatorMacApp: App {
 
     @State private var purchases = PurchaseStore()
     @State private var pro = ProPresentation()
+    @State private var reviews = ReviewPrompter()
 
     /// Read once at launch: it decides which window opens first. The flow
     /// itself updates the stored value when it finishes.
@@ -38,11 +39,12 @@ struct TranslatorMacApp: App {
 
     var body: some Scene {
         WindowGroup(id: "main") {
-            MainWindow(modelContext: modelContainer.mainContext, purchases: purchases)
+            MainWindow(modelContext: modelContainer.mainContext, purchases: purchases, reviews: reviews)
         }
         .modelContainer(modelContainer)
         .environment(purchases)
         .environment(pro)
+        .environment(reviews)
         .defaultSize(width: 1000, height: 660)
         // On a first launch the welcome window opens instead; it opens this
         // one when it's done.

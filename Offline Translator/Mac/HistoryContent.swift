@@ -17,6 +17,7 @@ struct HistoryContent: View {
     @Environment(\.undoManager) private var undoManager
     @Environment(PurchaseStore.self) private var purchases
     @Environment(ProPresentation.self) private var pro
+    @Environment(ReviewPrompter.self) private var reviews
     @Environment(\.openSettings) private var openSettings
     @AppStorage(SettingsKey.keepHistory) private var keepsHistory = true
     @State private var speaker = TranslationSpeaker()
@@ -220,6 +221,9 @@ struct HistoryContent: View {
                 return
             }
             store.setSaved(entry, isSaved, undoManager: undoManager)
+        }
+        if isSaved {
+            reviews.noteSaved(total: store.savedCount())
         }
     }
 

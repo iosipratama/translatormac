@@ -3,6 +3,7 @@
 //  TranslatorMac
 //
 
+import StoreKit
 import SwiftData
 import SwiftUI
 // See LanguageCatalog.swift: the Translation framework is not yet
@@ -13,6 +14,8 @@ import SwiftUI
 struct MainWindow: View {
     @Environment(PurchaseStore.self) private var purchases
     @Environment(ProPresentation.self) private var pro
+    @Environment(ReviewPrompter.self) private var reviews
+    @Environment(\.requestReview) private var requestReview
 
     @State private var model: TranslationModel
     @State private var selection: SidebarItem = .translate
@@ -27,8 +30,8 @@ struct MainWindow: View {
     /// The model outlives the translate screen so switching to Recent and back
     /// keeps the text and result. `State` only reads this value the first time
     /// the window is created.
-    init(modelContext: ModelContext, purchases: PurchaseStore) {
-        _model = State(initialValue: TranslationModel(modelContext: modelContext, purchases: purchases))
+    init(modelContext: ModelContext, purchases: PurchaseStore, reviews: ReviewPrompter) {
+        _model = State(initialValue: TranslationModel(modelContext: modelContext, purchases: purchases, reviews: reviews))
     }
 
     var body: some View {
@@ -68,6 +71,13 @@ struct MainWindow: View {
         }
         .onChange(of: model.upgradePrompts) {
             pro.present()
+        }
+        .onChange(of: reviews.requests) {
+            requestReview()
+        }
+        .onChange(of: pro.isPresented) { _, isPresented in
+            // No rating request in a session that showed the Pro sheet.
+            if isPresented { reviews.noteInterruption() }
         }
         .onChange(of: purchases.canTranslate) { _, canTranslate in
             // Buying Pro while blocked should pick up where typing left off.

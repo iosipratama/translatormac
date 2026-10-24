@@ -14,6 +14,7 @@ import SwiftUI
 struct TranslateOfflineApp: App {
     @State private var purchases = PurchaseStore()
     @State private var pro = ProPresentation()
+    @State private var reviews = ReviewPrompter()
 
     private let modelContainer: ModelContainer
 
@@ -28,10 +29,11 @@ struct TranslateOfflineApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView(modelContext: modelContainer.mainContext, purchases: purchases)
+            RootView(modelContext: modelContainer.mainContext, purchases: purchases, reviews: reviews)
         }
         .modelContainer(modelContainer)
         .environment(purchases)
         .environment(pro)
+        .environment(reviews)
     }
 }

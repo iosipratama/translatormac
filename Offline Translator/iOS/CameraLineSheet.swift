@@ -18,6 +18,7 @@ struct CameraLineSheet: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Environment(PurchaseStore.self) private var purchases
+    @Environment(ReviewPrompter.self) private var reviews
 
     @State private var savedEntry: TranslationHistory?
     @State private var justCopied = false
@@ -122,5 +123,6 @@ struct CameraLineSheet: View {
         store.setSaved(entry, true)
         savedEntry = entry
         feedback += 1
+        reviews.noteSaved(total: store.savedCount())
     }
 }

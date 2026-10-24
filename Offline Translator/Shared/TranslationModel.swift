@@ -55,6 +55,7 @@ final class TranslationModel {
 
     private let modelContext: ModelContext
     private let purchases: PurchaseStore
+    private let reviews: ReviewPrompter
 
     /// Owned here so the Translation menu can reach it through the model.
     @ObservationIgnored private(set) lazy var speaker = TranslationSpeaker()
@@ -174,9 +175,10 @@ final class TranslationModel {
 
     // MARK: - Setup
 
-    init(modelContext: ModelContext, purchases: PurchaseStore) {
+    init(modelContext: ModelContext, purchases: PurchaseStore, reviews: ReviewPrompter) {
         self.modelContext = modelContext
         self.purchases = purchases
+        self.reviews = reviews
 
         let defaults = UserDefaults.standard
         sourceLanguage = defaults.string(forKey: DefaultsKey.source)
@@ -561,6 +563,7 @@ final class TranslationModel {
             guard allowEmptyInput, needsPreparation else { return }
         } else {
             guard !needsPro else {
+                reviews.noteInterruption()
                 finishTranslating()
                 return
             }
@@ -734,6 +737,7 @@ final class TranslationModel {
         recordToRecent(force: true)
         guard let record = currentRecord else { return true }
         history.setSaved(record, true)
+        reviews.noteSaved(total: history.savedCount())
         return true
     }
 
@@ -753,6 +757,7 @@ final class TranslationModel {
         if !sessionCounted {
             sessionCounted = true
             purchases.recordTranslation()
+            reviews.noteFinishedTranslation()
         }
         guard keepsHistory || force else { return }
 
