@@ -317,7 +317,9 @@ final class PurchaseStore {
 
     // MARK: - Entitlements
 
-    private func refreshAccess() async {
+    /// Reads purchases and the early-buyer check again. Restore does this
+    /// after syncing with the App Store; tests call it directly.
+    func refreshAccess() async {
         await refreshOwnership()
         await refreshEarlySupporter()
     }

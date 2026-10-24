@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4E5A00012F0000000000000D /* Translate Offline.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 4E5A00012F0000000000000C /* Translate Offline.storekit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		4E5A00012F00000000000007 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -17,6 +21,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4E5A00012F0000000000000C /* Translate Offline.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Translate Offline.storekit"; sourceTree = "<group>"; };
 		4E5A00012F00000000000001 /* TranslatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TranslatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E387F7E2EF58778003702F0 /* Translate Offline.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Translate Offline.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EEC71BD2EF90A970044AE89 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = README.md; sourceTree = "<group>"; };
@@ -57,6 +62,7 @@
 			isa = PBXGroup;
 			children = (
 				4EEC71BD2EF90A970044AE89 /* README.md */,
+				4E5A00012F0000000000000C /* Translate Offline.storekit */,
 				4E387F802EF58778003702F0 /* Offline Translator */,
 				4E5A00012F00000000000002 /* Tests */,
 				4E387F7F2EF58778003702F0 /* Products */,
@@ -171,6 +177,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E5A00012F0000000000000D /* Translate Offline.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -31,7 +31,7 @@ Colors live in `Assets.xcassets/Palette` with light and dark values; use the gen
 - Pronunciation for languages written in other scripts, and read-aloud with the system voice
 - Recent and Saved translations in the sidebar
 - macOS native UI (SwiftUI): sidebar, toolbar language menus, full menu-bar commands
-- Everything unlocked for the first 3 days after the first launch; then free with 5 translations a day, and Pro (yearly or lifetime) removes the limit
+- Everything unlocked for the first 3 days after the first launch; then free with 5 translations a day. Pro (lifetime or yearly) removes the limit and unlocks Best quality, pronunciation and read-aloud, and Saved phrases, each marked with a PRO tag (`ProTag`) on the free plan
 - Recent keeps every translation on every plan, until it's cleared
                         
 ### Requirements
@@ -44,12 +44,15 @@ Colors live in `Assets.xcassets/Palette` with light and dark values; use the gen
 
 ### In-app purchases
 - Pro is offered as a choice of plans, listed in `PurchaseStore.offeredPlans`; each plan's product is in `ProPlan`
-  - Lifetime: `iosipratama.TranslatorMac.pro` (non-consumable, the original product)
+  - Lifetime, listed first: `iosipratama.TranslatorMac.pro` (non-consumable, the original product)
   - Yearly: `iosipratama.TranslatorMac.pro.yearly` (auto-renewable subscription)
   - Weekly is defined but not offered: `iosipratama.TranslatorMac.pro.weekly`
 - Any active plan unlocks Pro; anyone whose original download is older than 1.2, the first free version, gets Pro automatically
 - `PurchaseStore.access` (`PlanAccess`) is what every gate asks: Pro, the free days, or the free plan
   - The free days (`FreeAccessPeriod`, `PlanLimits.freeAccessDays`) start at the first launch, recorded in this device's Keychain (`FirstLaunchRecord`) so a reinstall doesn't restart them; nothing leaves the device
   - Debug builds have controls at the bottom of Settings › Pro: force a plan, move the date forward, restart the free days, and simulate a Mac without Apple Intelligence
-- Tests: `bitrig test -scheme TranslatorMac` runs the `TranslatorTests` target (`Tests/`)
+- A translation counts toward the daily limit once it's finished (⌘↩, Copy, Speak, Save, or a 2-second pause), once per text (`TextSession`)
+- On the last free day a one-time notice (`FreeAccessNotice`) compares Free and Pro; feature lists come from `PlanFeatures`, matching the website
+- A rating is requested from the 10th finished translation or 3rd saved phrase, never after the limit or the Pro sheet, once per version (`ReviewRules`)
+- Tests: `bitrig test -scheme TranslatorMac` runs the `TranslatorTests` target (`Tests/`), including StoreKit purchases against `Translate Offline.storekit`
 - `Translate Offline.storekit` lets local runs buy either plan without App Store Connect; its prices are placeholders
