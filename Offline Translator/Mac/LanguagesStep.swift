@@ -5,7 +5,9 @@
 
 import SwiftUI
 
-/// Step two: pick the languages to download.
+/// Step two: pick the languages to download. With nothing new picked, as
+/// when the languages needed are already on this Mac, the main button
+/// continues to the app instead, so the step is never a dead end.
 struct LanguagesStep: View {
     @Bindable var model: OnboardingModel
     var network: NetworkMonitor
@@ -112,24 +114,47 @@ struct LanguagesStep: View {
 
     private var footer: some View {
         HStack {
-            Text("^[\(model.selectedCount) selected](inflect: true) · needs internet once")
+            footerNote
                 .font(.caption)
                 .foregroundStyle(.secondary)
+                .contentTransition(.numericText())
 
             Spacer()
 
-            if !network.isOnline {
+            // Only needed when downloading can't work.
+            if model.selectedCount > 0, !network.isOnline {
                 Button("Skip for Now", action: onSkip)
             }
             Button("Back") {
                 model.goBack()
             }
-            Button("Download") {
+            mainButton
+                .accentProminentButton()
+                .keyboardShortcut(.defaultAction)
+        }
+        .animation(.snappy, value: model.selectedCount)
+    }
+
+    @ViewBuilder
+    private var mainButton: some View {
+        if model.selectedCount == 0 {
+            // Nothing to download, so there's no download step to show.
+            Button("Continue", action: onSkip)
+        } else {
+            Button("Download ^[\(model.selectedCount) Language](inflect: true)") {
                 model.startDownloads()
             }
-            .accentProminentButton()
-            .keyboardShortcut(.defaultAction)
-            .disabled(model.selectedCount == 0 || !network.isOnline)
+            .disabled(!network.isOnline)
         }
+    }
+
+    private var footerNote: Text {
+        if model.selectedCount > 0 {
+            return Text("^[\(model.selectedCount) selected](inflect: true) · needs internet once")
+        }
+        if model.installedCount > 0 {
+            return Text("^[\(model.installedCount) language](inflect: true) already on this Mac")
+        }
+        return Text("Pick the languages you need, or add them later in Settings.")
     }
 }

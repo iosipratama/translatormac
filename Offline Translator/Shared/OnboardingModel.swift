@@ -67,6 +67,11 @@ final class OnboardingModel {
         selection.count
     }
 
+    /// Languages already downloaded before onboarding.
+    var installedCount: Int {
+        choices.count(where: \.isInstalled)
+    }
+
     /// The languages asked for, in order.
     private(set) var requested: [Locale.Language] = []
     /// Languages whose download was declined or failed. Readiness comes from

@@ -195,22 +195,24 @@ ID,Area,Where,Element,Current text,New text,When it shows / notes,Source
 194,Onboarding (first launch),Welcome,Feature,"Works without internet — Download a language once, then use it anywhere.",,Icon: wifi.slash,Mac/WelcomeStep.swift:40-41
 195,Onboarding (first launch),Welcome,Feature,"Stays on this Mac — No account, and nothing is uploaded.",,,Mac/WelcomeStep.swift:45-46
 196,Onboarding (first launch),Welcome,Button,Continue,,,Mac/WelcomeStep.swift:54
-198,Onboarding (first launch),Languages step,Title,Which languages do you need?,,,Mac/LanguagesStep.swift:18
-199,Onboarding (first launch),Languages step,Subtitle,Each one downloads once and stays on this Mac. You can add more later in Settings.,,,Mac/LanguagesStep.swift:20
-200,Onboarding (first launch),Languages step,Warning,"You’re offline. Connect to download, or skip for now.",,No internet,Mac/LanguagesStep.swift:30
-201,Onboarding (first launch),Languages step,Button,Show All Languages,,,Mac/LanguagesStep.swift:60
-202,Onboarding (first launch),Languages step,Label,Already on this Mac,,,Mac/LanguagesStep.swift:95
-203,Onboarding (first launch),Languages step,Footer,{count} selected · needs internet once,,,Mac/LanguagesStep.swift:115
-204,Onboarding (first launch),Languages step,Buttons,Skip for Now / Back / Download,,,Mac/LanguagesStep.swift:122-127
-205,Onboarding (first launch),All set step,Title,Downloading languages…,,,Mac/AllSetStep.swift:82
-206,Onboarding (first launch),All set step,Message,macOS shows the download progress in a separate window.,,,Mac/AllSetStep.swift:90
-207,Onboarding (first launch),All set step,Title,Some languages didn’t download,,,Mac/AllSetStep.swift:83
-208,Onboarding (first launch),All set step,Message,"Try again, or add them later in Settings.",,,Mac/AllSetStep.swift:92
-209,Onboarding (first launch),All set step,Title,You’re all set,,,Mac/AllSetStep.swift:84
-210,Onboarding (first launch),All set step,Message,These languages now work offline.,,,Mac/AllSetStep.swift:91
-211,Onboarding (first launch),All set step,Message,You can download languages anytime in Settings.,,Nothing chosen,Mac/AllSetStep.swift:93
-212,Onboarding (first launch),All set step,Status / button,Ready / Not downloaded / Try Again,,Per language,Mac/AllSetStep.swift:126-132
-213,Onboarding (first launch),All set step,Button,Start Translating,,,Mac/AllSetStep.swift:38
+197,Onboarding (first launch),Languages step,Title,Which languages do you need?,,,Mac/LanguagesStep.swift:18
+198,Onboarding (first launch),Languages step,Subtitle,Each one downloads once and stays on this Mac. You can add more later in Settings.,,,Mac/LanguagesStep.swift:20
+199,Onboarding (first launch),Languages step,Warning,"You’re offline. Connect to download, or skip for now.",,No internet,Mac/LanguagesStep.swift:30
+200,Onboarding (first launch),Languages step,Button,Show All Languages,,,Mac/LanguagesStep.swift:60
+201,Onboarding (first launch),Languages step,Label,Already on this Mac,,,Mac/LanguagesStep.swift:95
+202,Onboarding (first launch),Languages step,Footer,{count} selected · needs internet once,,Languages picked,Mac/LanguagesStep.swift:115
+203,Onboarding (first launch),Languages step,Footer,{count} language(s) already on this Mac,,"Nothing picked, some already downloaded",Mac/LanguagesStep.swift
+204,Onboarding (first launch),Languages step,Footer,"Pick the languages you need, or add them later in Settings.",,"Nothing picked, nothing downloaded",Mac/LanguagesStep.swift
+205,Onboarding (first launch),Languages step,Buttons,Continue / Download {count} Language(s) · Back · Skip for Now,,Continue when nothing is picked; Skip for Now only when languages are picked but the Mac is offline,Mac/LanguagesStep.swift:122-127
+206,Onboarding (first launch),All set step,Title,Downloading languages…,,,Mac/AllSetStep.swift:82
+207,Onboarding (first launch),All set step,Message,macOS shows the download progress in a separate window.,,,Mac/AllSetStep.swift:90
+208,Onboarding (first launch),All set step,Title,Some languages didn’t download,,,Mac/AllSetStep.swift:83
+209,Onboarding (first launch),All set step,Message,"Try again, or add them later in Settings.",,,Mac/AllSetStep.swift:92
+210,Onboarding (first launch),All set step,Title,You’re all set,,,Mac/AllSetStep.swift:84
+211,Onboarding (first launch),All set step,Message,These languages now work offline.,,,Mac/AllSetStep.swift:91
+212,Onboarding (first launch),All set step,Message,You can download languages anytime in Settings.,,Nothing chosen,Mac/AllSetStep.swift:93
+213,Onboarding (first launch),All set step,Status / button,Ready / Not downloaded / Try Again,,Per language,Mac/AllSetStep.swift:126-132
+214,Onboarding (first launch),All set step,Button,Start Translating,,,Mac/AllSetStep.swift:38
 215,Menu bar,App menu,Item,About Translate Offline,,,Mac/TranslatorMacApp.swift:54
 216,Menu bar,App menu,Item,Upgrade to Pro…,,Without Pro,Mac/AppCommands.swift:18
 217,Menu bar,App menu,Item,Rate Translate Offline,,,Mac/AppCommands.swift:24
