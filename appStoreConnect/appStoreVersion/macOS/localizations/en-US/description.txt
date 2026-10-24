@@ -1,23 +1,29 @@
-Translate Offline translates text right on your Mac, with no internet connection needed. Your words never leave your computer.
+Translate text on your Mac with no internet needed. Nothing you type leaves your Mac.
 
-Type or paste, and the translation appears as you type. It's made for the moments you can't count on Wi-Fi: hotel rooms, flights, trains, and travel abroad.
+Type or paste, and the translation appears as you type. Use it for work emails and documents you'd rather not upload, for language study, or on a flight or train.
 
-• Works offline: translation runs on your Mac, even with Wi-Fi off
-• Private by design: nothing you type is uploaded anywhere
+FEATURES
 • Translates as you type, or press Command-Return
-• Recent: find past translations fast
-• Pro: pronunciation for languages like Japanese and Chinese, plus read-aloud
-• Pro: Saved phrases, to keep the ones you reuse
-• Pro: Best quality on Macs with Apple Intelligence, for more natural translations, still offline
-• Made for Mac: menu bar commands, keyboard shortcuts, and light and dark mode
+• Detects the language for you
+• Recent translations, to find past ones fast
+• No account and no sign-up
+• Made for Mac: menu commands, keyboard shortcuts, and light and dark mode
 
-Languages include English, Arabic, Chinese, Dutch, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Thai, Turkish, Ukrainian, Vietnamese, and more. Download the ones you need once, from System Settings or right in the app.
+TRANSLATE OFFLINE PRO
+• Unlimited translations
+• Best quality with Apple Intelligence, for more natural translations that still run offline (needs a Mac with Apple Intelligence)
+• Pronunciation and read-aloud: see how to say words in languages like Japanese and Chinese, and hear them spoken
+• Saved phrases, to keep the ones you reuse
 
-For your first 3 days, everything is unlimited. After that, Free gives you 5 translations a day, translate as you type, all 19 languages offline, and Recent translations, with nothing uploaded. Translate Offline Pro adds unlimited translations, Best quality with Apple Intelligence, pronunciation and read-aloud, and Saved phrases. Pay once with Lifetime, or subscribe yearly.
+LANGUAGES
+Arabic, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Thai, Turkish, Ukrainian, and Vietnamese. Download each one once, in the app or in System Settings, and it stays on your Mac.
 
-The yearly subscription renews automatically unless it's cancelled at least 24 hours before the end of the current period. Manage or cancel it in your App Store account settings.
+FREE AND PRO
+Everything is unlocked for your first 3 days. After that, the free plan gives you 5 translations a day, and Pro removes the limit. Pay once with Lifetime, or choose Yearly.
+
+The Yearly plan renews automatically unless it's canceled at least 24 hours before the end of the current period. Manage or cancel it anytime in your Apple Account settings.
 
 Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 Privacy Policy: https://mekarya.studio/privacy/translate-offline
 
-Questions or ideas? Contact support using the link below.
+Questions or ideas? Contact support with the link below.
