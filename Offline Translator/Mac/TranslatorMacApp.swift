@@ -61,6 +61,9 @@ struct TranslatorMacApp: App {
             NavigationCommands()
             TranslationCommands()
             HelpCommands()
+            #if DEBUG
+            DebugCommands(purchases: purchases, pro: pro, reviews: reviews)
+            #endif
         }
 
         Settings {

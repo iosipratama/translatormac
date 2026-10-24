@@ -38,6 +38,27 @@ final class ReviewPrompter {
         sessionWasInterrupted = true
     }
 
+    #if DEBUG
+    /// Debug builds only: ask right away, whatever the rules say.
+    func requestNow() {
+        requests += 1
+    }
+
+    /// Debug builds only: forget the count, the version asked and this
+    /// session's interruptions, as on a new install.
+    func reset() {
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: DefaultsKey.finishedTranslations)
+        defaults.removeObject(forKey: DefaultsKey.versionLastAsked)
+        sessionWasInterrupted = false
+    }
+
+    /// Debug builds only: finished translations counted so far.
+    var finishedTranslations: Int {
+        UserDefaults.standard.integer(forKey: DefaultsKey.finishedTranslations)
+    }
+    #endif
+
     private func consider(_ moment: ReviewRules.Moment) {
         let defaults = UserDefaults.standard
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""

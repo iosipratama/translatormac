@@ -50,7 +50,7 @@ Colors live in `Assets.xcassets/Palette` with light and dark values; use the gen
 - Any active plan unlocks Pro; anyone whose original download is older than 1.2, the first free version, gets Pro automatically
 - `PurchaseStore.access` (`PlanAccess`) is what every gate asks: Pro, the free days, or the free plan
   - The free days (`FreeAccessPeriod`, `PlanLimits.freeAccessDays`) start at the first launch, recorded in this device's Keychain (`FirstLaunchRecord`) so a reinstall doesn't restart them; nothing leaves the device
-  - Debug builds have controls at the bottom of Settings › Pro: force a plan, move the date forward, restart the free days, and simulate a Mac without Apple Intelligence
+  - Debug builds have a Debug menu in the menu bar (`DebugCommands`): force Pro or Free, jump to any day, restart the free days, show the upgrade screen or either free-days notice, replay onboarding, use up or reset today's free translations, simulate a Mac without Apple Intelligence, and request or reset the rating prompt. Settings › Pro shows the same basics at the bottom
 - A translation counts toward the daily limit once it's finished (⌘↩, Copy, Speak, Save, or a 2-second pause), once per text (`TextSession`)
 - On the last free day a one-time notice (`FreeAccessNotice`) compares Free and Pro; feature lists come from `PlanFeatures`, matching the website
 - A rating is requested from the 10th finished translation or 3rd saved phrase, never after the limit or the Pro sheet, once per version (`ReviewRules`)

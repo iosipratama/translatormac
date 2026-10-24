@@ -7,7 +7,8 @@
 import SwiftUI
 
 /// Settings › Pro, debug builds only: try each plan, later days and a Mac
-/// without Apple Intelligence without waiting or changing Macs.
+/// without Apple Intelligence without waiting or changing Macs. The Debug
+/// menu has these and more.
 struct ProDebugControls: View {
     @Environment(PurchaseStore.self) private var purchases
     @AppStorage(SettingsKey.debugNoAppleIntelligence) private var simulatesNoAppleIntelligence = false
@@ -25,7 +26,7 @@ struct ProDebugControls: View {
                 .fixedSize()
 
                 LabeledContent("Today is:") {
-                    Stepper(value: $purchases.debugDayOffset, in: 0...30) {
+                    Stepper(value: $purchases.debugDayOffset, in: -30...30) {
                         Text("Day \(dayNumber) · \(purchases.now, format: .dateTime.day().month())")
                             .monospacedDigit()
                     }

@@ -155,6 +155,39 @@ final class PurchaseStore {
         debugDayOffset = 0
         freeAccessNoticeShown = false
     }
+
+    /// Debug builds only: which day since the first launch the app thinks
+    /// it is, from 1.
+    var debugDay: Int {
+        freeAccess.day(on: now)
+    }
+
+    /// Debug builds only: pretend it's this day since the first launch.
+    func setDebugDay(_ day: Int) {
+        debugDayOffset = day - freeAccess.day(on: .now)
+    }
+
+    /// Debug builds only: show the free days' notice again, as on the last
+    /// free day, or as after it for someone who skipped that day. Moves to
+    /// that day and goes by the App Store, since the notice never shows
+    /// for Pro.
+    func replayFreeAccessNotice(ended: Bool) {
+        debugPlan = .automatic
+        setDebugDay(ended ? freeAccess.days + 1 : freeAccess.days)
+        freeAccessNoticeShown = false
+    }
+
+    /// Debug builds only: set how many free translations are left today.
+    func setRemainingFreeTranslations(_ remaining: Int) {
+        allowance = DailyAllowance(day: now, used: Self.dailyFreeLimit - remaining)
+    }
+
+    /// Debug builds only: back to what the App Store and the clock say.
+    func resetDebugOverrides() {
+        debugPlan = .automatic
+        debugDayOffset = 0
+        UserDefaults.standard.removeObject(forKey: SettingsKey.debugNoAppleIntelligence)
+    }
     #endif
 
     private(set) var isPurchasing = false
