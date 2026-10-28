@@ -1483,7 +1483,7 @@
         "violenceRealistic": "NONE",
         "violenceRealisticProlongedGraphicOrSadistic": "NONE"
       },
-      "id": "9258ca16-047b-4df6-a6e7-74428543be94",
+      "id": "fb2c87b7-ed59-4461-8133-6d8b8c6aa978",
       "type": "ageRatingDeclarations"
     },
     "app": {
@@ -1499,16 +1499,16 @@
         "primaryCategory": "UTILITIES",
         "secondaryCategory": "PRODUCTIVITY"
       },
-      "id": "9258ca16-047b-4df6-a6e7-74428543be94",
+      "id": "fb2c87b7-ed59-4461-8133-6d8b8c6aa978",
       "type": "appInfos"
     },
     "appInfoLocalization:en-US": {
       "fields": {
         "name": "Translate Offline: Translator",
         "privacyPolicyUrl": "https://mekarya.studio/privacy/translate-offline",
-        "subtitle": "No Wi-Fi Language Translation"
+        "subtitle": "Private, Works Without Wi-Fi"
       },
-      "id": "5f37e803-bfbb-4658-bc74-86648f7357f4",
+      "id": "4b31def6-14c2-4992-a083-f3873379a2fc",
       "type": "appInfoLocalizations"
     },
     "appStoreReviewDetail:MAC_OS:1.3": {
