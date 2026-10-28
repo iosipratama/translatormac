@@ -59,15 +59,19 @@ struct CameraLineSheet: View {
                 RoundIconButton(
                     title: model.speaker.isSpeaking ? "Stop" : "Read Aloud",
                     systemImage: model.speaker.isSpeaking ? "stop.fill" : "speaker.wave.2.fill",
-                    isProminent: true
+                    isProminent: true,
+                    isLocked: !purchases.canUsePronunciation && !model.speaker.isSpeaking
                 ) {
                     if model.speaker.isSpeaking {
                         model.speaker.stop()
+                    } else if !purchases.canUsePronunciation {
+                        dismiss()
+                        needsPro()
                     } else {
                         model.speaker.speak(translation, in: target)
                     }
                 }
-                .disabled(!model.speaker.canSpeak(target))
+                .disabled(!model.speaker.canSpeak(target) && purchases.canUsePronunciation)
 
                 RoundIconButton(
                     title: isSaved ? "Remove from Saved" : "Save",

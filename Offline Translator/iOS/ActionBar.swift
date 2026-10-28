@@ -13,14 +13,19 @@ struct ActionBar: View {
     var toggleSaved: () -> Void
     var copy: () -> Void
 
+    private var isReadAloudLocked: Bool {
+        !model.unlocksPro && !model.speaker.isSpeaking
+    }
+
     var body: some View {
         let speaker = model.speaker
 
         HStack(spacing: 12) {
             RoundIconButton(
-                title: speaker.isSpeaking ? "Stop" : "Read aloud",
+                title: speaker.isSpeaking ? "Stop" : "Read Aloud",
                 systemImage: speaker.isSpeaking ? "stop.fill" : "speaker.wave.2.fill",
                 isProminent: true,
+                isLocked: isReadAloudLocked,
                 action: model.toggleSpeech
             )
             .overlay {
@@ -34,7 +39,8 @@ struct ActionBar: View {
                         .accessibilityHidden(true)
                 }
             }
-            .disabled(!model.canSpeak)
+            // Locked, it stays tappable to offer Pro.
+            .disabled(!model.canSpeak && !isReadAloudLocked)
 
             RoundIconButton(title: "Show full-screen", systemImage: "arrow.up.left.and.arrow.down.right", action: showToSomeone)
 
@@ -42,6 +48,8 @@ struct ActionBar: View {
                 title: model.isCurrentSaved ? "Remove from Saved" : "Save",
                 systemImage: model.isCurrentSaved ? "star.fill" : "star",
                 iconColor: model.isCurrentSaved ? .accentForeground : .textPrimary,
+                // Removing a star always works.
+                isLocked: !model.unlocksPro && !model.isCurrentSaved,
                 action: toggleSaved
             )
 

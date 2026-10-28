@@ -48,12 +48,22 @@ struct SettingsScreen: View {
                 }
                 .tint(.green)
                 if isBestAvailable {
-                    Picker("Quality", selection: $quality) {
-                        ForEach(TranslationQuality.allCases) { quality in
-                            Text(quality.title).tag(quality)
+                    if TranslationQuality.isUnlocked {
+                        Picker("Quality", selection: $quality) {
+                            ForEach(TranslationQuality.allCases) { quality in
+                                Text(quality.title).tag(quality)
+                            }
+                        }
+                        .pickerStyle(.menu)
+                    } else {
+                        // Best quality is a Pro feature: Fast, with a tag.
+                        LabeledContent("Quality") {
+                            HStack(spacing: 8) {
+                                Text(TranslationQuality.fast.title)
+                                ProTag(feature: "Best quality")
+                            }
                         }
                     }
-                    .pickerStyle(.menu)
                 }
             } header: {
                 Text("Translation")
@@ -178,6 +188,9 @@ struct SettingsScreen: View {
     // MARK: - Notes
 
     private var qualityNote: String {
+        guard TranslationQuality.isUnlocked else {
+            return String(localized: "Best quality uses Apple Intelligence for more natural translations, still offline. Included with Pro.")
+        }
         switch quality {
         case .fast:
             return String(localized: "Uses the languages downloaded to this iPhone. Quick enough to translate as you type.")

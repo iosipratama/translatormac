@@ -6,7 +6,7 @@
 import SwiftUI
 
 /// The small yellow "PRO" capsule. Every locked feature wears it, through
-/// `ProTag`, so they all read the same way.
+/// `ProTag`, so they all read the same way, on the Mac and the iPhone.
 struct ProBadge: View {
     var body: some View {
         Text("Pro")

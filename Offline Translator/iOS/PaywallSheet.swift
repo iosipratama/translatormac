@@ -34,7 +34,7 @@ struct PaywallSheet: View {
                     Text("Translate without limits")
                         .font(.largeTitle.bold())
                         .foregroundStyle(.textPrimary)
-                    Text("Everything stays offline and private.")
+                    Text(subtitle)
                         .font(.body)
                         .foregroundStyle(.textMuted)
                         .padding(.top, 8)
@@ -85,6 +85,14 @@ struct PaywallSheet: View {
             await purchases.loadProducts()
             await loadTrial()
         }
+    }
+
+    private var subtitle: LocalizedStringKey {
+        if case .freeAccess(let end) = purchases.access {
+            // The end is midnight, so name the last whole day instead.
+            return "Everything is unlocked through \(end.addingTimeInterval(-1), format: .dateTime.weekday(.wide)). Keep it all with Pro."
+        }
+        return "Everything stays offline and private."
     }
 
     private func benefit(_ text: LocalizedStringResource) -> some View {

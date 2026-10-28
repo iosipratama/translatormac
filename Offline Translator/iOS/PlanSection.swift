@@ -47,12 +47,22 @@ struct PlanSection: View {
             .listRowBackground(Color.clear)
             .listRowInsets(EdgeInsets())
 
-            Section {
-                LabeledContent("Translations left today", value: "\(purchases.remainingFreeTranslations) of \(PlanLimits.freeTranslationsPerDay)")
-            } footer: {
-                Text("Free translations reset at midnight.")
+            if case .freeAccess(let end) = purchases.access {
+                Section {
+                    LabeledContent("Free days", value: String(localized: "Everything unlocked"))
+                } footer: {
+                    // The end is midnight, so name the last whole day instead.
+                    Text("Everything is unlocked through \(end.addingTimeInterval(-1), format: .dateTime.weekday(.wide).month().day()). Then the free plan gives you \(PlanLimits.freeTranslationsPerDay) translations a day.")
+                }
+                .listRowBackground(Color.surface)
+            } else {
+                Section {
+                    LabeledContent("Translations left today", value: "\(purchases.remainingFreeTranslations) of \(PlanLimits.freeTranslationsPerDay)")
+                } footer: {
+                    Text("Free translations reset at midnight.")
+                }
+                .listRowBackground(Color.surface)
             }
-            .listRowBackground(Color.surface)
         }
     }
 

@@ -18,6 +18,7 @@ struct TranslateScreen: View {
     var open: (AppRoute) -> Void
 
     @Environment(ProPresentation.self) private var pro
+    @Environment(PurchaseStore.self) private var purchases
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.openURL) private var openURL
 
@@ -385,9 +386,20 @@ struct TranslateScreen: View {
                 .textSelection(.enabled)
 
             if showsPronunciation, let pronunciation = result.pronunciation {
-                Text(pronunciation)
-                    .font(.body)
-                    .foregroundStyle(.textMuted)
+                if purchases.canUsePronunciation {
+                    Text(pronunciation)
+                        .font(.body)
+                        .foregroundStyle(.textMuted)
+                } else {
+                    // A Pro feature: the line keeps its place with a tag.
+                    HStack(spacing: 6) {
+                        Text("Pronunciation")
+                            .font(.body)
+                            .foregroundStyle(.textFaint)
+                            .accessibilityHidden(true)
+                        ProTag(feature: "Pronunciation")
+                    }
+                }
             }
 
             if !isEditing, !isStale, !voice.isListening {

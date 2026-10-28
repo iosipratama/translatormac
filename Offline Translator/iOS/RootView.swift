@@ -23,6 +23,10 @@ struct RootView: View {
     /// Which languages are downloaded, for Settings and its Languages page.
     @State private var inventory = LanguageInventory()
     @State private var toast: ToastMessage?
+    @State private var notice: FreeAccessNotice?
+    /// Set when the notice's "See Pro Plans" closes it, so the Pro sheet
+    /// opens once it's gone; only one sheet can show at a time.
+    @State private var showsPlansAfterNotice = false
     /// Read so a change in Settings refreshes the view, and with it
     /// `TranslationQuality.effective`.
     @AppStorage(SettingsKey.translationQuality) private var quality: TranslationQuality = .fast
@@ -92,6 +96,8 @@ struct RootView: View {
         .onChange(of: pro.isPresented) { _, isPresented in
             // No rating request in a session that showed the Pro sheet.
             if isPresented { reviews.noteInterruption() }
+            // A notice that came due while the sheet was up waits for it.
+            if !isPresented { showNoticeIfDue(purchases.dueFreeAccessNotice) }
         }
         .onChange(of: purchases.canTranslate) { _, canTranslate in
             // Buying Pro while blocked should pick up where typing left off.
@@ -108,8 +114,33 @@ struct RootView: View {
                 toast = ToastMessage(text: "Pro is active", systemImage: "checkmark.seal.fill")
             }
         }
+        .sheet(item: $notice) {
+            if showsPlansAfterNotice {
+                showsPlansAfterNotice = false
+                pro.present()
+            }
+        } content: { notice in
+            FreeAccessNoticeSheet(notice: notice) {
+                showsPlansAfterNotice = true
+                self.notice = nil
+            }
+        }
+        // At launch, on the last free day, and when the day changes while
+        // the app is open; never over onboarding or the Pro sheet.
+        .onChange(of: purchases.dueFreeAccessNotice, initial: true) { _, due in
+            showNoticeIfDue(due)
+        }
+        .onChange(of: didFinishOnboarding) {
+            showNoticeIfDue(purchases.dueFreeAccessNotice)
+        }
         .toast($toast, bottomPadding: 24)
         .preferredColorScheme(theme.colorScheme)
+    }
+
+    private func showNoticeIfDue(_ due: FreeAccessNotice?) {
+        guard let due, didFinishOnboarding, notice == nil, !pro.isPresented else { return }
+        purchases.markFreeAccessNoticeShown()
+        notice = due
     }
 
     /// Opens Translate on the device's language and the first language

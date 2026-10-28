@@ -13,7 +13,10 @@ struct ShowToSomeoneView: View {
     var model: TranslationModel
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(PurchaseStore.self) private var purchases
     @State private var isFlipped = false
+    /// Its own Pro sheet: the app's can't show over this full-screen view.
+    @State private var isShowingPro = false
     @State private var brightnessBefore: CGFloat?
 
     var body: some View {
@@ -28,7 +31,9 @@ struct ShowToSomeoneView: View {
                         .minimumScaleFactor(0.3)
                         .foregroundStyle(.textPrimary)
                         .typesettingLanguage(model.targetLanguage)
-                    if let pronunciation = result.pronunciation, showsPronunciation {
+                    // Held up to someone else, so a locked line isn't shown
+                    // with a tag here; it just isn't shown.
+                    if let pronunciation = result.pronunciation, showsPronunciation, purchases.canUsePronunciation {
                         Text(pronunciation)
                             .font(.title2)
                             .foregroundStyle(.textMuted)
@@ -57,9 +62,15 @@ struct ShowToSomeoneView: View {
                         systemImage: model.speaker.isSpeaking ? "stop.fill" : "speaker.wave.2.fill",
                         diameter: 64,
                         isProminent: true,
-                        action: model.toggleSpeech
-                    )
-                    .disabled(!model.canSpeak)
+                        isLocked: !purchases.canUsePronunciation && !model.speaker.isSpeaking
+                    ) {
+                        if purchases.canUsePronunciation || model.speaker.isSpeaking {
+                            model.toggleSpeech()
+                        } else {
+                            isShowingPro = true
+                        }
+                    }
+                    .disabled(!model.canSpeak && purchases.canUsePronunciation)
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Read Aloud")
                             .font(.headline)
@@ -76,6 +87,9 @@ struct ShowToSomeoneView: View {
         .padding(.horizontal, 20)
         .padding(.bottom, 8)
         .background(.canvas)
+        .sheet(isPresented: $isShowingPro) {
+            PaywallSheet()
+        }
         .onAppear {
             model.noteShownToSomeone()
             UIApplication.shared.isIdleTimerDisabled = true

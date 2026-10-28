@@ -130,6 +130,10 @@ struct LibraryScreen: View {
                 Clipboard.copy(entry.sourceText)
             }
             Button("Read Aloud", systemImage: "speaker.wave.2") {
+                guard purchases.canUsePronunciation else {
+                    pro.present()
+                    return
+                }
                 model.speaker.speak(entry.translatedText, in: LanguageCatalog.language(forIdentifier: entry.targetLanguageID))
             }
             Button(entry.isSaved ? "Remove from Saved" : "Save", systemImage: entry.isSaved ? "star.slash" : "star") {
