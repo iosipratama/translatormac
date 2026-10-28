@@ -1,0 +1,188 @@
+ID,Area,Where,Element,Current text,New text,When it shows / notes,Source
+001,Permission prompts (iOS asks once),Camera permission,Purpose text,Point your camera at signs and menus to translate them. Photos are processed on this iPhone and never leave it.,,Shown by iOS the first time the camera opens,Config/iOS-Info.plist NSCameraUsageDescription
+002,Permission prompts (iOS asks once),Microphone permission,Purpose text,Hold to talk and hear the translation. Your voice is processed on this iPhone and never leaves it.,,First hold-to-talk,Config/iOS-Info.plist NSMicrophoneUsageDescription
+003,Permission prompts (iOS asks once),Speech recognition permission,Purpose text,Your speech is turned into text on this iPhone so it can be translated. It never leaves your iPhone.,,First hold-to-talk,Config/iOS-Info.plist NSSpeechRecognitionUsageDescription
+004,Onboarding (first launch),Welcome,Title,Welcome to Translate Offline,,,iOS/OnboardingWelcome.swift:55
+005,Onboarding (first launch),Welcome,Subtitle,"Private, offline translation for your iPhone",,,iOS/OnboardingWelcome.swift:58
+006,Onboarding (first launch),Welcome,Feature,"Use your camera — Translate signs, menus, and photos.",,,iOS/OnboardingWelcome.swift:69-70
+007,Onboarding (first launch),Welcome,Feature,"Talk and listen — Speak, then hear it said aloud.",,,iOS/OnboardingWelcome.swift:75-76
+008,Onboarding (first launch),Welcome,Feature,"No internet needed — Download once, use it anywhere.",,,iOS/OnboardingWelcome.swift:81-82
+009,Onboarding (first launch),Welcome,Button,Continue,,,iOS/OnboardingWelcome.swift:30
+010,Onboarding (first launch),Languages step,Title,Add languages to translate,,,iOS/OnboardingLanguages.swift:21
+011,Onboarding (first launch),Languages step,Section,Available offline,,Languages already on the iPhone,iOS/OnboardingLanguages.swift:53
+012,Onboarding (first launch),Languages step,Section,Download to use,,,iOS/OnboardingLanguages.swift:64
+013,Onboarding (first launch),Languages step,Status,Ready,,Next to a language already downloaded,iOS/OnboardingLanguages.swift:152
+014,Onboarding (first launch),Languages step,Note,Each language downloads together with {your language} and works offline. You can add more later.,,When the person's own language is known,iOS/OnboardingLanguages.swift:120
+015,Onboarding (first launch),Languages step,Note,Each language downloads once and works offline. You can add more later.,,Otherwise,iOS/OnboardingLanguages.swift:122
+016,Onboarding (first launch),Languages step,Warning,"You’re offline. Connect to Wi-Fi or cellular to download, or tap Skip and add languages later.",,No internet,iOS/OnboardingLanguages.swift:190
+017,Onboarding (first launch),Languages step,Buttons,Continue / Download {count} Language(s) · Skip,,Continue when nothing is picked,"iOS/OnboardingLanguages.swift:93,127"
+018,Onboarding (first launch),Download step,Title,Downloading your languages,,,iOS/OnboardingDownloads.swift:126
+019,Onboarding (first launch),Download step,Message,iOS asks you to confirm each pair. Languages you already have finish right away.,,,iOS/OnboardingDownloads.swift:135
+020,Onboarding (first launch),Download step,Title,You’re all set,,,iOS/OnboardingDownloads.swift:127
+021,Onboarding (first launch),Download step,Message,These languages now work offline on this iPhone.,,,iOS/OnboardingDownloads.swift:139
+022,Onboarding (first launch),Download step,Title,Ready when you are,,Nothing was picked,iOS/OnboardingDownloads.swift:127
+023,Onboarding (first launch),Download step,Message,You can download languages anytime in Settings › Languages.,,,iOS/OnboardingDownloads.swift:138
+024,Onboarding (first launch),Download step,Title,Some languages didn’t download,,,iOS/OnboardingDownloads.swift:128
+025,Onboarding (first launch),Download step,Message,"Try again, or add them later in Settings › Languages.",,,iOS/OnboardingDownloads.swift:141
+026,Onboarding (first launch),Download step,Row,{partner} ↔ {language},,VoiceOver reads “{partner} and {language}”,iOS/OnboardingDownloads.swift:160-166
+027,Onboarding (first launch),Download step,Row status,On this iPhone / Ready / Downloading… / Waiting / Not downloaded · Try Again,,,iOS/OnboardingChrome.swift:45-62
+028,Onboarding (first launch),Download step,Button,Start Translating,,,iOS/OnboardingDownloads.swift:51
+029,Translate screen,Navigation bar,Title,Translate,,,iOS/TranslateScreen.swift:107
+030,Translate screen,Navigation bar,Buttons,Library / Settings,,Icon only; names used by VoiceOver,iOS/TranslateScreen.swift:184-188
+031,Translate screen,Language card,VoiceOver,From {language} / To {language} · Choose a language,,,iOS/LanguagePairCard.swift:65-66
+032,Translate screen,Language card,Button,Swap languages,,Icon only,iOS/LanguagePairCard.swift:29
+033,Translate screen,Language card,VoiceOver,{source} to {target} · Choose languages,,,iOS/TranslateScreen.swift:172-173
+034,Translate screen,Text area,Placeholder,Enter text,,VoiceOver label: Text to translate,iOS/TranslateScreen.swift:231
+035,Translate screen,Text area,Button,Clear text,,Icon only,iOS/TranslateScreen.swift:207
+036,Translate screen,Text area,Button,Cancel,,While editing,iOS/TranslateScreen.swift:176
+037,Translate screen,Source label,Label,{LANGUAGE} · ● Listening / {LANGUAGE} · Spoken,,Shown in capitals,iOS/TranslateScreen.swift:264-267
+038,Translate screen,Source label,Label,{language} (detected),,Shared with the Mac app; a change applies to both,Shared/TranslationModel.swift:284
+039,Translate screen,Result area,Placeholder,The translation appears as you type.,,,iOS/TranslateScreen.swift:367
+040,Translate screen,Result area,Placeholder,Tap Done to translate.,,Translate as you type off,iOS/TranslateScreen.swift:367
+041,Translate screen,Result area,Placeholder,The translation appears as you speak.,,While holding to talk,iOS/TranslateScreen.swift:366
+042,Translate screen,Result label,Label,{LANGUAGE} · Reading aloud,,While reading aloud,iOS/TranslateScreen.swift:373
+043,Translate screen,Result area,Message,{language} isn’t on this iPhone yet.,,Language not downloaded,iOS/TranslateScreen.swift:423
+044,Translate screen,Result area,Button,Download,,,iOS/TranslateScreen.swift:426
+045,Translate screen,Result area (daily limit),Message,You’ve used today’s 5 free translations. Pro translates without a limit.,,"Free plan, 0 left, new text",iOS/TranslateScreen.swift:438
+046,Translate screen,Result area (daily limit),Button,Get Pro,,,iOS/TranslateScreen.swift:441
+047,Translate screen,Action bar,Button,Read aloud / Stop,,Icon only,iOS/ActionBar.swift:21
+048,Translate screen,Action bar,Button,Show full-screen,,Icon only,iOS/ActionBar.swift:39
+049,Translate screen,Action bar,Button,Save / Remove from Library,,Icon only (star),iOS/ActionBar.swift:42
+050,Translate screen,Action bar,Button,Copy,,,iOS/ActionBar.swift:49
+051,Translate screen,Action bar,Button,1× Speed / 0.5× Speed,,While reading aloud,iOS/ActionBar.swift:58
+052,Translate screen,Action bar,VoiceOver,Speed: normal / Speed: slow · Switches between normal and slow,,,iOS/ActionBar.swift:63-64
+053,Translate screen,Toast,Message,Saved to Library · View,,After saving,iOS/TranslateScreen.swift:459-461
+054,Translate screen,Toast,VoiceOver,Copied {language} text,,After copying,iOS/TranslateScreen.swift:469
+055,Translate screen,Toast,Message,You’re Pro,,After buying,iOS/RootView.swift:108
+056,Translate screen,Recent preview,Section / link,Recent · See all,,"Below the result, when empty",iOS/RecentPreview.swift:17-20
+057,Translate screen,Recent preview,Badge,Saved,,,iOS/RecentPreview.swift:51
+058,Translate screen,Bottom controls,Buttons,Type instead · Translate with camera,,,iOS/BottomControls.swift:21-32
+059,Voice (hold to talk),Talk button,Caption,Hold to talk / Release to translate / Mic off,,,iOS/HoldToTalkButton.swift:99-101
+060,Voice (hold to talk),Talk button,VoiceOver,Hold to talk / Listening / Microphone off / Voice unavailable offline,,,iOS/HoldToTalkButton.swift:107-110
+061,Voice (hold to talk),Talk button,VoiceOver hint,"Double-tap to start listening, and again to translate",,,iOS/HoldToTalkButton.swift:45
+062,Voice (hold to talk),While listening,Text,Listening…,,Before any words arrive,iOS/TranslateScreen.swift:277
+063,Voice (hold to talk),While listening,Hint,Slide your finger away to cancel.,,,iOS/TranslateScreen.swift:357
+064,Voice (hold to talk),Nothing heard,Title,Didn’t catch that,,,iOS/TranslateScreen.swift:223
+065,Voice (hold to talk),Nothing heard,Message,"Hold the button while you talk, then let go. Speak close to your iPhone if it’s noisy.",,,iOS/TranslateScreen.swift:226
+066,Voice (hold to talk),Microphone off card,Title,Microphone is off,,Permission denied,iOS/TranslateScreen.swift:291
+067,Voice (hold to talk),Microphone off card,Message,"To translate by voice, turn on Microphone and Speech Recognition for Translate Offline in Settings. You can still type or use the camera.",,,iOS/TranslateScreen.swift:294
+068,Voice (hold to talk),Microphone off card,Button,Open Settings,,,iOS/TranslateScreen.swift:300
+069,Voice (hold to talk),Toast,Message,Hold to talk,,After a quick tap instead of holding,iOS/TranslateScreen.swift:530
+070,Voice (hold to talk),Toast,Error,Couldn’t start listening. Try again.,,,iOS/TranslateScreen.swift:520
+071,Voice (hold to talk),Toast,Error,Voice isn’t available offline for {language} yet. You can still type.,,,iOS/TranslateScreen.swift:563
+072,Show to someone (full screen),Header,Title,SHOW TO SOMEONE,,Shown in capitals,iOS/ShowToSomeoneView.swift:101
+073,Show to someone (full screen),Header,Buttons,Close · Flip to face them / Turn back,,Icon only,iOS/ShowToSomeoneView.swift:97-104
+074,Show to someone (full screen),Original card,Label,{LANGUAGE} · YOU SAID,,Shown in capitals,iOS/ShowToSomeoneView.swift:44
+075,Show to someone (full screen),Read aloud,Button / title,Read it aloud / Stop,,,iOS/ShowToSomeoneView.swift:56-64
+076,Show to someone (full screen),Read aloud,Note,Screen stays bright while this is open,,,iOS/ShowToSomeoneView.swift:67
+077,Camera,Top bar,Buttons,Close / Retake · Turn on light / Turn off light,,Icon only,iOS/CameraScreen.swift:163-171
+078,Camera,Language menu,Items,{Japanese} → {English} / {English} → {Japanese} · Choose Languages…,,Picker named “Direction” for VoiceOver,iOS/CameraScreen.swift:191-197
+079,Camera,Language menu,VoiceOver,Can't read this language,,Warning icon; note the straight apostrophe,iOS/CameraScreen.swift:205
+080,Camera,Viewfinder,Hint,Point at a menu or sign,,,iOS/CameraScreen.swift:276
+081,Camera,Viewfinder,Hint,Text found · tap the shutter to translate,,,iOS/CameraScreen.swift:275
+082,Camera,Viewfinder,Hint,Camera can’t read {language} yet.,,,iOS/CameraScreen.swift:274
+083,Camera,Bottom bar,Buttons,Choose a photo · Take photo and translate,,Icon only,iOS/CameraScreen.swift:234-254
+084,Camera,After the photo,Status,Translating the photo,,VoiceOver,iOS/CameraScreen.swift:135
+085,Camera,After the photo,Switch,Translated / Original,,,iOS/CameraScreen.swift:284-285
+086,Camera,After the photo,Text,{count} line(s) · tap one for details,,,iOS/CameraScreen.swift:291
+087,Camera,After the photo,Button,Copy All,,,iOS/CameraScreen.swift:300
+088,Camera,After the photo,VoiceOver hint,Shows the original and more,,On each line,iOS/CapturedPhotoView.swift:78
+089,Camera,Toast,Message,Copied all lines,,,iOS/CameraScreen.swift:298
+090,Camera,Toast,Error,Couldn’t take the photo. Try again.,,,iOS/CameraScreen.swift:351
+091,Camera,Toast,Error,Couldn’t open that photo.,,,iOS/CameraScreen.swift:363
+092,Camera,Toast,Error,No text found. Move closer or add more light.,,,iOS/CameraScreen.swift:385
+093,Camera,Toast,Error,Couldn’t translate this photo. Check that both languages are downloaded.,,,iOS/CameraScreen.swift:417
+094,Camera,Line sheet,Buttons,Close · Read aloud / Stop · Save / Remove from Library · Copy,,,iOS/CameraLineSheet.swift:32-79
+095,Camera,Camera off,Title,Camera is off,,Permission denied,iOS/CameraOffView.swift:33
+096,Camera,Camera off,Message,Turn on Camera for Translate Offline in Settings to translate signs and menus live. Or pick a photo you already took.,,,iOS/CameraOffView.swift:38
+097,Camera,Camera off,Buttons,Open Settings / Choose a Photo / Close,,,iOS/CameraOffView.swift:20-58
+098,Language picker (sheet),Top,Switch,From · {language} / To · {language},,Named “Side” for VoiceOver,iOS/LanguagePickerSheet.swift:35-37
+099,Language picker (sheet),Top,Value,Detect,,When Detect Language is chosen,iOS/LanguagePickerSheet.swift:224
+100,Language picker (sheet),List,Search,Search languages,,,iOS/LanguagePickerSheet.swift:84
+101,Language picker (sheet),List,Section,On this iPhone,,,iOS/LanguagePickerSheet.swift:65
+102,Language picker (sheet),List,Section,Download to use,,,iOS/LanguagePickerSheet.swift:77
+103,Language picker (sheet),List,Section footer,"Each language downloads once, then works offline.",,,iOS/LanguagePickerSheet.swift:80
+104,Language picker (sheet),Row,Status,Translating to / Translating from,,On the language chosen for the other side,iOS/LanguagePickerSheet.swift:118
+105,Language picker (sheet),Row,VoiceOver,Selected · Downloads the language,,,"iOS/LanguagePickerSheet.swift:116,145"
+106,Language picker (sheet),Empty,Title / message,No Languages Available — This device can’t translate right now.,,,iOS/LanguagePickerSheet.swift:54-56
+107,Library (Recent & Saved),Navigation bar,Title,Library,,,iOS/LibraryScreen.swift:64
+108,Library (Recent & Saved),Tabs,Segments,Saved / Recent,,,iOS/LibraryTab.swift:17-18
+109,Library (Recent & Saved),Search,Placeholder,Search saved / Search recent,,,iOS/LibraryTab.swift:24-25
+110,Library (Recent & Saved),Menu,Item,Clear History…,,,iOS/LibraryScreen.swift:70
+111,Library (Recent & Saved),Clear confirmation,Title,Clear history?,,,iOS/LibraryScreen.swift:79
+112,Library (Recent & Saved),Clear confirmation,Message,This removes every recent translation from this iPhone. Saved translations stay.,,,iOS/LibraryScreen.swift:85
+113,Library (Recent & Saved),Clear confirmation,Button,Clear History,,,iOS/LibraryScreen.swift:80
+114,Library (Recent & Saved),Row,Languages,{EN} → {JA},,VoiceOver reads “{English} to {Japanese}”,iOS/LibraryRow.swift:57-61
+115,Library (Recent & Saved),Row,Star / hint,Save / Remove from Saved · Opens in Translate,,,iOS/LibraryRow.swift:33-37
+116,Library (Recent & Saved),Swipe actions,Buttons,Unsave / Save · Delete,,,iOS/LibraryScreen.swift:106-119
+117,Library (Recent & Saved),Long-press menu,Items,Copy Translation / Copy Original / Read Aloud / Save / Unsave / Delete,,,iOS/LibraryScreen.swift:126-139
+118,Library (Recent & Saved),Footer,Text,{count} result(s),,While searching,iOS/LibraryScreen.swift:161
+119,Library (Recent & Saved),Footer (Saved),Text,{count} saved · never deleted automatically,,,iOS/LibraryScreen.swift:165
+120,Library (Recent & Saved),Footer (Recent),Text,{count} translation(s) · kept on this iPhone only,,,iOS/LibraryScreen.swift:167
+121,Library (Recent & Saved),Empty (history off),Title / message,History is off — Turn on history in Settings to see your translations here.,,,iOS/LibraryScreen.swift:180-182
+122,Library (Recent & Saved),Empty (history off),Button,Open Settings,,,iOS/LibraryScreen.swift:184
+123,Library (Recent & Saved),Empty (Recent),Title / message,"No translations yet — Translations you finish, copy or save show up here. They stay on this iPhone.",,,iOS/LibraryScreen.swift:188-190
+124,Library (Recent & Saved),Empty (Saved),Title / message,No saved translations — Tap the star on any translation to keep it here. Saved items are never deleted automatically.,,,iOS/LibraryScreen.swift:196-198
+125,Library (Recent & Saved),Empty,Button,Start Translating,,,iOS/LibraryScreen.swift:192
+126,Library (Recent & Saved),Toast,Message,Removed from Saved · Undo,,,iOS/LibraryScreen.swift:261-262
+127,Library (Recent & Saved),Languages column,Value,Detected,,Shared with the Mac app; a change applies to both; when the language was detected,Shared/LanguageCatalog.swift:220
+128,Settings,Navigation bar,Title,Settings,,,iOS/SettingsScreen.swift:152
+129,Settings,Translation,Section,Translation,,,iOS/SettingsScreen.swift:59
+130,Settings,Translation,Toggles,Translate as you type · Show pronunciation · Read results aloud after voice,,,iOS/SettingsScreen.swift:45-47
+131,Settings,Translation,Picker,Quality: Fast / Best quality,,Only on iPhones with Apple Intelligence; Shared with the Mac app; a change applies to both,iOS/SettingsScreen.swift:51; Shared/TranslationQuality.swift:28-29
+132,Settings,Translation,Footer (Fast),Uses the languages downloaded to this iPhone. Quick enough to translate as you type.,,,iOS/SettingsScreen.swift:183
+133,Settings,Translation,Footer (Best quality),"Uses Apple Intelligence for more natural translations in every language, with nothing to download. Each one takes a moment longer. Still works offline.",,,iOS/SettingsScreen.swift:185
+134,Settings,Voice,Section / slider,Voice · Speaking speed: Slow … Fast,,,iOS/SettingsScreen.swift:66-74
+135,Settings,Voice,Sample read aloud,This is how translations will sound.,,After moving the slider,iOS/SettingsScreen.swift:224
+136,Settings,Languages,Row,Languages · {count} downloaded,,,iOS/SettingsScreen.swift:85-89
+137,Settings,History,Section,History,,,iOS/SettingsScreen.swift:104
+138,Settings,History,Toggle / button,Keep history · Clear History,,,iOS/SettingsScreen.swift:96-98
+139,Settings,History,Footer (on),Keeps your translations on this iPhone until you clear them. Saved items are never removed.,,,iOS/SettingsScreen.swift:192
+140,Settings,History,Footer (off),New translations aren’t added to Recent. Saved items still work.,,,iOS/SettingsScreen.swift:191
+141,Settings,History,Clear confirmation,Clear all history? — This removes every translation in Recent. Saved translations are kept. · Clear History,,,iOS/SettingsScreen.swift:155-161
+142,Settings,Plan (free),Card,"Unlock Pro — Unlimited translations, history and saved",,,iOS/PlanSection.swift:72-74
+143,Settings,Plan (free),Row,Translations today · {used} of 5,,,iOS/PlanSection.swift:51
+144,Settings,Plan (free),Footer,Free plan · the daily count resets at midnight.,,,iOS/PlanSection.swift:53
+145,Settings,Plan (Pro),Title / badge,Translate Offline Pro · Active,,,iOS/PlanSection.swift:102-105
+146,Settings,Plan (Pro),Plan line,{Yearly} · renews {date} / {Yearly} · ends {date} / Lifetime · purchased {date} / Lifetime · original purchase / Lifetime,,,iOS/PlanSection.swift:134-143
+147,Settings,Plan (Pro),Buttons,Manage Subscription · Switch to Lifetime,,,iOS/PlanSection.swift:26-33
+148,Settings,Plan (Pro),Note,"You own Lifetime, so your subscription is no longer needed. Cancel it in Manage Subscription.",,Lifetime bought while Yearly still runs,iOS/PlanSection.swift:38
+149,Settings,About,Links,Restore Purchase · Privacy Policy · Terms of Use,,,iOS/SettingsScreen.swift:125-138
+150,Settings,About,Footer,Version {1.3} · Everything runs on this iPhone.,,,iOS/SettingsScreen.swift:145
+151,Settings › Languages,Languages,Title,Languages,,,iOS/LanguagesScreen.swift:90
+152,Settings › Languages,Languages,Header,Download a language once and it works offline everywhere in the app.,,,iOS/LanguagesScreen.swift:22
+153,Settings › Languages,Languages,Section / status,On this iPhone · Ready,,,iOS/LanguagesScreen.swift:43-48
+154,Settings › Languages,Languages,Section,Download to use,,,iOS/LanguagesScreen.swift:80
+155,Settings › Languages,Languages,VoiceOver hint,Downloads the language,,,iOS/LanguagesScreen.swift:76
+156,Settings › Languages,Languages,Footer,"iOS stores these languages for all apps. To remove one, go to the Settings app › Apps › Translate › Downloaded Languages.",,,iOS/LanguagesScreen.swift:83
+157,Settings › Languages,Languages,Empty,No Languages Available — This device can’t translate right now.,,,iOS/LanguagesScreen.swift:36-38
+158,Upgrade screen (paywall),Top bar,Buttons,Close · Restore,,,iOS/PaywallSheet.swift:61-67
+159,Upgrade screen (paywall),Header,Title,Translate without limits,,,iOS/PaywallSheet.swift:34
+160,Upgrade screen (paywall),Header,Subtitle,Everything stays offline and private. Pick the plan that fits how you travel.,,,iOS/PaywallSheet.swift:37
+161,Upgrade screen (paywall),Benefits,Item,"Unlimited translations, every day",,,iOS/PaywallSheet.swift:43
+162,Upgrade screen (paywall),Benefits,Item,Unlimited voice and camera,,,iOS/PaywallSheet.swift:44
+163,Upgrade screen (paywall),Benefits,Item,Save as many phrases as you want,,,iOS/PaywallSheet.swift:45
+164,Upgrade screen (paywall),Plan row 1,Name / badge,Yearly · Best Value,,Listed first and selected,iOS/PaywallSheet.swift:101-106
+165,Upgrade screen (paywall),Plan row 1,Detail,{monthly} a month / Billed once a year,,Billed once a year while prices load,iOS/PaywallSheet.swift:192-197
+166,Upgrade screen (paywall),Plan row 1,Detail (trial),{monthly} a month · {n} days free,,Only if the App Store has a free trial set up for Yearly (it doesn't now),iOS/PaywallSheet.swift:195
+167,Upgrade screen (paywall),Plan row 2,Name / detail,"Lifetime · Pay once, keep Pro forever",,,iOS/PaywallSheet.swift:110-112
+168,Upgrade screen (paywall),Plans,VoiceOver,Plans,,,iOS/PaywallSheet.swift:119
+169,Upgrade screen (paywall),Main button,Button,Subscribe · {price}/year,,Yearly selected,iOS/PaywallSheet.swift:207
+170,Upgrade screen (paywall),Main button,Button,Start {n}-Day Free Trial,,Only with an App Store free trial,iOS/PaywallSheet.swift:206
+171,Upgrade screen (paywall),Main button,Button,Buy Lifetime · {price},,Lifetime selected,iOS/PaywallSheet.swift:204
+172,Upgrade screen (paywall),Under button,Terms,{price}/year. Renews automatically. Cancel anytime in Settings › Apple Account at least 24 hours before renewal.,,Yearly selected,iOS/PaywallSheet.swift:217-219
+173,Upgrade screen (paywall),Under button,Terms (trial),{price}/year after the trial. Renews automatically. …,,Only with an App Store free trial,iOS/PaywallSheet.swift:220
+174,Upgrade screen (paywall),Under button,Terms,One payment of {price}. No subscription. Restores on all your Apple devices.,,Lifetime selected,iOS/PaywallSheet.swift:215
+175,Upgrade screen (paywall),Under button,Links,Terms · Privacy,,,iOS/PaywallSheet.swift:150-151
+176,Upgrade screen (paywall),Under button,Error,Couldn’t reach the App Store. Check your connection and try again.,,,iOS/PaywallSheet.swift:128
+177,Upgrade screen (paywall),After Lifetime (Yearly still on),Title / message,You’re on Lifetime now — Cancel your yearly plan in Manage Subscription so you aren’t charged again.,,,iOS/PaywallSheet.swift:169-172
+178,Upgrade screen (paywall),After Lifetime (Yearly still on),Buttons,Manage Subscription · Done,,,iOS/PaywallSheet.swift:180-183
+179,Shared messages (also on the Mac),"Paywall, Settings",Message,Your purchase is waiting for approval. Pro unlocks as soon as it’s approved.,,Shared with the Mac app; a change applies to both,Shared/PurchaseStore.swift:319
+180,Shared messages (also on the Mac),"Paywall, Settings",Error,Couldn’t complete the purchase. Try again in a moment.,,Shared with the Mac app; a change applies to both,Shared/PurchaseStore.swift:328
+181,Shared messages (also on the Mac),"Paywall, Settings",Error,Couldn’t verify the purchase. Use Restore Purchases to try again.,,Shared with the Mac app; a change applies to both,Shared/PurchaseStore.swift:427
+182,Shared messages (also on the Mac),Restore,Error / messages,Couldn’t restore purchases. Check your connection and try again. / Purchases restored / No Pro purchase found for this Apple Account.,,Shared with the Mac app; a change applies to both,Shared/PurchaseStore.swift:341-348
+183,Shared messages (also on the Mac),Translate screen (error),Message,{source} → {target} isn’t downloaded yet. / {target} isn’t downloaded yet.,,Shared with the Mac app; a change applies to both,Shared/TranslationFailure.swift:30-31
+184,Shared messages (also on the Mac),Translate screen (error),Message,Translation between {source} and {target} isn’t available. Choose another language.,,Shared with the Mac app; a change applies to both,Shared/TranslationFailure.swift:36
+185,Shared messages (also on the Mac),Translate screen (error),Message,Translating from {source} isn’t available. Choose another language. / Translating into {target} isn’t available. Choose another language.,,Shared with the Mac app; a change applies to both,Shared/TranslationFailure.swift:42-48
+186,Shared messages (also on the Mac),Translate screen (error),Message,Couldn’t tell which language this is. Choose it from the menu on the left.,,Shared with the Mac app; a change applies to both; “menu on the left” doesn't fit the iPhone layout,Shared/TranslationFailure.swift:54
+187,Shared messages (also on the Mac),Translate screen (error),Message,"There’s nothing to translate. / Try again, or try shorter text.",,Shared with the Mac app; a change applies to both,Shared/TranslationFailure.swift:60-68
