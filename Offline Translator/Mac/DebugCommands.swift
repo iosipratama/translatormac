@@ -26,6 +26,17 @@ struct DebugCommands: Commands {
 
             Divider()
 
+            Menu("Scenario") {
+                ForEach(DebugScenario.allCases) { scenario in
+                    Button(scenario.title) {
+                        showMainWindow()
+                        scenario.apply(to: purchases, reviews: reviews)
+                    }
+                }
+            }
+
+            Divider()
+
             Picker("Plan", selection: Binding(get: { purchases.debugPlan }, set: { purchases.debugPlan = $0 })) {
                 ForEach(PurchaseStore.DebugPlan.allCases) { plan in
                     Text(plan.title).tag(plan)

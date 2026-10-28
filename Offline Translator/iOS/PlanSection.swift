@@ -133,7 +133,7 @@ struct PlanSection: View {
     private var planLine: String {
         #if DEBUG
         if purchases.debugPlan == .forcePro, purchases.activePlan == nil {
-            return "Forced on in Settings › Debug"
+            return "Pro, set in Settings › Debug"
         }
         #endif
         switch purchases.activePlan {

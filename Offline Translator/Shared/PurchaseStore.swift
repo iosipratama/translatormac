@@ -55,9 +55,21 @@ final class PurchaseStore {
     /// Apple doesn't cancel on its own.
     private(set) var hasRedundantSubscription = false
 
+    /// Bought the app back when it was paid, as the App Store says.
+    private var boughtWhenPaid: Bool {
+        didSet { UserDefaults.standard.set(boughtWhenPaid, forKey: DefaultsKey.isEarlySupporter) }
+    }
+
     /// Bought the app back when it was paid.
-    private(set) var isEarlySupporter: Bool {
-        didSet { UserDefaults.standard.set(isEarlySupporter, forKey: DefaultsKey.isEarlySupporter) }
+    var isEarlySupporter: Bool {
+        #if DEBUG
+        switch debugPlan {
+        case .earlierBuyer: return true
+        case .notBought, .forceFree, .forcePro: return false
+        case .automatic: break
+        }
+        #endif
+        return boughtWhenPaid
     }
 
     var ownsPro: Bool { activePlan != nil }
@@ -68,8 +80,8 @@ final class PurchaseStore {
     var hasPro: Bool {
         #if DEBUG
         switch debugPlan {
-        case .forcePro: return true
-        case .forceFree: return false
+        case .forcePro, .earlierBuyer: return true
+        case .forceFree, .notBought: return false
         case .automatic: break
         }
         #endif
@@ -118,22 +130,37 @@ final class PurchaseStore {
     }
 
     #if DEBUG
-    /// Debug builds only: pretend to be on Pro or on the free plan,
-    /// whatever StoreKit says. Release builds don't have this at all.
+    /// Debug builds only: pretend to be a kind of customer, whatever
+    /// StoreKit says. Release builds don't have this at all.
     enum DebugPlan: String, CaseIterable, Identifiable {
+        /// What StoreKit and the app's download say.
         case automatic
-        case forcePro
+        /// Nothing bought, even if a test purchase exists: the free days
+        /// and the free plan, by the date.
+        case notBought
+        /// The free plan, with the free days over whatever the date.
         case forceFree
+        /// Pro, as after buying a plan.
+        case forcePro
+        /// Pro from buying the app before it was free.
+        case earlierBuyer
 
         var id: Self { self }
 
         var title: String {
             switch self {
             case .automatic: "From App Store"
-            case .forcePro: "Force Pro"
-            case .forceFree: "Force Free (no free days)"
+            case .notBought: "Not Bought (free days by date)"
+            case .forceFree: "Free Plan (no free days)"
+            case .forcePro: "Pro"
+            case .earlierBuyer: "Earlier Buyer (Pro)"
             }
         }
+    }
+
+    /// Debug builds only: whether the free days' notice has been shown.
+    var debugNoticeShown: Bool {
+        freeAccessNoticeShown
     }
 
     var debugPlan: DebugPlan = UserDefaults.standard.string(forKey: "debugPlan")
@@ -169,10 +196,10 @@ final class PurchaseStore {
 
     /// Debug builds only: show the free days' notice again, as on the last
     /// free day, or as after it for someone who skipped that day. Moves to
-    /// that day and goes by the App Store, since the notice never shows
+    /// that day and ignores test purchases, since the notice never shows
     /// for Pro.
     func replayFreeAccessNotice(ended: Bool) {
-        debugPlan = .automatic
+        debugPlan = .notBought
         setDebugDay(ended ? freeAccess.days + 1 : freeAccess.days)
         freeAccessNoticeShown = false
     }
@@ -187,6 +214,11 @@ final class PurchaseStore {
         debugPlan = .automatic
         debugDayOffset = 0
         UserDefaults.standard.removeObject(forKey: SettingsKey.debugNoAppleIntelligence)
+    }
+
+    /// Debug builds only: mark the free days' notice as seen, or not.
+    func setFreeAccessNoticeShown(_ shown: Bool) {
+        freeAccessNoticeShown = shown
     }
     #endif
 
@@ -237,7 +269,7 @@ final class PurchaseStore {
         } else {
             activePlan = nil
         }
-        isEarlySupporter = defaults.bool(forKey: DefaultsKey.isEarlySupporter)
+        boughtWhenPaid = defaults.bool(forKey: DefaultsKey.isEarlySupporter)
         allowance = DailyAllowance(
             day: defaults.object(forKey: DefaultsKey.allowanceDay) as? Date ?? .now,
             used: defaults.integer(forKey: DefaultsKey.allowanceUsed)
@@ -411,7 +443,7 @@ final class PurchaseStore {
                 Log.purchases.error("App transaction failed verification")
                 return
             }
-            isEarlySupporter = PlanAccess.isEarlySupporter(
+            boughtWhenPaid = PlanAccess.isEarlySupporter(
                 originalAppVersion: app.originalAppVersion,
                 environment: app.environment
             )
