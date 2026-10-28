@@ -228,7 +228,7 @@ struct TranslateScreen: View {
                         .foregroundStyle(.textMuted)
                 }
             } else {
-                TextField("Text to translate", text: input, prompt: Text("Enter text").foregroundStyle(.textFaint), axis: .vertical)
+                TextField("Text to translate", text: input, prompt: Text("Type or paste text").foregroundStyle(.textFaint), axis: .vertical)
                     .font(sourceFont)
                     .foregroundStyle(isEditing || !hasInput ? AnyShapeStyle(.textPrimary) : AnyShapeStyle(.textSecondary))
                     .tint(Color.accent)
@@ -420,7 +420,7 @@ struct TranslateScreen: View {
     private func failureMessage(_ failure: TranslationFailure) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             if failure.offersDownload {
-                Text("\(model.name(for: model.targetLanguage)) isn’t on this iPhone yet.")
+                Text("\(model.name(for: model.targetLanguage)) isn’t downloaded yet.")
                     .font(.body)
                     .foregroundStyle(.textSecondary)
                 Button("Download", systemImage: "arrow.down.circle", action: model.downloadCurrentPair)
@@ -435,7 +435,7 @@ struct TranslateScreen: View {
 
     private var limitMessage: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("You’ve used today’s \(PlanLimits.freeTranslationsPerDay) free translations. Pro translates without a limit.")
+            Text("You’ve used today’s \(PlanLimits.freeTranslationsPerDay) free translations. They reset at midnight, and Pro has no daily limit.")
                 .font(.body)
                 .foregroundStyle(.textSecondary)
             Button("Get Pro") { pro.present() }
@@ -527,7 +527,7 @@ struct TranslateScreen: View {
         guard voice.isListening else { return }
         if let pressedAt, Date.now.timeIntervalSince(pressedAt) < 0.3 {
             cancelMic()
-            toast = ToastMessage(text: "Hold to talk", systemImage: "microphone.fill")
+            toast = ToastMessage(text: "Hold to talk, then let go.", systemImage: "microphone.fill")
             return
         }
         Task {
@@ -560,7 +560,7 @@ struct TranslateScreen: View {
             voiceNotice = .micOff
         } else if !isVoiceAvailable {
             let name = model.sourceLanguage.map(model.name(for:)) ?? ""
-            toast = ToastMessage(text: "Voice isn’t available offline for \(name) yet. You can still type.")
+            toast = ToastMessage(text: "Voice isn’t available offline for \(name). You can still type.")
         }
     }
 }

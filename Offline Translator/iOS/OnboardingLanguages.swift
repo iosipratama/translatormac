@@ -50,7 +50,7 @@ struct OnboardingLanguages: View {
                             availableRow(choice)
                         }
                     } header: {
-                        sectionHeader("Available offline")
+                        sectionHeader("On this iPhone")
                     }
                     .listRowBackground(Color.surface)
                 }
@@ -149,7 +149,7 @@ struct OnboardingLanguages: View {
             Text(choice.name)
                 .foregroundStyle(.textPrimary)
             Spacer()
-            Text("Ready")
+            Text("Downloaded")
                 .font(.subheadline)
                 .foregroundStyle(.textMuted)
         }

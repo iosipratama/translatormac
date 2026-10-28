@@ -55,7 +55,7 @@ struct OnboardingWelcome: View {
                         Text("Welcome to Translate Offline")
                             .font(.largeTitle.bold())
                             .foregroundStyle(.textPrimary)
-                        Text("Private, offline translation for your iPhone")
+                        Text("Private translation on this iPhone.")
                             .font(.body.weight(.semibold))
                             .foregroundStyle(.textMuted)
                             .frame(maxWidth: 225)
@@ -73,13 +73,13 @@ struct OnboardingWelcome: View {
                     )
                     feature(
                         "Talk and listen",
-                        "Speak, then hear it said aloud.",
+                        "Speak, then hear the translation.",
                         icon: .waveformLines,
                         index: 1
                     )
                     feature(
-                        "No internet needed",
-                        "Download once, use it anywhere.",
+                        "Works without internet",
+                        "Download a language once, then use it anywhere.",
                         icon: .wifiOff,
                         index: 2
                     )

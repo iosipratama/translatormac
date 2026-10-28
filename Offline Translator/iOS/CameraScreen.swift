@@ -92,7 +92,7 @@ struct CameraScreen: View {
         }
         .sheet(isPresented: $isShowingPro) {
             PaywallSheet {
-                toast = ToastMessage(text: "You’re Pro", systemImage: "checkmark.seal.fill")
+                toast = ToastMessage(text: "Pro is active", systemImage: "checkmark.seal.fill")
             }
         }
         .sensoryFeedback(.success, trigger: copiedCount)
@@ -202,7 +202,7 @@ struct CameraScreen: View {
                 if !canRead {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .foregroundStyle(Color.accent)
-                        .accessibilityLabel("Can't read this language")
+                        .accessibilityLabel("Can’t read this language")
                 }
                 Text(model.name(for: source))
                 Image(systemName: "arrow.right")
@@ -271,7 +271,7 @@ struct CameraScreen: View {
     }
 
     private var hint: LocalizedStringKey {
-        if !canRead { return "Camera can’t read \(model.name(for: source)) yet." }
+        if !canRead { return "Camera can’t read \(model.name(for: source))." }
         if feed.visibleTextCount > 0 { return "Text found · tap the shutter to translate" }
         return "Point at a menu or sign"
     }

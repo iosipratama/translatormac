@@ -144,7 +144,7 @@ ID,Area,Where,Element,Current text,New text,When it shows / notes,Source
 143,Translation errors,Right pane (error),Message,Translation between {source} and {target} isn’t available. Choose another language.,,,Shared/TranslationFailure.swift:36
 144,Translation errors,Right pane (error),Message,Translating from {source} isn’t available. Choose another language.,,,Shared/TranslationFailure.swift:42
 145,Translation errors,Right pane (error),Message,Translating into {target} isn’t available. Choose another language.,,,Shared/TranslationFailure.swift:48
-146,Translation errors,Right pane (error),Message,Couldn’t tell which language this is. Choose it from the menu on the left.,,,Shared/TranslationFailure.swift:54
+146,Translation errors,Right pane (error),Message,Couldn’t tell which language this is. Choose the language you’re translating from.,,,Shared/TranslationFailure.swift:54
 147,Translation errors,Right pane (error),Message,There’s nothing to translate.,,,Shared/TranslationFailure.swift:60
 148,Translation errors,Right pane (error),Message,"Try again, or try shorter text.",,,Shared/TranslationFailure.swift:68
 149,Translation errors,Right pane (error),Stand-in name,the detected language,,Used as {source} with Detect Language,Shared/TranslationFailure.swift:22

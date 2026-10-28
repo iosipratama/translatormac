@@ -34,17 +34,24 @@ struct PaywallSheet: View {
                     Text("Translate without limits")
                         .font(.largeTitle.bold())
                         .foregroundStyle(.textPrimary)
-                    Text("Everything stays offline and private. Pick the plan that fits how you travel.")
+                    Text("Everything stays offline and private.")
                         .font(.body)
                         .foregroundStyle(.textMuted)
                         .padding(.top, 8)
 
+                    Text("Everything in Free, plus:")
+                        .font(.subheadline)
+                        .foregroundStyle(.textMuted)
+                        .padding(.top, 24)
+
+                    // The same list as the Mac and the website; Best quality
+                    // only where Apple Intelligence can run.
                     VStack(alignment: .leading, spacing: 14) {
-                        benefit("Unlimited translations, every day")
-                        benefit("Unlimited voice and camera")
-                        benefit("Save as many phrases as you want")
+                        ForEach(PlanFeatures.pro, id: \.key) { feature in
+                            benefit(feature)
+                        }
                     }
-                    .padding(.top, 24)
+                    .padding(.top, 12)
                 }
                 .padding(.horizontal, 24)
                 .padding(.top, 4)
@@ -80,7 +87,7 @@ struct PaywallSheet: View {
         }
     }
 
-    private func benefit(_ text: LocalizedStringKey) -> some View {
+    private func benefit(_ text: LocalizedStringResource) -> some View {
         HStack(spacing: 14) {
             Image(systemName: "checkmark")
                 .font(.footnote.weight(.bold))
@@ -103,14 +110,14 @@ struct PaywallSheet: View {
                     title: ProPlan.yearly.title,
                     detail: yearlyDetail,
                     price: purchases.product(for: .yearly)?.displayPrice,
-                    badge: "Best Value",
                     isSelected: plan == .yearly
                 ) { plan = .yearly }
 
                 PaywallPlanRow(
                     title: ProPlan.lifetime.title,
-                    detail: String(localized: "Pay once, keep Pro forever"),
+                    detail: String(localized: "Pay once"),
                     price: purchases.product(for: .lifetime)?.displayPrice,
+                    badge: "Best Value",
                     isSelected: plan == .lifetime
                 ) { plan = .lifetime }
             }
@@ -212,9 +219,9 @@ struct PaywallSheet: View {
         let price = purchases.product(for: plan)?.displayPrice ?? "…"
         switch plan {
         case .lifetime:
-            return String(localized: "One payment of \(price). No subscription. Restores on all your Apple devices.")
+            return String(localized: "One payment of \(price). Works on iPhone and Mac.")
         case .yearly, .weekly:
-            let renewal = String(localized: "Renews automatically. Cancel anytime in Settings › Apple Account at least 24 hours before renewal.")
+            let renewal = String(localized: "Renews automatically. Cancel anytime.")
             return trialDays == nil
                 ? String(localized: "\(price)/year. \(renewal)")
                 : String(localized: "\(price)/year after the trial. \(renewal)")

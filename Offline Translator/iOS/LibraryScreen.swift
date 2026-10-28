@@ -76,13 +76,13 @@ struct LibraryScreen: View {
                 }
             }
         }
-        .confirmationDialog("Clear history?", isPresented: $isConfirmingClear, titleVisibility: .visible) {
+        .confirmationDialog("Clear all history?", isPresented: $isConfirmingClear, titleVisibility: .visible) {
             Button("Clear History", role: .destructive) {
                 model.historyWillClear()
                 store.clearRecent()
             }
         } message: {
-            Text("This removes every recent translation from this iPhone. Saved translations stay.")
+            Text("This removes every translation in Recent. Saved translations are kept.")
         }
         .toast($toast, bottomPadding: 8)
         .sensoryFeedback(.success, trigger: savedCount)
@@ -132,7 +132,7 @@ struct LibraryScreen: View {
             Button("Read Aloud", systemImage: "speaker.wave.2") {
                 model.speaker.speak(entry.translatedText, in: LanguageCatalog.language(forIdentifier: entry.targetLanguageID))
             }
-            Button(entry.isSaved ? "Unsave" : "Save", systemImage: entry.isSaved ? "star.slash" : "star") {
+            Button(entry.isSaved ? "Remove from Saved" : "Save", systemImage: entry.isSaved ? "star.slash" : "star") {
                 setSaved(entry, !entry.isSaved)
             }
             if tab == .recent {
@@ -187,7 +187,7 @@ struct LibraryScreen: View {
                 ContentUnavailableView {
                     Label("No translations yet", systemImage: "clock")
                 } description: {
-                    Text("Translations you finish, copy or save show up here. They stay on this iPhone.")
+                    Text("Translations you make show up here. They stay on this iPhone.")
                 } actions: {
                     startButton("Start Translating", action: showTranslate)
                 }
@@ -195,7 +195,7 @@ struct LibraryScreen: View {
                 ContentUnavailableView {
                     Label("No saved translations", systemImage: "star")
                 } description: {
-                    Text("Tap the star on any translation to keep it here. Saved items are never deleted automatically.")
+                    Text("Tap the star on any translation to keep it here. Saved translations are never deleted automatically.")
                 } actions: {
                     startButton("Start Translating", action: showTranslate)
                 }

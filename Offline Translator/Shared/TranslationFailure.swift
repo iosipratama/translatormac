@@ -51,7 +51,7 @@ nonisolated struct TranslationFailure: Equatable {
 
         case TranslationError.unableToIdentifyLanguage:
             return TranslationFailure(
-                message: String(localized: "Couldn’t tell which language this is. Choose it from the menu on the left."),
+                message: String(localized: "Couldn’t tell which language this is. Choose the language you’re translating from."),
                 offersDownload: false
             )
 

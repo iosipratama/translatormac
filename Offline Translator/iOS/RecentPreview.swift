@@ -17,7 +17,7 @@ struct RecentPreview: View {
                 SectionLabel("Recent")
                     .accessibilityAddTraits(.isHeader)
                 Spacer()
-                Button("See all", action: seeAll)
+                Button("See All", action: seeAll)
                     .font(.subheadline.weight(.semibold))
             }
             .padding(.bottom, 10)

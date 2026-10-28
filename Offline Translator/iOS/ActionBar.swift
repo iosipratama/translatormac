@@ -39,7 +39,7 @@ struct ActionBar: View {
             RoundIconButton(title: "Show full-screen", systemImage: "arrow.up.left.and.arrow.down.right", action: showToSomeone)
 
             RoundIconButton(
-                title: model.isCurrentSaved ? "Remove from Library" : "Save",
+                title: model.isCurrentSaved ? "Remove from Saved" : "Save",
                 systemImage: model.isCurrentSaved ? "star.fill" : "star",
                 iconColor: model.isCurrentSaved ? .accentForeground : .textPrimary,
                 action: toggleSaved

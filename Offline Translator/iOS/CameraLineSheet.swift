@@ -57,7 +57,7 @@ struct CameraLineSheet: View {
 
             HStack(spacing: 12) {
                 RoundIconButton(
-                    title: model.speaker.isSpeaking ? "Stop" : "Read aloud",
+                    title: model.speaker.isSpeaking ? "Stop" : "Read Aloud",
                     systemImage: model.speaker.isSpeaking ? "stop.fill" : "speaker.wave.2.fill",
                     isProminent: true
                 ) {
@@ -70,7 +70,7 @@ struct CameraLineSheet: View {
                 .disabled(!model.speaker.canSpeak(target))
 
                 RoundIconButton(
-                    title: isSaved ? "Remove from Library" : "Save",
+                    title: isSaved ? "Remove from Saved" : "Save",
                     systemImage: isSaved ? "star.fill" : "star",
                     iconColor: isSaved ? .accentForeground : .textPrimary,
                     action: toggleSaved

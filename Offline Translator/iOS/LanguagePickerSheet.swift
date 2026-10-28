@@ -51,9 +51,9 @@ struct LanguagePickerSheet: View {
                     Section {
                         if query.isEmpty {
                             ContentUnavailableView(
-                                "No Languages Available",
+                                "No languages available",
                                 systemImage: "globe",
-                                description: Text("This device can’t translate right now.")
+                                description: Text("This iPhone can’t translate right now.")
                             )
                         } else {
                             ContentUnavailableView.search(text: query)

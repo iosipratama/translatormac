@@ -44,7 +44,7 @@ struct LanguageStatusRow: View {
             case .alreadyHere:
                 checkLabel("On this iPhone")
             case .ready:
-                checkLabel("Ready")
+                checkLabel("Downloaded")
                     .transition(.scale(scale: 0.8).combined(with: .opacity))
             case .downloading:
                 HStack(spacing: 8) {

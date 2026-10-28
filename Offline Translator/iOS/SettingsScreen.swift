@@ -44,7 +44,7 @@ struct SettingsScreen: View {
                 Group {
                     Toggle("Translate as you type", isOn: $translatesAsYouType)
                     Toggle("Show pronunciation", isOn: $showsPronunciation)
-                    Toggle("Read results aloud after voice", isOn: $speaksAfterVoice)
+                    Toggle("Read translations aloud after you speak", isOn: $speaksAfterVoice)
                 }
                 .tint(.green)
                 if isBestAvailable {
@@ -122,7 +122,7 @@ struct SettingsScreen: View {
                     restore()
                 } label: {
                     HStack {
-                        Text("Restore Purchase")
+                        Text("Restore Purchases")
                             .foregroundStyle(.textPrimary)
                         Spacer()
                         if isRestoring {
@@ -189,7 +189,7 @@ struct SettingsScreen: View {
     private var historyNote: LocalizedStringKey {
         // With history off, describing what's kept would be untrue.
         guard keepsHistory else { return "New translations aren’t added to Recent. Saved items still work." }
-        return "Keeps your translations on this iPhone until you clear them. Saved items are never removed."
+        return "Keeps your translations on this iPhone until you clear them. Saved translations are never deleted automatically."
     }
 
     private static var version: String {

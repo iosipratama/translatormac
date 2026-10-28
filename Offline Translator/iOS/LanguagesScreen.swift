@@ -33,9 +33,9 @@ struct LanguagesScreen: View {
                 }
             } else if inventory.entries.isEmpty || (installed.isEmpty && downloadable.isEmpty) {
                 ContentUnavailableView(
-                    "No Languages Available",
+                    "No languages available",
                     systemImage: "globe",
-                    description: Text("This device can’t translate right now.")
+                    description: Text("This iPhone can’t translate right now.")
                 )
                 .listRowBackground(Color.clear)
             } else {
@@ -45,7 +45,7 @@ struct LanguagesScreen: View {
                             HStack {
                                 names(entry)
                                 Spacer()
-                                Label("Ready", systemImage: "checkmark")
+                                Label("Downloaded", systemImage: "checkmark")
                                     .font(.subheadline)
                                     .foregroundStyle(.textMuted)
                                     .labelStyle(ReadyLabelStyle())

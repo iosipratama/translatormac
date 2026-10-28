@@ -35,7 +35,7 @@ struct PlanSection: View {
                 }
             } footer: {
                 if purchases.hasRedundantSubscription {
-                    Text("You own Lifetime, so your subscription is no longer needed. Cancel it in Manage Subscription.")
+                    Text("Your yearly plan is still active. To avoid another charge, cancel it in Manage Subscription.")
                 }
             }
             .listRowBackground(Color.surface)
@@ -48,9 +48,9 @@ struct PlanSection: View {
             .listRowInsets(EdgeInsets())
 
             Section {
-                LabeledContent("Translations today", value: "\(purchases.translationsUsedToday) of \(PlanLimits.freeTranslationsPerDay)")
+                LabeledContent("Translations left today", value: "\(purchases.remainingFreeTranslations) of \(PlanLimits.freeTranslationsPerDay)")
             } footer: {
-                Text("Free plan · the daily count resets at midnight.")
+                Text("Free translations reset at midnight.")
             }
             .listRowBackground(Color.surface)
         }

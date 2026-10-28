@@ -53,7 +53,7 @@ struct ShowToSomeoneView: View {
 
                 HStack(spacing: 16) {
                     RoundIconButton(
-                        title: model.speaker.isSpeaking ? "Stop" : "Read it aloud",
+                        title: model.speaker.isSpeaking ? "Stop" : "Read Aloud",
                         systemImage: model.speaker.isSpeaking ? "stop.fill" : "speaker.wave.2.fill",
                         diameter: 64,
                         isProminent: true,
@@ -61,7 +61,7 @@ struct ShowToSomeoneView: View {
                     )
                     .disabled(!model.canSpeak)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Read it aloud")
+                        Text("Read Aloud")
                             .font(.headline)
                             .foregroundStyle(.textPrimary)
                         Text("Screen stays bright while this is open")

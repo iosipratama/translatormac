@@ -105,7 +105,7 @@ struct RootView: View {
         }
         .sheet(isPresented: Bindable(pro).isPresented) {
             PaywallSheet {
-                toast = ToastMessage(text: "You’re Pro", systemImage: "checkmark.seal.fill")
+                toast = ToastMessage(text: "Pro is active", systemImage: "checkmark.seal.fill")
             }
         }
         .toast($toast, bottomPadding: 24)
